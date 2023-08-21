@@ -29,7 +29,7 @@ public class BestBaker extends DailyEvents implements Listener {
 			
 		boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 		
-		if(contains == true) {
+		if(contains) {
 			
 			if(craftedItem.getType() == Material.BREAD) {
 				

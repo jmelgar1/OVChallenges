@@ -2,13 +2,13 @@
   <artifact type="jar" name="FBEvents:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/FBEvents_jar</output-path>
     <root id="archive" name="FBEvents.jar">
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/config.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/event_scoring_values.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/eventdata.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/eventplayerdata.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/playerdata.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/plugin.yml" />
-      <element id="file-copy" path="$USER_HOME$/git/OVEvents/org.onlyvanilla.dailyevents/smallevents.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/event_scoring_values.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/eventdata.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/eventplayerdata.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/playerdata.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/smallevents.yml" />
     </root>
   </artifact>
 </component>

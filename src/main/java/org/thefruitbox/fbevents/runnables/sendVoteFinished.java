@@ -35,7 +35,7 @@ public class sendVoteFinished extends BukkitRunnable implements Listener{
 		if(Bukkit.getServer().getOnlinePlayers().size() >= 0) {
 		
 			//get winning event
-			String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList(), mainClass);
+			String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
 			
 			//create section with winning event name
 			ConfigurationSection currentEventSection = eventData.createSection("current-event");

@@ -108,7 +108,7 @@ public class DetermineEventData {
     	
 	}
 	
-	public String getVotedEvent(FileConfiguration smallEvents, List<String> smallEventNames, Main mainClass) {
+	public String getVotedEvent(FileConfiguration smallEvents, List<String> smallEventNames) {
 		String topEvent = "NONE";
 		int topVote = 0;
 		int totalVotes = 0;

@@ -50,8 +50,8 @@ public class CoalDigger extends DailyEvents implements Listener {
 				}
 			}
 			
-			if(contains == true) {
-				if(blockPlaced == false) {
+			if(contains) {
+				if(!blockPlaced) {
 					int currentScore = winningEventSection.getInt(p.getName());
 					currentScore += 1;
 					winningEventSection.set(p.getName(), currentScore);

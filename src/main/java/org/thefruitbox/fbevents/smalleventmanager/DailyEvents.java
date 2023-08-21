@@ -20,7 +20,7 @@ public class DailyEvents implements Listener {
 	public DetermineEventData dev1 = new DetermineEventData();
 	
 	//get winning event 
-	public String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList(), mainClass);
+	public String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
 	
 	//event data file from main class
 	public FileConfiguration eventData = mainClass.getEventData();
@@ -50,13 +50,13 @@ public class DailyEvents implements Listener {
         Plugin plugin = mainClass.getServer().getPluginManager().getPlugin("CoreProtect");
 
         // Check that CoreProtect is loaded
-        if (plugin == null || !(plugin instanceof CoreProtect)) {
+        if (!(plugin instanceof CoreProtect)) {
             return null;
         }
 
         // Check that the API is enabled
         CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
-        if (CoreProtect.isEnabled() == false) {
+        if (!CoreProtect.isEnabled()) {
             return null;
         }
 

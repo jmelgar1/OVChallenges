@@ -27,7 +27,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 	public DetermineEventData dev1 = new DetermineEventData();
 	
 	//get winning event 
-	String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList(), mainClass);
+	String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
 	
 	int seconds = 180;
 	

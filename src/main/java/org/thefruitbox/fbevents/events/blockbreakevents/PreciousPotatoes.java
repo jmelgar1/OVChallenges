@@ -12,8 +12,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.thefruitbox.fbevents.runnables.UpdateScoreboard;
 import org.thefruitbox.fbevents.smalleventmanager.DailyEvents;
 
-import net.coreprotect.CoreProtectAPI;
-
 public class PreciousPotatoes extends DailyEvents implements Listener {
 
 	@EventHandler
@@ -32,7 +30,7 @@ public class PreciousPotatoes extends DailyEvents implements Listener {
 					
 					boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 
-					if(contains == true) {
+					if(contains) {
 						int currentScore = winningEventSection.getInt(p.getName());
 						currentScore += 1;
 						winningEventSection.set(p.getName(), currentScore);

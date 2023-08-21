@@ -26,8 +26,6 @@ public class CookieClicker extends DailyEvents implements Listener {
 		ClickType clickType = event.getClick();
 		
 		int realAmount = craftedItem.getAmount();
-		
-		//ensure mob was killed by a player
 			
 		boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 		

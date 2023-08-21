@@ -32,10 +32,10 @@ public class BringHomeTheBacon extends DailyEvents implements Listener {
 				
 				boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 				
-				if(contains == true) {
+				if(contains) {
 					int score = winningEventSection.getInt(p.getName());
 					
-					if(baby == true) {
+					if(baby) {
 						score += 2;
 						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a baby pig! " + ChatColor.GOLD + "+2 Points!");
 					} else {

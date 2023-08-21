@@ -10,10 +10,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.thefruitbox.fbevents.runnables.UpdateScoreboard;
 import org.thefruitbox.fbevents.smalleventmanager.DailyEvents;
 
-public class WardenWarrior extends DailyEvents implements Listener {
+public class WheresWither extends DailyEvents implements Listener{
 	
 	@EventHandler
-	public void killWarden(EntityDeathEvent event) {
+	public void killWither(EntityDeathEvent event) {
 		
 		LivingEntity entity = event.getEntity();
 		Player p = entity.getKiller();
@@ -21,7 +21,7 @@ public class WardenWarrior extends DailyEvents implements Listener {
 		//ensure mob was killed by a player
 		if(!(entity.getKiller() == null)) {
 			
-			if(entity.getType() == EntityType.WARDEN) {
+			if(entity.getType() == EntityType.WITHER) {
 				
 				boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 				
@@ -29,7 +29,7 @@ public class WardenWarrior extends DailyEvents implements Listener {
 					int currentScore = winningEventSection.getInt(p.getName());
 					int newScore = currentScore += 1;
 					winningEventSection.set(p.getName(), newScore);
-					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1F, 1F);
+					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 					mainClass.saveEventDataFile();
 					
 					UpdateScoreboard updateScoreboard = new UpdateScoreboard();
