@@ -20,7 +20,7 @@ public class CowTipper extends DailyEvents implements Listener {
 		
 		LivingEntity entity = event.getEntity();
 		Player p = entity.getKiller();
-		boolean baby = false; 
+		boolean baby;
 
 		//ensure mob was killed by a player
 		if(!(entity.getKiller() == null)) {

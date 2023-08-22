@@ -1,6 +1,7 @@
 package org.thefruitbox.fbevents.runnables;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -16,9 +17,10 @@ import org.thefruitbox.fbevents.events.killingevents.*;
 import org.thefruitbox.fbevents.managers.DetermineEventData;
 import org.thefruitbox.fbevents.smalleventmanager.DailyEvents;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ChatColor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StartEvent extends BukkitRunnable{
 	
@@ -39,358 +41,45 @@ public class StartEvent extends BukkitRunnable{
 	
 	//create empty scoreboard title name
 	String scoreboardTitle;
-	
-	//Luckperms api
-	static LuckPerms api = LuckPermsProvider.get();
+
+	private static final Map<String, Class<? extends DailyEvents>> eventClassMap = new HashMap<>();
 	
 	@Override
-	public void run() { 
+	public void run() {
 		
 		instance = this;
 		
 		EndEvent endEvent = new EndEvent();
-		
-		if(winningEventNS.equals("GhastHunter")) {
-			GhastHunter ghastHunter = new GhastHunter();
-			
-			eventWinnerClass = ghastHunter;
-			
-			scoreboardTitle = ChatColor.WHITE + String.valueOf(ChatColor.BOLD) + "GHAST HUNTER";
-			createScoreboard(ghastHunter);
-			
-			if(allOnline) {
-				ghastHunter.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Ghast Hunter").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("ShulkerHunt")) {
-			ShulkerHunt shulkerHunt = new ShulkerHunt();
-			
-			eventWinnerClass = shulkerHunt;
-			
-			scoreboardTitle = ChatColor.DARK_PURPLE + String.valueOf(ChatColor.BOLD) + "SHULKER HUNT";
-			createScoreboard(shulkerHunt);
-			
-			if(allOnline) {
-				shulkerHunt.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Shulker Hunt").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
 
-		} else if (winningEventNS.equals("ScarySkeletons")) {
-			ScarySkeletons scarySkeletons = new ScarySkeletons();
+		initializeEventClassMap();
+		Class<? extends DailyEvents> eventClass = eventClassMap.get(winningEventNS);
 
-			eventWinnerClass = scarySkeletons;
+		if(eventClass != null){
+			try{
+				DailyEvents eventWinnerClass = eventClass.getDeclaredConstructor().newInstance();
 
-			scoreboardTitle = ChatColor.WHITE + String.valueOf(ChatColor.BOLD) + "SCARY SKELETONS";
-			createScoreboard(scarySkeletons);
+				ConfigurationSection winningEventSection = mainClass.getSmallEvents().getConfigurationSection(winningEvent);
+				String color = winningEventSection.getString("color");
+				String name = winningEventSection.getName();
+				int duration = winningEventSection.getInt("duration");
 
-			if(allOnline) {
-				scarySkeletons.registerEvents();
-			}
+				scoreboardTitle = ChatColor.valueOf(color) + String.valueOf(ChatColor.BOLD) + name.toUpperCase();
+				createScoreboard(eventWinnerClass);
 
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Shulker Hunt").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("BadBats")) {
-			BadBats badBats = new BadBats();
-			
-			eventWinnerClass = badBats;
-			
-			scoreboardTitle = ChatColor.DARK_GRAY + String.valueOf(ChatColor.BOLD) + "BAD BATS";
-			createScoreboard(badBats);
-			
-			if(allOnline) {
-				badBats.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Bad Bats").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
+				if(allOnline){
+					eventWinnerClass.registerEvents();
+				} else {
+					SendDailyEventVote sendDailyEventVote = new SendDailyEventVote();
+					sendDailyEventVote.dev1.clearParticipationList(mainClass);
+					sendDailyEventVote.runTaskLater(mainClass, 200);
+				}
 
-		} else if (winningEventNS.equals("WheresWither")) {
-			WheresWither wheresWither = new WheresWither();
-
-			eventWinnerClass = wheresWither;
-
-			scoreboardTitle = ChatColor.BLUE + String.valueOf(ChatColor.BOLD) + "WHERE'S WITHER";
-			createScoreboard(wheresWither);
-
-			if(allOnline) {
-				wheresWither.registerEvents();
+				endEvent.runTaskLater(mainClass, (long) duration *60*20);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Wheres Wither").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("HilariousHomicide")) {
-			HilariousHomicide hilariousHomicide = new HilariousHomicide();
-			
-			eventWinnerClass = hilariousHomicide;
-			
-			scoreboardTitle = ChatColor.DARK_RED + String.valueOf(ChatColor.BOLD) + "HILARIOUS HOMICIDE";
-			createScoreboard(hilariousHomicide);
-			
-			if(allOnline) {
-				hilariousHomicide.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Hilarious Homicide").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("WorldWarZ")) {
-			WorldWarZ worldWarZ = new WorldWarZ();
-			
-			eventWinnerClass = worldWarZ;
-			
-			scoreboardTitle = ChatColor.DARK_GREEN + String.valueOf(ChatColor.BOLD) + "WORLD WAR Z";
-			createScoreboard(worldWarZ);
-			
-			if(allOnline) {
-				worldWarZ.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("World War Z").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("WardenWarrior")) {
-			WardenWarrior wardenWarrior = new WardenWarrior();
-			
-			eventWinnerClass = wardenWarrior;
-			
-			scoreboardTitle = ChatColor.DARK_BLUE + String.valueOf(ChatColor.BOLD) + "WARDEN WARRIOR";
-			createScoreboard(wardenWarrior);
-			
-			if(allOnline) {
-				wardenWarrior.registerEvents();
-			}
-			
-			//end event after 2 hours
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Warden Warrior").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("FishFrenzy")){
-			FishFrenzy fishFrenzy = new FishFrenzy();
-			
-			eventWinnerClass = fishFrenzy;
-			
-			scoreboardTitle = ChatColor.BLUE + String.valueOf(ChatColor.BOLD) + "FISH FRENZY";
-			createScoreboard(fishFrenzy);
-			
-			if(allOnline) {
-				fishFrenzy.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Fish Frenzy").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("CowTipper")){
-			CowTipper cowTipper = new CowTipper();
-		
-			eventWinnerClass = cowTipper;
-			
-			scoreboardTitle = ChatColor.WHITE + String.valueOf(ChatColor.BOLD) + "COW TIPPER";
-			createScoreboard(cowTipper);
-			
-			if(allOnline) {
-				cowTipper.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Cow Tipper").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("BringHomeTheBacon")){
-			BringHomeTheBacon bringHomeTheBacon = new BringHomeTheBacon();
-			
-			eventWinnerClass = bringHomeTheBacon;
-			
-			scoreboardTitle = ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "BRING HOME THE BACON";
-			createScoreboard(bringHomeTheBacon);
-
-			if(allOnline) {
-				bringHomeTheBacon.registerEvents();
-			}
-			
-			//end event after 10 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Bring Home The Bacon").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("CookieClicker")){
-			CookieClicker cookieClicker = new CookieClicker();
-			
-			eventWinnerClass = cookieClicker;
-			
-			scoreboardTitle = ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "COOKIE CLICKER";
-			createScoreboard(cookieClicker);
-			
-			if(allOnline) {
-				cookieClicker.registerEvents();
-			}
-			
-			//end event after 10 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Cookie Clicker").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("DragonSlayer")){
-			DragonSlayer dragonSlayer = new DragonSlayer();
-			
-			eventWinnerClass = dragonSlayer;
-			
-			scoreboardTitle = ChatColor.DARK_GRAY + String.valueOf(ChatColor.BOLD) + "DRAGON SLAYER";
-			createScoreboard(dragonSlayer);
-			
-			if(allOnline) {
-				dragonSlayer.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Dragon Slayer").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("DeepDiamonds")){
-			DeepDiamonds deepDiamonds = new DeepDiamonds();
-			
-			eventWinnerClass = deepDiamonds;
-			
-			scoreboardTitle = ChatColor.AQUA + String.valueOf(ChatColor.BOLD) + "DEEP DIAMONDS";
-			createScoreboard(deepDiamonds);
-			
-			if(allOnline) {
-				deepDiamonds.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Deep Diamonds").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("NastyNetherite")){
-			NastyNetherite nastyNetherite = new NastyNetherite();
-			
-			eventWinnerClass = nastyNetherite;
-			
-			scoreboardTitle = ChatColor.DARK_GRAY + String.valueOf(ChatColor.BOLD) + "NASTY NETHERITE";
-			createScoreboard(nastyNetherite);
-			
-			if(allOnline) {
-				nastyNetherite.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Nasty Netherite").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("CrazyCarrots")){
-			CrazyCarrots crazyCarrots = new CrazyCarrots();
-			
-			eventWinnerClass = crazyCarrots;
-			
-			scoreboardTitle = ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "CRAZY CARROTS";
-			createScoreboard(crazyCarrots);
-			
-			if(allOnline) {
-				crazyCarrots.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Crazy Carrots").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("PreciousPotatoes")){
-			PreciousPotatoes preciousPotatoes = new PreciousPotatoes();
-			
-			eventWinnerClass = preciousPotatoes;
-			
-			scoreboardTitle = ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "PRECIOUS POTATOES";
-			createScoreboard(preciousPotatoes);
-			
-			if(allOnline) {
-				preciousPotatoes.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Precious Potatoes").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("CoalDigger")){
-			CoalDigger coalDigger = new CoalDigger();
-			
-			eventWinnerClass = coalDigger;
-			
-			scoreboardTitle = ChatColor.DARK_GRAY + String.valueOf(ChatColor.BOLD) + "COAL DIGGER";
-			createScoreboard(coalDigger);
-			
-			if(allOnline) {
-				coalDigger.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Coal Digger").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("BestBaker")){
-			BestBaker bestBaker = new BestBaker();
-			
-			eventWinnerClass = bestBaker;
-			
-			scoreboardTitle = ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "BEST BAKER";
-			createScoreboard(bestBaker);
-			
-			if(allOnline) {
-				bestBaker.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Best Baker").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("Lumberjack")){
-			Lumberjack lumberjack = new Lumberjack();
-			
-			eventWinnerClass = lumberjack;
-			
-			scoreboardTitle = ChatColor.BLUE + String.valueOf(ChatColor.BOLD) + "LUMBERJACK";
-			createScoreboard(lumberjack);
-			
-			if(allOnline) {
-				lumberjack.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Lumberjack").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-			
-		} else if (winningEventNS.equals("IronWorker")){
-			Ironworker ironworker = new Ironworker();
-			
-			eventWinnerClass = ironworker;
-			
-			scoreboardTitle = ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "IRONWORKER";
-			createScoreboard(ironworker);
-			
-			if(allOnline) {
-				ironworker.registerEvents();
-			}
-			
-			//end event after 20 minutes
-			int ticksTillEnd = mainClass.getSmallEvents().getConfigurationSection("Iron Worker").getInt("duration");
-			endEvent.runTaskLater(mainClass, (long) ticksTillEnd *60*20);
-		}
-		
-		if(!allOnline) {
-			SendDailyEventVote sendDailyEventVote = new SendDailyEventVote();
-			sendDailyEventVote.dev1.clearParticipationList(mainClass);
-			sendDailyEventVote.runTaskLater(mainClass, 200);
+		} else {
+			Bukkit.broadcastMessage("null event fix now");
 		}
 	}
 	
@@ -473,6 +162,39 @@ public class StartEvent extends BukkitRunnable{
 		UpdateScoreboard updateScoreboard = new UpdateScoreboard();
 		updateScoreboard.setCountdown();
 		updateScoreboard.run();
+	}
+
+	private void initializeEventClassMap(){
+		//Block Break Events
+		eventClassMap.put("CoalDigger", CoalDigger.class);
+		eventClassMap.put("CrazyCarrots", CrazyCarrots.class);
+		eventClassMap.put("DeepDiamonds", DeepDiamonds.class);
+		eventClassMap.put("IronWorker", Ironworker.class);
+		eventClassMap.put("Lumberjack", Lumberjack.class);
+		eventClassMap.put("NastyNetherite", NastyNetherite.class);
+		eventClassMap.put("PreciousPotatoes", PreciousPotatoes.class);
+
+		//Crafting Events
+		eventClassMap.put("BestBaker", BestBaker.class);
+		eventClassMap.put("CookieClicker", CookieClicker.class);
+
+		//Damage Events
+		eventClassMap.put("DragonSlayer", DragonSlayer.class);
+
+		//Fishing Events
+		eventClassMap.put("FishFrenzy", FishFrenzy.class);
+
+		//Killing Events
+		eventClassMap.put("BadBats", BadBats.class);
+		eventClassMap.put("BringHomeTheBacon", BringHomeTheBacon.class);
+		eventClassMap.put("CowTipper", CowTipper.class);
+		eventClassMap.put("GhastHunter", GhastHunter.class);
+		eventClassMap.put("HilariousHomicide", HilariousHomicide.class);
+		eventClassMap.put("ScarySkeletons", ScarySkeletons.class);
+		eventClassMap.put("ShulkerHunt", ShulkerHunt.class);
+		eventClassMap.put("WardenWarrior", WardenWarrior.class);
+		eventClassMap.put("WheresWither", WheresWither.class);
+		eventClassMap.put("WorldWarZ", WorldWarZ.class);
 	}
 	
 	public void unregisterEvent(DailyEvents className) {

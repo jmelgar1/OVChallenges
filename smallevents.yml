@@ -1,7 +1,6 @@
 Fish Frenzy:
    description: Catch as many fish as you can!
    item: FISHING_ROD
-   name: Fish Frenzy
    duration: 5
    color: LIGHT_PURPLE
    votes: 0
@@ -14,7 +13,6 @@ Fish Frenzy:
 Ghast Hunter:
    description: Kill as many ghasts as you can!
    item: GHAST_TEAR
-   name: Ghast Hunter
    duration: 10
    color: WHITE
    votes: 0
@@ -26,7 +24,6 @@ Ghast Hunter:
 Wheres Wither:
    description: Kill as many withers as you can!
    item: NETHER_STAR
-   name: Where's Wither
    duration: 20
    color: BLUE
    votes: 0
@@ -38,7 +35,6 @@ Wheres Wither:
 Shulker Hunt:
    description: Kill as many shulkers as you can!
    item: SHULKER_SHELL
-   name: Shulker Hunt
    duration: 20
    color: DARK_PURPLE
    votes: 0
@@ -50,7 +46,6 @@ Shulker Hunt:
 Dragon Slayer:
    description: Do as much damage to enderdragons as you can!
    item: DRAGON_HEAD
-   name: Dragon Slayer
    duration: 20
    color: DARK_GRAY
    votes: 0
@@ -62,7 +57,6 @@ Dragon Slayer:
 Bring Home The Bacon:
    description: Kill as many pigs as you can!
    item: COOKED_PORKCHOP
-   name: Bring Home The Bacon
    duration: 5
    color: LIGHT_PURPLE
    votes: 0
@@ -74,7 +68,6 @@ Bring Home The Bacon:
 Crazy Carrots:
    description: Mine as many fully grown carrot crops as you can!
    item: CARROT
-   name: Crazy Carrots
    duration: 5
    color: GOLD
    votes: 0
@@ -86,7 +79,6 @@ Crazy Carrots:
 Bad Bats:
    description: Kill as many bats as you can!
    item: BLACK_DYE
-   name: Bad Bats
    duration: 5
    color: DARK_GRAY
    votes: 0
@@ -98,7 +90,6 @@ Bad Bats:
 Deep Diamonds:
    description: Mine as many diamonds as you can!
    item: DIAMOND
-   name: Deep Diamonds
    duration: 20
    color: AQUA
    votes: 0
@@ -110,7 +101,6 @@ Deep Diamonds:
 Warden Warrior:
    description: Kill as many wardens as you can!
    item: SCULK_SENSOR
-   name: Warden Warrior
    duration: 20
    color: DARK_BLUE
    votes: 0
@@ -122,7 +112,6 @@ Warden Warrior:
 Cookie Clicker:
    description: Craft as many cookies as you can!
    item: COOKIE
-   name: Cookie Clicker
    duration: 5
    color: YELLOW
    votes: 0
@@ -134,7 +123,6 @@ Cookie Clicker:
 Nasty Netherite:
    description: Mine as much ancient debri as you can!
    item: NETHERITE_INGOT
-   name: Nasty Netherite
    duration: 20
    color: GRAY
    votes: 0
@@ -146,7 +134,6 @@ Nasty Netherite:
 Precious Potatoes:
    description: Mine as many fully grown potatoes as you can!
    item: POTATO
-   name: Precious Potatoes
    duration: 5
    color: YELLOW
    votes: 0
@@ -158,7 +145,6 @@ Precious Potatoes:
 Hilarious Homicide:
    description: Kill as many villagers as you can!
    item: IRON_SWORD
-   name: Hilarious Homicide
    duration: 10
    color: DARK_RED
    votes: 0
@@ -170,7 +156,6 @@ Hilarious Homicide:
 Cow Tipper:
    description: Kill as many cows as you can!
    item: COOKED_BEEF
-   name: Cow Tipper
    duration: 5
    color: WHITE
    votes: 0
@@ -182,7 +167,6 @@ Cow Tipper:
 World War Z:
    description: Kill as many zombies as you can!
    item: ROTTEN_FLESH
-   name: World War Z
    duration: 10
    color: DARK_GREEN
    votes: 0
@@ -194,7 +178,6 @@ World War Z:
 Scary Skeletons:
    description: Kill as many skeletons as you can!
    item: BONE
-   name: Scary Skeletons
    duration: 10
    color: WHITE
    votes: 0
@@ -206,7 +189,6 @@ Scary Skeletons:
 Coal Digger:
    description: Mine as much coal ore as you can!
    item: COAL
-   name: Coal Digger
    duration: 5
    color: DARK_GRAY
    votes: 0
@@ -218,7 +200,6 @@ Coal Digger:
 Iron Worker:
    description: Mine as much iron ore as you can!
    item: IRON_INGOT
-   name: Iron Worker
    duration: 10
    color: GRAY
    votes: 0
@@ -230,7 +211,6 @@ Iron Worker:
 Lumberjack:
    description: Mine as many logs as you can!
    item: OAK_LOG
-   name: Lumberjack
    duration: 5
    color: GREEN
    votes: 0
@@ -242,7 +222,6 @@ Lumberjack:
 Best Baker:
    description: Craft as much bread as you can!
    item: BREAD
-   name: Best Baker
    duration: 5
    color: GOLD
    votes: 0

@@ -54,8 +54,7 @@ public class fbprofile extends InventoryManager implements Listener, CommandExec
 	static Material[] items = {Material.FISHING_ROD, Material.GHAST_TEAR, Material.SHULKER_SHELL, Material.DRAGON_HEAD, Material.COOKED_PORKCHOP,
 						Material.CARROT, Material.BLACK_DYE, Material.DIAMOND, Material.SCULK_SENSOR, Material.COOKIE,
 						Material.NETHERITE_INGOT, Material.POTATO, Material.IRON_SWORD, Material.COOKED_BEEF, Material.ROTTEN_FLESH,
-						Material.COAL, Material.IRON_INGOT, Material.OAK_LOG, Material.BREAD, Material.LIGHT_GRAY_DYE, Material.LIGHT_GRAY_DYE,
-						Material.BONE, Material.NETHER_STAR};
+						Material.COAL, Material.IRON_INGOT, Material.OAK_LOG, Material.BREAD, Material.BONE, Material.NETHER_STAR};
 	
 	static ChatColor[] colors = {ChatColor.LIGHT_PURPLE, ChatColor.WHITE, ChatColor.DARK_PURPLE, ChatColor.DARK_GRAY, ChatColor.LIGHT_PURPLE,
 								 ChatColor.GOLD, ChatColor.DARK_GRAY, ChatColor.AQUA, ChatColor.DARK_BLUE, ChatColor.YELLOW,
