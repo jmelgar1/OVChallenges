@@ -3,6 +3,8 @@ package org.thefruitbox.fbevents.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,7 +31,7 @@ public class DetermineEventData {
 		Collections.shuffle(smallEventNames);
 	}
 	
-	public List<String> RotateEvents(List<String> smallEventNames){
+	public void RotateEvents(List<String> smallEventNames){
 		//loop per # of rotations
 		for(int i = 0; i < 3; i++) {
 			
@@ -42,7 +44,7 @@ public class DetermineEventData {
 			}
 			smallEventNames.set(0, temp);
 		}
-		return smallEventNames.subList(0, 3);
+		smallEventNames.subList(0, 3);
 	}
 	
 	public List<String> getList(){
@@ -108,32 +110,48 @@ public class DetermineEventData {
     	
 	}
 	
-	public String getVotedEvent(FileConfiguration smallEvents, List<String> smallEventNames) {
-		String topEvent = "NONE";
+	public String determineEvent(FileConfiguration smallEvents, List<String> smallEventNames) {
+		List<String> topEvents = new ArrayList<>();
 		int topVote = 0;
 		int totalVotes = 0;
 		
 	   	//gets all events from list
-    	for(String names : smallEventNames) {	
-    		ConfigurationSection eventsSection = smallEvents.getConfigurationSection(names);
-    		int votes = eventsSection.getInt("votes");
-    		
-    		if(votes > topVote) {
-    			topVote = votes;
-    			topEvent = names;
-    		}
-    		
-    		totalVotes += votes;
-    	}
-    	
-    	//if less than 2 players vote return none
-    	if(totalVotes < 2) {
-    		return "NONE";
-    	}
-    	
-    	//if one person votes cancel.
-    	
-    	return topEvent;
+		for (String eventName : smallEventNames) {
+			ConfigurationSection eventsSection = smallEvents.getConfigurationSection(eventName);
+			int votes = eventsSection.getInt("votes");
+
+			if (votes > topVote) {
+				topVote = votes;
+				topEvents.clear();
+				topEvents.add(eventName);
+			} else if (votes == topVote) {
+				topEvents.add(eventName);
+			}
+
+			totalVotes += votes;
+		}
+
+		// If less than 2 players vote or no events have votes, return "NONE"
+		if (totalVotes < 2 || topEvents.isEmpty()) {
+			return "NONE";
+		}
+
+		// If there's a tie, randomly select one of the top events
+		if (topEvents.size() > 1) {
+			Random random = new Random();
+			int randomIndex = random.nextInt(topEvents.size());
+			return topEvents.get(randomIndex);
+		}
+
+		// If there's only one top event, return it
+		return topEvents.get(0);
+	}
+
+	public String getVotedEvent(Main mainClass) {
+		List<String> winningEventList = mainClass.getEventData().getConfigurationSection("current-event").getKeys(false)
+				.stream().collect(Collectors.toList());
+
+		return winningEventList.get(0);
 	}
 	
 	public DetermineEventData getInstance() {

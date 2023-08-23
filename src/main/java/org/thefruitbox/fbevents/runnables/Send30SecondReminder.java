@@ -9,7 +9,7 @@ import org.thefruitbox.fbevents.managers.DetermineEventData;
 import net.md_5.bungee.api.ChatColor;
 
 
-public class send30SecondReminder extends BukkitRunnable{
+public class Send30SecondReminder extends BukkitRunnable{
     
 	//Main instance
 	private Main mainClass = Main.getInstance();

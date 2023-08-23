@@ -11,6 +11,8 @@ import org.thefruitbox.fbevents.Main;
 import org.thefruitbox.fbevents.events.blockbreakevents.*;
 import org.thefruitbox.fbevents.events.craftingevents.BestBaker;
 import org.thefruitbox.fbevents.events.craftingevents.CookieClicker;
+import org.thefruitbox.fbevents.events.craftingevents.CountlessCakes;
+import org.thefruitbox.fbevents.events.craftingevents.ScrumptiousStew;
 import org.thefruitbox.fbevents.events.damageevents.DragonSlayer;
 import org.thefruitbox.fbevents.events.fishingevents.FishFrenzy;
 import org.thefruitbox.fbevents.events.killingevents.*;
@@ -32,8 +34,8 @@ public class StartEvent extends BukkitRunnable{
 	
 	public DetermineEventData dev1 = new DetermineEventData();
 	
-	//get winning event 
-	public String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
+	//get winning event
+	String winningEvent = mainClass.dev1.getVotedEvent(mainClass);
 	String winningEventNS = winningEvent.replaceAll("\\s", "");
 	
 	//initilize KillMobEvent class variable
@@ -43,7 +45,8 @@ public class StartEvent extends BukkitRunnable{
 	String scoreboardTitle;
 
 	private static final Map<String, Class<? extends DailyEvents>> eventClassMap = new HashMap<>();
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		
@@ -52,8 +55,10 @@ public class StartEvent extends BukkitRunnable{
 		EndEvent endEvent = new EndEvent();
 
 		initializeEventClassMap();
+		System.out.println(winningEvent);
 		Class<? extends DailyEvents> eventClass = eventClassMap.get(winningEventNS);
 
+		System.out.println(winningEventNS);
 		if(eventClass != null){
 			try{
 				DailyEvents eventWinnerClass = eventClass.getDeclaredConstructor().newInstance();
@@ -140,6 +145,7 @@ public class StartEvent extends BukkitRunnable{
 					this.cancel();
 				}
 			} else {
+				System.out.println("WINNING EVENT: " + winningEvent);
 				obj.getScore(p.getName() + ": " + ChatColor.YELLOW + className.winningEventSection.getInt(p.getName())).setScore(counter);
 				counter--;
 			
@@ -173,10 +179,14 @@ public class StartEvent extends BukkitRunnable{
 		eventClassMap.put("Lumberjack", Lumberjack.class);
 		eventClassMap.put("NastyNetherite", NastyNetherite.class);
 		eventClassMap.put("PreciousPotatoes", PreciousPotatoes.class);
+		eventClassMap.put("ElegantEmeralds", ElegantEmeralds.class);
+		eventClassMap.put("QualityQuartz", QualityQuartz.class);
 
 		//Crafting Events
 		eventClassMap.put("BestBaker", BestBaker.class);
 		eventClassMap.put("CookieClicker", CookieClicker.class);
+		eventClassMap.put("CountlessCakes", CountlessCakes.class);
+		eventClassMap.put("ScrumptiousStew", ScrumptiousStew.class);
 
 		//Damage Events
 		eventClassMap.put("DragonSlayer", DragonSlayer.class);
@@ -190,11 +200,13 @@ public class StartEvent extends BukkitRunnable{
 		eventClassMap.put("CowTipper", CowTipper.class);
 		eventClassMap.put("GhastHunter", GhastHunter.class);
 		eventClassMap.put("HilariousHomicide", HilariousHomicide.class);
-		eventClassMap.put("ScarySkeletons", ScarySkeletons.class);
+		eventClassMap.put("ScarySkeletons", SpookySkeletons.class);
 		eventClassMap.put("ShulkerHunt", ShulkerHunt.class);
 		eventClassMap.put("WardenWarrior", WardenWarrior.class);
 		eventClassMap.put("WheresWither", WheresWither.class);
 		eventClassMap.put("WorldWarZ", WorldWarZ.class);
+		eventClassMap.put("CreepingCreepers", CreepingCreepers.class);
+		eventClassMap.put("EndlessEndermen", EndlessEndermen.class);
 	}
 	
 	public void unregisterEvent(DailyEvents className) {

@@ -6,16 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.thefruitbox.fbevents.runnables.SendDailyEventVote;
-import org.thefruitbox.fbevents.runnables.send30SecondReminder;
-import org.thefruitbox.fbevents.runnables.sendVoteFinished;
+import org.thefruitbox.fbevents.runnables.Send30SecondReminder;
+import org.thefruitbox.fbevents.runnables.SendVoteFinished;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class fbeEndVote implements CommandExecutor{
 	
 	SendDailyEventVote dailyVote = new SendDailyEventVote();
-	send30SecondReminder secondReminder = new send30SecondReminder();
-	sendVoteFinished voteFinished = new sendVoteFinished();
+	Send30SecondReminder secondReminder = new Send30SecondReminder();
+	SendVoteFinished voteFinished = new SendVoteFinished();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

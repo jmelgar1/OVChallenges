@@ -1,5 +1,7 @@
 package org.thefruitbox.fbevents.bukkitevents;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -14,9 +16,8 @@ import org.thefruitbox.fbevents.Main;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import org.thefruitbox.fbevents.commands.fbprofile;
 
-public class playerEvents implements Listener {
+public class PlayerEvents implements Listener {
 
     //Main instance
     private Main mainClass = Main.getInstance();
@@ -27,15 +28,14 @@ public class playerEvents implements Listener {
     //Luckperms api
     static LuckPerms api = LuckPermsProvider.get();
 
-    //ovprofile
-    fbprofile OVProfile = new fbprofile();
-
     //when a player joins the server
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         Player p = event.getPlayer();
         String uniqueIDString = p.getUniqueId().toString();
+
+        FileConfiguration eventList = mainClass.getSmallEvents();
 
         if(playerDataConfig.get(uniqueIDString) == null) {
 
@@ -57,6 +57,7 @@ public class playerEvents implements Listener {
             ConfigurationSection statsSection = playerUUID.getConfigurationSection("stats");
             statsSection.createSection("big-events");
             statsSection.createSection("small-events");
+            statsSection.createSection("high-scores");
 
             //create section for individual big events
             ConfigurationSection bigEventsSection = statsSection.getConfigurationSection("big-events");
@@ -67,16 +68,21 @@ public class playerEvents implements Listener {
 
             //create section for individual small events
             ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");
-            for(String events : fbprofile.events) {
+            ConfigurationSection highScoreSection = statsSection.getConfigurationSection("high-scores");
+            for(String events : eventList.getKeys(false)) {
                 smallEventsSection.set(events, 0);
+                highScoreSection.set(events, 0);
             }
-
 
             playerUUID.createSection("rank");
             playerUUID.set("rank", getPlayerGroup(p.getName()));
             playerUUID.createSection("date-joined");
             mainClass.savePlayerDataFile();
         } else {
+            updatePlayerData(eventList, uniqueIDString);
+            //check if all events in players file match up with config, if there are unknown remove them, if there are
+            //some missing add them
+
             //get existing user
             ConfigurationSection existingPlayerUUID = playerDataConfig.getConfigurationSection(uniqueIDString);
 
@@ -90,15 +96,48 @@ public class playerEvents implements Listener {
 
     //get player rank
     @SuppressWarnings("deprecation")
-    public static String getPlayerGroup(String username) {
+    private static String getPlayerGroup(String username) {
         //Find user group
         UUID userUUID = Bukkit.getOfflinePlayer(username).getUniqueId();
         User user = api.getUserManager().loadUser(userUUID).join();
 
-        //get user groups
-        String group = user.getPrimaryGroup();
-
         //return player group
-        return group;
+        return user.getPrimaryGroup();
+    }
+
+    public void updatePlayerData(FileConfiguration eventList, String uniqueIDString){
+        ConfigurationSection playerUUID = playerDataConfig.getConfigurationSection(uniqueIDString);
+        ConfigurationSection statsSection = playerUUID.getConfigurationSection("stats");
+        ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");
+        ConfigurationSection highScoreSection = statsSection.getConfigurationSection("high-scores");
+
+        //if no high scores section exists.
+        if(highScoreSection == null){
+            statsSection.createSection("high-scores");
+            mainClass.savePlayerDataFile();
+            for(String events : eventList.getKeys(false)) {
+                statsSection.getConfigurationSection("high-scores").set(events, 0);
+            }
+        }
+
+        //create new list of events that are in user data
+        List<String> existingEvents = new ArrayList<>();
+        for(String events : smallEventsSection.getKeys(false)){
+            existingEvents.add(events);
+        }
+
+        //add any new events to user list
+        for(String events : eventList.getKeys(false)){
+            if(!existingEvents.contains(events)){
+                smallEventsSection.set(events, 0);
+            }
+        }
+
+        //remove any instance of TBD
+        if(existingEvents.contains("TBD")){
+            smallEventsSection.set("TBD", null);
+        }
+
+        mainClass.savePlayerDataFile();
     }
 }

@@ -5,12 +5,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.thefruitbox.fbevents.Main;
 //import org.thefruitbox.fbevents.bukkitevents.EditPlayerPoints;
-import org.thefruitbox.fbevents.bukkitevents.playerEvents;
+import org.thefruitbox.fbevents.bukkitevents.PlayerEvents;
 import org.thefruitbox.fbevents.runnables.SendDailyEventVote;
 
 public class fbeSetXP implements CommandExecutor{
@@ -18,13 +16,9 @@ public class fbeSetXP implements CommandExecutor{
 	//Main instance
 	private Main mainClass = Main.getInstance();
 	
-	//EditPlayerPoints epp1 = new EditPlayerPoints();
-	
-	SendDailyEventVote dailyVote = new SendDailyEventVote();
-	
 	ConfigurationSection playerDataConfig = mainClass.getPlayerData();
 	
-	playerEvents pe1 = new playerEvents();
+	PlayerEvents pe1 = new PlayerEvents();
 	
 	@SuppressWarnings("deprecation")
 	@Override

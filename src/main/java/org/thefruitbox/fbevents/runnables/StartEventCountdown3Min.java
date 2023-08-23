@@ -27,7 +27,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 	public DetermineEventData dev1 = new DetermineEventData();
 	
 	//get winning event 
-	String winningEvent = mainClass.dev1.getVotedEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
+	String winningEvent = mainClass.dev1.determineEvent(mainClass.getSmallEvents(), mainClass.dev1.getList());
 	
 	int seconds = 180;
 	
@@ -53,11 +53,6 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 			for(String s : mainClass.getEventData().getStringList("participants")){
 				Player p = Bukkit.getPlayer(s);
 				
-//				String group = "in_event";
-//				User user = api.getPlayerAdapter(Player.class).getUser(p);
-//				user.data().add(InheritanceNode.builder(group).value(true).build());
-//				api.getUserManager().saveUser(user);
-				
 				//if player leaves before event starts REMOVE FROM LIST!
 				if(p == null) {
 					
@@ -79,7 +74,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 				}
 			}
 			
-			if(validStart == true) {
+			if(validStart) {
 				StartEvent startEvent = new StartEvent();
 				startEvent.run();
 				bar.removeAll();
@@ -108,6 +103,5 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 		Player p = e.getPlayer();
 		BossBar bar = playerBossbar.get(p);
 		bar.addPlayer(p);
-		
 	}
 }

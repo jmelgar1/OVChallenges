@@ -12,10 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.thefruitbox.fbevents.runnables.UpdateScoreboard;
 import org.thefruitbox.fbevents.smalleventmanager.DailyEvents;
 
-public class CookieClicker extends DailyEvents implements Listener {
+public class ScrumptiousStew extends DailyEvents implements Listener {
 	
 	@EventHandler
-	public void craftCookie(CraftItemEvent event) {
+	public void craftBread(CraftItemEvent event) {
 		
 		Player p = (Player) event.getWhoClicked();
 		
@@ -31,7 +31,9 @@ public class CookieClicker extends DailyEvents implements Listener {
 		
 		if(contains) {
 			
-			if(craftedItem.getType() == Material.COOKIE) {
+			if(craftedItem.getType() == Material.MUSHROOM_STEW ||
+			craftedItem.getType() == Material.SUSPICIOUS_STEW ||
+			craftedItem.getType() == Material.RABBIT_STEW) {
 				
 				if(clickType.isShiftClick()) {
 					int lowerAmount = craftedItem.getMaxStackSize() + 1000;

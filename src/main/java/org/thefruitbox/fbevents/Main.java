@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.thefruitbox.fbevents.bukkitevents.PreventItemUsage;
-import org.thefruitbox.fbevents.bukkitevents.playerEvents;
+import org.thefruitbox.fbevents.bukkitevents.PlayerEvents;
 import org.thefruitbox.fbevents.commands.fbehelp;
 import org.thefruitbox.fbevents.commands.fbevote;
 import org.thefruitbox.fbevents.commands.admin.configureStats;
@@ -27,7 +27,7 @@ import org.thefruitbox.fbevents.commands.fbprofile;
 import org.thefruitbox.fbevents.managers.DetermineEventData;
 import org.thefruitbox.fbevents.runnables.EndEvent;
 import org.thefruitbox.fbevents.runnables.SendDailyEventVote;
-import org.thefruitbox.fbevents.runnables.sendVoteFinished;
+import org.thefruitbox.fbevents.runnables.SendVoteFinished;
 
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
@@ -130,7 +130,7 @@ public class Main extends JavaPlugin implements Listener{
         getServer().getPluginManager().registerEvents(new fbprofile(), this);
 
         //admin events
-        getServer().getPluginManager().registerEvents(new playerEvents(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         getServer().getPluginManager().registerEvents(new configureStats(), this);
         getServer().getPluginManager().registerEvents(new configureStatsCT(), this);
         getServer().getPluginManager().registerEvents(new configureStatsBC(), this);
@@ -140,7 +140,7 @@ public class Main extends JavaPlugin implements Listener{
         getServer().getPluginManager().registerEvents(new PreventItemUsage(), this);
 
         //runnable events
-        getServer().getPluginManager().registerEvents(new sendVoteFinished(), this);
+        getServer().getPluginManager().registerEvents(new SendVoteFinished(), this);
 
         //create new runnable to start the event cycle
         SendDailyEventVote dailyVote = new SendDailyEventVote();

@@ -21,7 +21,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.thefruitbox.fbevents.Main;
-import org.thefruitbox.fbevents.managers.DetermineEventData;
 import org.thefruitbox.fbevents.managers.InventoryManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -30,8 +29,6 @@ public class fbevote extends InventoryManager implements CommandExecutor, Listen
 
     //Main instance
     public static Main mainClass = Main.getInstance();
-
-    static DetermineEventData dev1 = new DetermineEventData();
 
     private static Inventory inv;
 
@@ -76,7 +73,7 @@ public class fbevote extends InventoryManager implements CommandExecutor, Listen
 
             String description = eventName.getString("description");
             String item = eventName.getString("item");
-            String name = eventName.getString("name");
+            String name = eventName.getName();
             String color = eventName.getString("color");
             int duration = eventName.getInt("duration");
             int requiredScore = eventName.getInt("requiredscore");

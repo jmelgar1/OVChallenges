@@ -1,7 +1,6 @@
 package org.thefruitbox.fbevents.runnables;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.thefruitbox.fbevents.Main;
@@ -55,7 +54,7 @@ public class SendDailyEventVote extends BukkitRunnable {
 		    	p.spigot().sendMessage(message);
 			}
 			
-			sendVoteFinished voteFinished = new sendVoteFinished();
+			SendVoteFinished voteFinished = new SendVoteFinished();
 			voteFinished.runTaskLater(mainClass, 2400);
 			
 		} else {

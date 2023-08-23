@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="FBEvents:jar2">
-    <output-path>$PROJECT_DIR$/out/artifacts/FBEvents_jar2</output-path>
+    <output-path>$PROJECT_DIR$/../TheFruitBox/test server/plugins</output-path>
     <root id="archive" name="FBEvents.jar">
       <element id="module-output" name="FBEvents.main" />
       <element id="file-copy" path="$PROJECT_DIR$/smallevents.yml" />

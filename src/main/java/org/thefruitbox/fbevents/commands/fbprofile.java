@@ -1,10 +1,7 @@
 package org.thefruitbox.fbevents.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -28,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.thefruitbox.fbevents.Main;
+import org.thefruitbox.fbevents.bukkitevents.PlayerEvents;
 import org.thefruitbox.fbevents.managers.InventoryManager;
 
 import net.luckperms.api.LuckPerms;
@@ -49,24 +47,9 @@ public class fbprofile extends InventoryManager implements Listener, CommandExec
 	
      //Get playerdataconfig
 	static FileConfiguration playerDataConfig = mainClass.getPlayerData();
-	
-	//convert this to using a config instead (like ovevote)
-	static Material[] items = {Material.FISHING_ROD, Material.GHAST_TEAR, Material.SHULKER_SHELL, Material.DRAGON_HEAD, Material.COOKED_PORKCHOP,
-						Material.CARROT, Material.BLACK_DYE, Material.DIAMOND, Material.SCULK_SENSOR, Material.COOKIE,
-						Material.NETHERITE_INGOT, Material.POTATO, Material.IRON_SWORD, Material.COOKED_BEEF, Material.ROTTEN_FLESH,
-						Material.COAL, Material.IRON_INGOT, Material.OAK_LOG, Material.BREAD, Material.BONE, Material.NETHER_STAR};
-	
-	static ChatColor[] colors = {ChatColor.LIGHT_PURPLE, ChatColor.WHITE, ChatColor.DARK_PURPLE, ChatColor.DARK_GRAY, ChatColor.LIGHT_PURPLE,
-								 ChatColor.GOLD, ChatColor.DARK_GRAY, ChatColor.AQUA, ChatColor.DARK_BLUE, ChatColor.YELLOW,
-								 ChatColor.GRAY, ChatColor.YELLOW, ChatColor.DARK_RED, ChatColor.WHITE, ChatColor.DARK_GREEN,
-								 ChatColor.DARK_GRAY, ChatColor.GRAY, ChatColor.GREEN, ChatColor.GOLD, ChatColor.GRAY, ChatColor.GRAY, ChatColor.WHITE,
-									ChatColor.BLUE};
-	
-	public static String[] events = {"Fish Frenzy", "Ghast Hunter", "Shulker Hunt", "Dragon Slayer", "Bring Home The Bacon", "Crazy Carrots",
-							  "Bad Bats", "Deep Diamonds", "Warden Warrior", "Cookie Clicker", "Nasty Netherite",
-							  "Precious Potatoes", "Hilarious Homicide", "Cow Tipper", "World War Z", "Coal Digger", "Iron Worker",
-							  "Lumberjack", "Best Baker", "Scary Skeletons", "Where's Wither"};
-	
+
+	private PlayerEvents playerEvents = new PlayerEvents();
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -81,18 +64,15 @@ public class fbprofile extends InventoryManager implements Listener, CommandExec
         		if(playerDataConfig.get(uniqueIDString) == null) {
         			p.sendMessage(ChatColor.RED + IGN + " has never joined the server!");
         			
-        			//ignore admin name
-        		} else if(IGN.equals("ADMIN_10")){
-        			p.sendMessage(ChatColor.RED + IGN + " has never joined the server!");
-        			
         		} else {
-        			inv = Bukkit.createInventory(p, 54, "TheFruitBox Profile | " + IGN);
+					playerEvents.updatePlayerData(mainClass.getSmallEvents(), uniqueIDString);
+        			inv = Bukkit.createInventory(p, 54, "FB Profile | " + IGN);
         			inventories.put(playerUUID, inv);
                 	openInventory(p, inventories.get(playerUUID));
                 	initializeItems(IGN);
         		}
         	} else {
-        		inv = Bukkit.createInventory(p, 54, "TheFruitBox Profile | " + p.getName());
+        		inv = Bukkit.createInventory(p, 54, "FB Profile | " + p.getName());
         		inventories.put(playerUUID, inv);
             	openInventory(p, inventories.get(playerUUID));
             	initializeItems(p.getName());
@@ -103,94 +83,133 @@ public class fbprofile extends InventoryManager implements Listener, CommandExec
 	
 	@SuppressWarnings("deprecation")
 	public static void initializeItems(String IGN) {
-		
-	//user data
-	String playerUUID = Bukkit.getServer().getOfflinePlayer(IGN).getUniqueId().toString();
-	ConfigurationSection playerUUIDSection = playerDataConfig.getConfigurationSection(playerUUID);
-	
-	//get stats section
-	ConfigurationSection statsSection = playerUUIDSection.getConfigurationSection("stats");
-	
-	//get big events section
-	ConfigurationSection bigEventsSection = statsSection.getConfigurationSection("big-events");
 
-	//player head info
-	ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-	SkullMeta meta = (SkullMeta) skull.getItemMeta();
-	meta.setOwner(IGN);
-	skull.setItemMeta(meta);
-	
-	//add rank
-	inv.setItem(4, createGuiSkull(skull, ChatColor.GRAY + "" + ChatColor.BOLD + "USER: " + ChatColor.WHITE + IGN,
-			"",
-			ChatColor.GRAY + "" + ChatColor.BOLD + "Rank: " + ChatColor.WHITE + getPlayerGroup(IGN).toUpperCase(),
-			"",
-			ChatColor.GRAY + "" + ChatColor.BOLD + "Date Joined: " + ChatColor.WHITE + "Coming Soon"));
-	
-	//get champions tour section
-	ConfigurationSection championsTourSection = bigEventsSection.getConfigurationSection("champions-tour");
-	inv.setItem(11, createGuiItem(Material.GOLDEN_HELMET, ChatColor.GOLD + "" + ChatColor.BOLD + "CHAMPIONS TOUR", 
-			ChatColor.GRAY + "1st: " + ChatColor.YELLOW + championsTourSection.getInt("1st"),
-			ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + championsTourSection.getInt("2nd"),
-			ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + championsTourSection.getInt("3rd"),
-			ChatColor.GRAY + "4th: " + ChatColor.YELLOW + championsTourSection.getInt("4th"),
-			ChatColor.GRAY + "5th-6th: " + ChatColor.YELLOW + championsTourSection.getInt("5th-6th"),
-			ChatColor.GRAY + "",
-			ChatColor.GRAY + "Open Event Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open Event Wins"),
-			ChatColor.GRAY + "",
-			ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + championsTourSection.getInt("Participations")));
-	
-	//get champions tour section
-	ConfigurationSection buildCompetitionSection = bigEventsSection.getConfigurationSection("build-competitions");
-	inv.setItem(12, createGuiItem(Material.BRICKS, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "BUILD COMPETITIONS", 
-			ChatColor.GRAY + "1st: " + ChatColor.YELLOW + buildCompetitionSection.getInt("1st"),
-			ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + buildCompetitionSection.getInt("2nd"),
-			ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + buildCompetitionSection.getInt("3rd"),
-			"",
-			ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + buildCompetitionSection.getInt("Participations")));
-	
-	//get map art contest section
-	ConfigurationSection mapArtSection = bigEventsSection.getConfigurationSection("map-art-contests");
-	inv.setItem(13, createGuiItem(Material.FILLED_MAP, ChatColor.GREEN + "" + ChatColor.BOLD + "MAP ART CONTESTS", 
-			ChatColor.GRAY + "1st: " + ChatColor.YELLOW + mapArtSection.getInt("1st"),
-			ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + mapArtSection.getInt("2nd"),
-			ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + mapArtSection.getInt("3rd"),
-			"",
-			ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + mapArtSection.getInt("Participations")));
-	
-	//get red vs blue contest section
-	ConfigurationSection RVBSection = bigEventsSection.getConfigurationSection("red-vs-blue");
-	inv.setItem(14, createBannerItem(redvsblueBanner(), ChatColor.RED + "" + ChatColor.BOLD + "RED " +
-														ChatColor.YELLOW + "" + ChatColor.BOLD + "VS " +
-														ChatColor.BLUE + "" + ChatColor.BOLD + "BLUE", 
-			ChatColor.GRAY + "1st: " + ChatColor.YELLOW + RVBSection.getInt("1st"),
-			ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + RVBSection.getInt("2nd"),
-			ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + RVBSection.getInt("3rd"),
-			ChatColor.GRAY + "",
-			ChatColor.GRAY + "MVP: " + ChatColor.YELLOW + RVBSection.getInt("mvp"),
-			ChatColor.GRAY + "",
-			ChatColor.GRAY + "Team Wins: " + ChatColor.YELLOW + RVBSection.getInt("Team Wins"),
-			ChatColor.GRAY + "",
-			ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + RVBSection.getInt("Participations")));
-	
-	inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Event"));
-	
-	//Small events section
-	ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");
-	
-	
-	//make it so these are in order from greatest to least
-	int inventorySlot = 28;	
-	for(int i = 0; i < 21; i++) {
-		inv.setItem(inventorySlot, createGuiItem(items[i], colors[i] + events[i], 
-				ChatColor.GRAY + "Wins: " + ChatColor.YELLOW + smallEventsSection.getInt(events[i])));
-		
-		if(i==6 || i==13) {
-			inventorySlot += 3;
-		} else {
+		//user data
+		String playerUUID = Bukkit.getServer().getOfflinePlayer(IGN).getUniqueId().toString();
+		ConfigurationSection playerUUIDSection = playerDataConfig.getConfigurationSection(playerUUID);
+
+		//get stats section
+		ConfigurationSection statsSection = playerUUIDSection.getConfigurationSection("stats");
+
+		//get big events section
+		ConfigurationSection bigEventsSection = statsSection.getConfigurationSection("big-events");
+
+		//player head info
+		ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta meta = (SkullMeta) skull.getItemMeta();
+		meta.setOwner(IGN);
+		skull.setItemMeta(meta);
+
+		//add rank
+		inv.setItem(4, createGuiSkull(skull, ChatColor.GRAY + "" + ChatColor.BOLD + "USER: " + ChatColor.WHITE + IGN,
+				"",
+				ChatColor.GRAY + "" + ChatColor.BOLD + "Rank: " + ChatColor.WHITE + getPlayerGroup(IGN).toUpperCase(),
+				"",
+				ChatColor.GRAY + "" + ChatColor.BOLD + "Date Joined: " + ChatColor.WHITE + "Coming Soon"));
+
+		//get champions tour section
+		ConfigurationSection championsTourSection = bigEventsSection.getConfigurationSection("champions-tour");
+		inv.setItem(11, createGuiItem(Material.GOLDEN_HELMET, ChatColor.GOLD + "" + ChatColor.BOLD + "CHAMPIONS TOUR",
+				ChatColor.GRAY + "1st: " + ChatColor.YELLOW + championsTourSection.getInt("1st"),
+				ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + championsTourSection.getInt("2nd"),
+				ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + championsTourSection.getInt("3rd"),
+				ChatColor.GRAY + "4th: " + ChatColor.YELLOW + championsTourSection.getInt("4th"),
+				ChatColor.GRAY + "5th-6th: " + ChatColor.YELLOW + championsTourSection.getInt("5th-6th"),
+				ChatColor.GRAY + "",
+				ChatColor.GRAY + "Open Event Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open Event Wins"),
+				ChatColor.GRAY + "",
+				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + championsTourSection.getInt("Participations")));
+
+		//get champions tour section
+		ConfigurationSection buildCompetitionSection = bigEventsSection.getConfigurationSection("build-competitions");
+		inv.setItem(12, createGuiItem(Material.BRICKS, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "BUILD COMPETITIONS",
+				ChatColor.GRAY + "1st: " + ChatColor.YELLOW + buildCompetitionSection.getInt("1st"),
+				ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + buildCompetitionSection.getInt("2nd"),
+				ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + buildCompetitionSection.getInt("3rd"),
+				"",
+				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + buildCompetitionSection.getInt("Participations")));
+
+		//get map art contest section
+		ConfigurationSection mapArtSection = bigEventsSection.getConfigurationSection("map-art-contests");
+		inv.setItem(13, createGuiItem(Material.FILLED_MAP, ChatColor.GREEN + "" + ChatColor.BOLD + "MAP ART CONTESTS",
+				ChatColor.GRAY + "1st: " + ChatColor.YELLOW + mapArtSection.getInt("1st"),
+				ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + mapArtSection.getInt("2nd"),
+				ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + mapArtSection.getInt("3rd"),
+				"",
+				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + mapArtSection.getInt("Participations")));
+
+		//get red vs blue contest section
+		ConfigurationSection RVBSection = bigEventsSection.getConfigurationSection("red-vs-blue");
+		inv.setItem(14, createBannerItem(redvsblueBanner(), ChatColor.RED + "" + ChatColor.BOLD + "RED " +
+															ChatColor.YELLOW + "" + ChatColor.BOLD + "VS " +
+															ChatColor.BLUE + "" + ChatColor.BOLD + "BLUE",
+				ChatColor.GRAY + "1st: " + ChatColor.YELLOW + RVBSection.getInt("1st"),
+				ChatColor.GRAY + "2nd: " + ChatColor.YELLOW + RVBSection.getInt("2nd"),
+				ChatColor.GRAY + "3rd: " + ChatColor.YELLOW + RVBSection.getInt("3rd"),
+				ChatColor.GRAY + "",
+				ChatColor.GRAY + "MVP: " + ChatColor.YELLOW + RVBSection.getInt("mvp"),
+				ChatColor.GRAY + "",
+				ChatColor.GRAY + "Team Wins: " + ChatColor.YELLOW + RVBSection.getInt("Team Wins"),
+				ChatColor.GRAY + "",
+				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + RVBSection.getInt("Participations")));
+
+		inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Event"));
+
+		//Small events section
+		ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");
+		LinkedHashMap<String, Integer> orderedEvents = new LinkedHashMap<>();
+		if(smallEventsSection != null){
+
+			// Get the keys and values from the YAML section
+			Map<String, Integer> eventValues = smallEventsSection.getValues(false).entrySet()
+					.stream()
+					.collect(Collectors.toMap(Map.Entry::getKey, entry -> (int) entry.getValue()));
+
+			//Sort events based on wins in decending order
+			List<Map.Entry<String, Integer>> sortedEvents = new ArrayList<>(eventValues.entrySet());
+			sortedEvents.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+			// Create a new ordered map for the sorted events
+			for (Map.Entry<String, Integer> entry : sortedEvents) {
+				orderedEvents.put(entry.getKey(), entry.getValue());
+			}
+		}
+
+		FileConfiguration smallEventFile = mainClass.getSmallEvents();
+
+		//figure out how to put stuff on next screen that doesnt fit.
+		int inventorySlot = 27;
+		int i = 0;
+		for(Map.Entry<String, Integer> entry : orderedEvents.entrySet()) {
+			String eventName = entry.getKey();
+			ConfigurationSection eventInfo = smallEventFile.getConfigurationSection(eventName);
+
+			ConfigurationSection playerData = playerDataConfig.getConfigurationSection(playerUUID);
+			ConfigurationSection stats = playerData.getConfigurationSection("stats");
+			ConfigurationSection highScoreSection = stats.getConfigurationSection("high-scores");
+
+			int highScore = highScoreSection.getInt(eventName);
+			int wins = entry.getValue();
+			ChatColor color = ChatColor.valueOf(eventInfo.getString("color"));
+			Material material = Material.valueOf(eventInfo.getString("item"));
+
+			inv.setItem(inventorySlot, createGuiItem(material, color + eventName,
+					ChatColor.GRAY + "Wins: " + ChatColor.YELLOW + wins,
+					ChatColor.GRAY + "High Score: " + ChatColor.GREEN + highScore));
+
+//			if(i==6 || i==13) {
+//				inventorySlot += 3;
+//			} else {
+//				inventorySlot++;
+//				}
+
+//			i++;
+
 			inventorySlot++;
 			}
-		}	
+
+//			inv.setItem(44, createGuiItem(Material.LIME_WOOL,
+//					ChatColor.GREEN + "Next Page ->"));
 	}
 	
 	public void openInventory(final HumanEntity ent, Inventory inv) {
@@ -209,6 +228,10 @@ public class fbprofile extends InventoryManager implements Listener, CommandExec
 		
 		//verify current item is not null
 		if (clickedItem == null || clickedItem.getType().isAir()) return;
+
+		if(clickedItem.getType() == Material.LIME_WOOL){
+			p.sendMessage("clicked wool");
+		}
 	}
 	
 	@EventHandler

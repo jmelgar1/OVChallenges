@@ -60,7 +60,7 @@ Bring Home The Bacon:
    duration: 5
    color: LIGHT_PURPLE
    votes: 0
-   requiredscore: 5
+   requiredscore: 3
    placements:
       first: 15
       second: 10
@@ -71,7 +71,7 @@ Crazy Carrots:
    duration: 5
    color: GOLD
    votes: 0
-   requiredscore: 30
+   requiredscore: 20
    placements:
       first: 15
       second: 10
@@ -82,7 +82,7 @@ Bad Bats:
    duration: 5
    color: DARK_GRAY
    votes: 0
-   requiredscore: 3
+   requiredscore: 1
    placements:
       first: 15
       second: 10
@@ -159,7 +159,7 @@ Cow Tipper:
    duration: 5
    color: WHITE
    votes: 0
-   requiredscore: 5
+   requiredscore: 3
    placements:
       first: 15
       second: 10
@@ -175,7 +175,7 @@ World War Z:
       first: 30
       second: 20
       third: 10
-Scary Skeletons:
+Spooky Skeletons:
    description: Kill as many skeletons as you can!
    item: BONE
    duration: 10
@@ -230,3 +230,69 @@ Best Baker:
       first: 15
       second: 10
       third: 5
+Elegant Emeralds:
+   description: Mine as many emeralds as you can!
+   item: EMERALD
+   duration: 20
+   color: GREEN
+   votes: 0
+   requiredscore: 1
+   placements:
+      first: 60
+      second: 30
+      third: 15
+Quality Quartz:
+   description: Mine as much quartz ore as you can!
+   item: QUARTZ
+   duration: 20
+   color: GRAY
+   votes: 0
+   requiredscore: 30
+   placements:
+      first: 60
+      second: 30
+      third: 15
+Countless Cakes:
+   description: Craft as much cake as you can!
+   item: CAKE
+   duration: 10
+   color: RED
+   votes: 0
+   requiredscore: 1
+   placements:
+      first: 30
+      second: 20
+      third: 10
+Scrumptious Stew:
+   description: Craft as much stew as you can!
+   item: MUSHROOM_STEW
+   duration: 10
+   color: RED
+   votes: 0
+   requiredscore: 3
+   placements:
+      first: 30
+      second: 20
+      third: 10
+Creeping Creepers:
+   description: Kill as many creepers as you can!
+   item: GUNPOWDER
+   duration: 10
+   color: DARK_GREEN
+   votes: 0
+   requiredscore: 3
+   placements:
+      first: 30
+      second: 20
+      third: 10
+Endless Endermen:
+   description: Kill as many endermen as you can!
+   item: ENDER_PEARL
+   duration: 10
+   color: DARK_PURPLE
+   votes: 0
+   requiredscore: 10
+   placements:
+      first: 30
+      second: 20
+      third: 10

@@ -1,22 +1,15 @@
 package org.thefruitbox.fbevents.managers;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class InventoryManager implements Listener{
-	
-	public static Inventory inv1;
-	public static Map<UUID, Inventory> inventories = new HashMap<UUID, Inventory>();
 	
 	//create gui item
 	public static ItemStack createGuiItem(final Material material, final String name, final String... lore) {
@@ -103,8 +96,4 @@ public class InventoryManager implements Listener{
 		
 		return itemStack;
 	}
-	
-	//EVENTHANDLERS
-	
-	
 }

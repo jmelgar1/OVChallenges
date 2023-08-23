@@ -11,8 +11,6 @@ import org.thefruitbox.fbevents.Main;
 import org.thefruitbox.fbevents.managers.DetermineEventData;
 import org.thefruitbox.fbevents.smalleventmanager.DailyEvents;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ChatColor;
 
 public class EndEvent extends BukkitRunnable{
@@ -25,12 +23,7 @@ public class EndEvent extends BukkitRunnable{
 	//start event instance
 	private StartEvent startEventClass = StartEvent.getInstance();
 	
-	UpdateScoreboard updateScoreboard = new UpdateScoreboard();
-	
 	DailyEvents dailyEvents = new DailyEvents();
-	
-	//Luckperms api
-	static LuckPerms api = LuckPermsProvider.get();
 	
 	ConfigurationSection eventConfig = mainClass.getSmallEvents();
 	ConfigurationSection event = eventConfig.getConfigurationSection(dailyEvents.winningEvent);
@@ -44,8 +37,8 @@ public class EndEvent extends BukkitRunnable{
 		
 		HashMap<String, Integer> topScores = new HashMap<String, Integer>();
 		
-		for(String s : mainClass.getEventData().getStringList("participants")) {
-			topScores.put(s, dailyEvents.winningEventSection.getInt(s));
+		for(String player : mainClass.getEventData().getStringList("participants")) {
+			topScores.put(player, dailyEvents.winningEventSection.getInt(player));
 		}
 		
 		//get greatest to least 
@@ -64,7 +57,7 @@ public class EndEvent extends BukkitRunnable{
 				
 					if(counter < 4) {
 		
-						Bukkit.broadcastMessage(ChatColor.GOLD + "" + counter + ". " + ChatColor.YELLOW + entry.getKey() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
+						Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(counter) + ". " + ChatColor.YELLOW + entry.getKey() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
 						
 						ConfigurationSection playerDataConfig = mainClass.getPlayerData();
 						ConfigurationSection playerUUID = playerDataConfig.getConfigurationSection(playerUUIDString);
@@ -101,15 +94,32 @@ public class EndEvent extends BukkitRunnable{
 			}
 			
 			if(p != null) {
-				int requiredScore = dailyEvents.winningEventSection.getInt("requiredscore");
-				if(entry.getValue() > dailyEvents.winningEventSection.getInt("requiredscore")) {
-						p.sendMessage(ChatColor.GOLD + "You earned " + mainClass.spongeColor + sponges + " sponges " + ChatColor.GOLD + "from the event!" + ChatColor.GOLD +
+				ConfigurationSection winningSection = mainClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEvent);
+				int requiredScore = winningSection.getInt("requiredscore");
+				if(entry.getValue() > requiredScore) {
+						p.sendMessage(ChatColor.GOLD + "You earned " + mainClass.spongeColor + sponges + " sponges " + ChatColor.GOLD + "from the event! " + ChatColor.GOLD +
 								"They have been deposited into your bank! " + ChatColor.YELLOW + "/bank");
 						mainClass.econ.depositPlayer(p, sponges);
+
+						String playerUUIDString = Bukkit.getPlayer(entry.getKey()).getUniqueId().toString();
+						ConfigurationSection playerDataConfig = mainClass.getPlayerData();
+						ConfigurationSection playerUUID = playerDataConfig.getConfigurationSection(playerUUIDString);
+						ConfigurationSection statsSection = playerUUID.getConfigurationSection("stats");
+						ConfigurationSection highScoreSection = statsSection.getConfigurationSection("high-scores");
+						if(highScoreSection == null){
+							statsSection.createSection("high-scores").set(dailyEvents.winningEvent, entry.getValue());
+							p.sendMessage(ChatColor.GREEN + String.valueOf(ChatColor.BOLD) + "You now have a high score of " + entry.getValue() + " for " + dailyEvents.winningEvent);
+						} else if(highScoreSection.getInt(dailyEvents.winningEvent) < entry.getValue()){
+							highScoreSection.set(dailyEvents.winningEvent, entry.getValue());
+							p.sendMessage(ChatColor.GREEN + String.valueOf(ChatColor.BOLD) + "You now have a high score of " + entry.getValue() + " for " + dailyEvents.winningEvent);
+						}
+
+						mainClass.savePlayerDataFile();
+
 						counter++;
 				} else {
-					Bukkit.getPlayer(entry.getKey()).sendMessage(ChatColor.RED + "You did not meet the required score of " + requiredScore + ""
-							+ " and did not receive any sponges!");
+					Bukkit.getPlayer(entry.getKey()).sendMessage(ChatColor.RED + "You did not meet the required score of "
+							+ requiredScore + " and did not receive any sponges!");
 				}
 			}
 		}
@@ -143,23 +153,5 @@ public class EndEvent extends BukkitRunnable{
 				p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 			}
 		}
-	}
-	
-	//get duration of the event (equal to the amount of XP given, 120 minutes = 1st place gets 120 xp)
-	int getDuration() {
-		ConfigurationSection smallEvents = mainClass.getSmallEvents();
-		ConfigurationSection winningEvent = smallEvents.getConfigurationSection(dailyEvents.winningEvent);
-		int duration = winningEvent.getInt("duration");
-		
-		return duration;
-	}
-	
-	//get players current xp
-	int getXP(String playerUUID) {
-		ConfigurationSection playerDataConfig = mainClass.getPlayerData();
-		ConfigurationSection playerUUIDSection = playerDataConfig.getConfigurationSection(playerUUID);
-		int levelExperience = playerUUIDSection.getInt("levelExperience");
-		
-		return levelExperience;
 	}
 }
