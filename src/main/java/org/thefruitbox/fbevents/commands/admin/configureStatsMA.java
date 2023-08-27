@@ -20,15 +20,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.thefruitbox.fbevents.Main;
-//import org.thefruitbox.fbevents.bukkitevents.EditPlayerPoints;
 
 import net.md_5.bungee.api.ChatColor;
 import org.thefruitbox.fbevents.commands.fbprofile;
 
 public class configureStatsMA implements CommandExecutor, Listener{
-	
-	//OVProfile Instance
-	fbprofile ovp1 = new fbprofile();
 	
 	private static Inventory inv;
 	
@@ -39,9 +35,6 @@ public class configureStatsMA implements CommandExecutor, Listener{
 	
 	//Get playerdataconfig
 	FileConfiguration playerDataConfig = mainClass.getPlayerData();
-	
-	//editPlayerPoints instance
-	//EditPlayerPoints epp1 = new EditPlayerPoints();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

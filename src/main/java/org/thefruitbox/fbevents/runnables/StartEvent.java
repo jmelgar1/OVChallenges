@@ -200,7 +200,7 @@ public class StartEvent extends BukkitRunnable{
 		eventClassMap.put("CowTipper", CowTipper.class);
 		eventClassMap.put("GhastHunter", GhastHunter.class);
 		eventClassMap.put("HilariousHomicide", HilariousHomicide.class);
-		eventClassMap.put("ScarySkeletons", SpookySkeletons.class);
+		eventClassMap.put("SpookySkeletons", SpookySkeletons.class);
 		eventClassMap.put("ShulkerHunt", ShulkerHunt.class);
 		eventClassMap.put("WardenWarrior", WardenWarrior.class);
 		eventClassMap.put("WheresWither", WheresWither.class);

@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.thefruitbox.fbevents.bukkitevents.PreventItemUsage;
 import org.thefruitbox.fbevents.bukkitevents.PlayerEvents;
 import org.thefruitbox.fbevents.commands.fbehelp;
 import org.thefruitbox.fbevents.commands.fbevote;
@@ -137,7 +136,6 @@ public class Main extends JavaPlugin implements Listener{
         getServer().getPluginManager().registerEvents(new configureStatsMA(), this);
         getServer().getPluginManager().registerEvents(new configureStatsRVB(), this);
         getServer().getPluginManager().registerEvents(new fbevote(), this);
-        getServer().getPluginManager().registerEvents(new PreventItemUsage(), this);
 
         //runnable events
         getServer().getPluginManager().registerEvents(new SendVoteFinished(), this);

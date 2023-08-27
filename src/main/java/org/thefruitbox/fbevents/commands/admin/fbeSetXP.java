@@ -7,9 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.thefruitbox.fbevents.Main;
-//import org.thefruitbox.fbevents.bukkitevents.EditPlayerPoints;
 import org.thefruitbox.fbevents.bukkitevents.PlayerEvents;
-import org.thefruitbox.fbevents.runnables.SendDailyEventVote;
 
 public class fbeSetXP implements CommandExecutor{
 	
@@ -17,8 +15,6 @@ public class fbeSetXP implements CommandExecutor{
 	private Main mainClass = Main.getInstance();
 	
 	ConfigurationSection playerDataConfig = mainClass.getPlayerData();
-	
-	PlayerEvents pe1 = new PlayerEvents();
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -40,8 +36,6 @@ public class fbeSetXP implements CommandExecutor{
         				playerUUIDString = Bukkit.getServer().getOfflinePlayer(playerName).getUniqueId().toString();
         				playerUUID = playerDataConfig.getConfigurationSection(playerUUIDString);
         			}
-        	    	
-        	    	//epp1.setLevelXP(Double.parseDouble(XP), playerUUID);
         	    	
         	    	if(sender instanceof Player) {
         	    		sender.sendMessage(mainClass.prefix + "Set " + XP + " to " + playerName);
