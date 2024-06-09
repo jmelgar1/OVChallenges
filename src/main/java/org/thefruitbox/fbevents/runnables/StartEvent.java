@@ -67,9 +67,9 @@ public class StartEvent extends BukkitRunnable{
 				String color = winningEventSection.getString("color");
 				String name = winningEventSection.getName();
 				int duration = winningEventSection.getInt("duration");
-
+				int minimum = winningEventSection.getInt("requiredscore");
 				scoreboardTitle = ChatColor.valueOf(color) + String.valueOf(ChatColor.BOLD) + name.toUpperCase();
-				createScoreboard(eventWinnerClass);
+				createScoreboard(eventWinnerClass, minimum);
 
 				if(allOnline){
 					eventWinnerClass.registerEvents();
@@ -92,24 +92,28 @@ public class StartEvent extends BukkitRunnable{
 	boolean allOnline = true;
 	
 	//function to create scoreboard
-	void createScoreboard(DailyEvents className) {
+	void createScoreboard(DailyEvents className, int minimum) {
 		Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 		Objective obj = board.registerNewObjective("FBEvents", "dummy", scoreboardTitle);
 		
-		obj.getScore(ChatColor.RESET.toString()).setScore(10);
-		obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Scores:").setScore(9);
+		obj.getScore(ChatColor.RESET.toString()).setScore(12);
+		obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Scores:").setScore(11);
 		
 		if(mainClass.getEventData().getStringList("participants").size() < 3) {
-			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
-			obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Time Left:").setScore(4);
-			obj.getScore("time left").setScore(3);
-			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(7);
+			obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Time Left:").setScore(6);
+			obj.getScore("time left").setScore(5);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(4);
+			obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + minimum).setScore(3);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
 			obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(1);
 		} else {
-			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(6);
-			obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Time Left:").setScore(5);
-			obj.getScore("time left").setScore(4);
-			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(8);
+			obj.getScore(ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD) + "Time Left:").setScore(7);
+			obj.getScore("time left").setScore(6);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
+			obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + minimum).setScore(4);
+			obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
 			obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(2);
 		}
 		

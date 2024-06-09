@@ -1,6 +1,8 @@
 package org.thefruitbox.fbevents.smalleventmanager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
@@ -66,5 +68,19 @@ public class DailyEvents implements Listener {
         }
 
         return CoreProtect;
+	}
+
+	public boolean isWithin50Blocks(Block block){
+		// Get the location of the block
+		Location blockLocation = block.getLocation();
+
+		// Create a location at (0, 0, 0) in the same world
+		Location origin = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+
+		// Calculate the distance between the block and the origin
+		double distance = blockLocation.distance(origin);
+
+		// Check if the distance is less than or equal to 50 blocks
+		return distance <= 75;
 	}
 }

@@ -96,7 +96,7 @@ public class EndEvent extends BukkitRunnable{
 			if(p != null) {
 				ConfigurationSection winningSection = mainClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEvent);
 				int requiredScore = winningSection.getInt("requiredscore");
-				if(entry.getValue() > requiredScore) {
+				if(entry.getValue() >= requiredScore) {
 						p.sendMessage(ChatColor.GOLD + "You earned " + mainClass.spongeColor + sponges + " sponges " + ChatColor.GOLD + "from the event! " + ChatColor.GOLD +
 								"They have been deposited into your bank! " + ChatColor.YELLOW + "/bank");
 						mainClass.econ.depositPlayer(p, sponges);

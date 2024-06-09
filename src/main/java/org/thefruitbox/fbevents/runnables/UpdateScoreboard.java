@@ -51,26 +51,30 @@ public class UpdateScoreboard extends BukkitRunnable {
 			
 			obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 			
-			obj.getScore(ChatColor.RESET.toString()).setScore(10);
-			obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:").setScore(9);;
+			obj.getScore(ChatColor.RESET.toString()).setScore(12);
+			obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:").setScore(11);;
 			
-			int counter = 8;
+			int counter = 10;
 			for(Map.Entry<String, Integer> entry : topScores1.entrySet()) {
-				if(counter >= 6) {
+				if(counter >= 8) {
 					obj.getScore(entry.getKey() + ": " + ChatColor.YELLOW + entry.getValue()).setScore(counter);
 					counter--;
 				}
 				if(topScores1.size() < 3) {
-					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(6);
-					obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(5);
-					obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(4);
-					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(8);
+					obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(7);
+					obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(6);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
+					obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + mainClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEventSection.getName()).getInt("requiredscore")).setScore(4);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
 					obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(2);
 				} else {
-					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
-					obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(4);
-					obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(3);
-					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(7);
+					obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(6);
+					obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(5);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(4);
+					obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + mainClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEventSection.getName()).getInt("requiredscore")).setScore(3);
+					obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
 					obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(1);
 				}
 			}	

@@ -31,7 +31,7 @@ public class Ironworker extends DailyEvents implements Listener {
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE) {
+		if((material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE) && !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			

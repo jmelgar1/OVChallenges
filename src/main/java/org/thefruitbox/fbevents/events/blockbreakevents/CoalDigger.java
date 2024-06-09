@@ -25,13 +25,13 @@ public class CoalDigger extends DailyEvents implements Listener {
 
 	@EventHandler
 	public void breakDiamond(BlockBreakEvent e) {
-		Block b = (Block) e.getBlock();
+		Block b = e.getBlock();
 		Player p = e.getPlayer();
 		
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.COAL_ORE || material == Material.DEEPSLATE_COAL_ORE) {
+		if((material == Material.COAL_ORE || material == Material.DEEPSLATE_COAL_ORE) && !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			

@@ -28,18 +28,18 @@ public class CountlessCakes extends DailyEvents implements Listener {
 		int realAmount = craftedItem.getAmount();
 			
 		boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
-		
+
 		if(contains) {
-			
+
 			if(craftedItem.getType() == Material.CAKE) {
-				
+
 				if(clickType.isShiftClick()) {
 					int lowerAmount = craftedItem.getMaxStackSize() + 1000;
 					for(ItemStack actualItem : inv.getContents()) {
 						if(!actualItem.getType().isAir() && lowerAmount > actualItem.getAmount() && !actualItem.getType().equals(craftedItem.getType())) {
 							lowerAmount = actualItem.getAmount();
 						}
-						
+
 						realAmount = lowerAmount * craftedItem.getAmount();
 					}
 				}

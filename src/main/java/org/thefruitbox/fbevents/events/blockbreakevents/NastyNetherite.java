@@ -31,7 +31,7 @@ public class NastyNetherite extends DailyEvents implements Listener {
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.ANCIENT_DEBRIS) {
+		if(material == Material.ANCIENT_DEBRIS && !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			

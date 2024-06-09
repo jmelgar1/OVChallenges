@@ -28,7 +28,7 @@ public class QualityQuartz extends DailyEvents implements Listener {
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.LEGACY_QUARTZ_ORE || material == Material.NETHER_QUARTZ_ORE) {
+		if((material == Material.LEGACY_QUARTZ_ORE || material == Material.NETHER_QUARTZ_ORE) && !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			

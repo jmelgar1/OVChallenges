@@ -28,20 +28,20 @@ public class ScrumptiousStew extends DailyEvents implements Listener {
 		int realAmount = craftedItem.getAmount();
 			
 		boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
-		
+
 		if(contains) {
-			
-			if(craftedItem.getType() == Material.MUSHROOM_STEW ||
-			craftedItem.getType() == Material.SUSPICIOUS_STEW ||
+
+			if(craftedItem.getType() == Material.SUSPICIOUS_STEW ||
+			craftedItem.getType() == Material.MUSHROOM_STEW ||
 			craftedItem.getType() == Material.RABBIT_STEW) {
-				
+
 				if(clickType.isShiftClick()) {
 					int lowerAmount = craftedItem.getMaxStackSize() + 1000;
 					for(ItemStack actualItem : inv.getContents()) {
 						if(!actualItem.getType().isAir() && lowerAmount > actualItem.getAmount() && !actualItem.getType().equals(craftedItem.getType())) {
 							lowerAmount = actualItem.getAmount();
 						}
-						
+
 						realAmount = lowerAmount * craftedItem.getAmount();
 					}
 				}

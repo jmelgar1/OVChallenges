@@ -31,7 +31,7 @@ public class DeepDiamonds extends DailyEvents implements Listener {
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE) {
+		if((material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE) && !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			

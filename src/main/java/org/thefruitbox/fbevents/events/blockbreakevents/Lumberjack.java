@@ -31,7 +31,7 @@ public class Lumberjack extends DailyEvents implements Listener {
 		Material material = b.getType();
 		
 		//check for block type (aka. emerald_ore, diamond ore, etc)
-		if(material == Material.OAK_LOG || 
+		if((material == Material.OAK_LOG ||
 				material == Material.JUNGLE_LOG ||
 				material == Material.SPRUCE_LOG ||
 				material == Material.ACACIA_LOG ||
@@ -50,7 +50,8 @@ public class Lumberjack extends DailyEvents implements Listener {
 				material == Material.STRIPPED_CRIMSON_HYPHAE ||
 				material == Material.STRIPPED_WARPED_HYPHAE ||
 				material == Material.CHERRY_LOG ||
-				material == Material.STRIPPED_CHERRY_LOG) {
+				material == Material.STRIPPED_CHERRY_LOG)
+				&& !isWithin50Blocks(b)) {
 			
 			boolean contains = dev1.getPlayerParticipants(mainClass.getEventData().getStringList("participants")).contains(p);
 			
