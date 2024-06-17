@@ -1,10 +1,10 @@
 api-version: 1.16
-name: FBEvents
-version: 1.1
-author: TheFruitBox
+name: OVChallenges
+version: 1.01
+author: OVClub
 website: www.thefruitbox.net
-main: org.thefruitbox.fbevents.Main
-description: TheFruitBox Commands
+main: org.ovclub.ovchallenges.Main
+description: OVChallenges Commands
 commands:
     fbehelp:
         description: See help page
