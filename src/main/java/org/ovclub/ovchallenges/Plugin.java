@@ -24,6 +24,7 @@ import org.ovclub.ovchallenges.commands.admin.oveSetXP;
 import org.ovclub.ovchallenges.commands.admin.oveReload;
 import org.ovclub.ovchallenges.commands.ovprofile;
 import org.ovclub.ovchallenges.file.EventsFile;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.util.EventUtility;
 import org.ovclub.ovchallenges.object.PlayerData;
 import org.ovclub.ovchallenges.runnables.EndEvent;
@@ -44,7 +45,8 @@ public class Plugin extends JavaPlugin implements Listener{
     private static Plugin instance;
 
     //vault instance
-    public Economy econ;
+    public static Economy econ = null;
+    public Economy getEconomy() {return econ;}
 
     //main config.yml
     FileConfiguration config;
@@ -62,14 +64,6 @@ public class Plugin extends JavaPlugin implements Listener{
     private File eventDataFile;
     private FileConfiguration eventData;
 
-    //OnlyVanilla Prefix
-    public String prefix = ChatColor.LIGHT_PURPLE + "[" +
-            ChatColor.RED + "" + ChatColor.BOLD + "F" +
-            ChatColor.GREEN + "" + ChatColor.BOLD + "B" +
-            ChatColor.LIGHT_PURPLE + "] ";
-
-    public ChatColor spongeColor = net.md_5.bungee.api.ChatColor.of("#dfff00");
-
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -85,6 +79,11 @@ public class Plugin extends JavaPlugin implements Listener{
 
         eventsFile = new EventsFile(this);
         eventsFile.loadEventsIntoMemory();
+
+        saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        ConfigManager.loadConfig(this.getConfig());
 
         //OLD SHIT
 

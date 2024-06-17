@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
 import net.md_5.bungee.api.ChatColor;
@@ -30,22 +30,22 @@ public class FishFrenzy implements Listener {
 		if(e.getState() == State.CAUGHT_FISH) {
 
 			boolean contains = plugin.getData().getParticipants().contains(p);
-			Event event = plugin.getData().getWinningEvent();
+			Challenge challenge = plugin.getData().getWinningEvent();
 
 			if(contains) {
 				Item item = (Item) e.getCaught();
 
 				if (item.getItemStack().getType() == Material.COD) {
-					event.addScore(p, 1);
+					challenge.addScore(p, 1);
 					p.sendMessage(ChatColor.LIGHT_PURPLE + "You caught cod! " + ChatColor.GOLD + "+1 point");
 				} else if (item.getItemStack().getType() == Material.SALMON) {
-					event.addScore(p, 2);
+					challenge.addScore(p, 2);
 					p.sendMessage(ChatColor.LIGHT_PURPLE + "You caught salmon! " + ChatColor.GOLD + "+2 points");
 				} else if (item.getItemStack().getType() == Material.PUFFERFISH) {
-					event.addScore(p, 3);
+					challenge.addScore(p, 3);
 					p.sendMessage(ChatColor.LIGHT_PURPLE + "You caught pufferfish! " + ChatColor.GOLD + "+3 points");
 				} else if (item.getItemStack().getType() == Material.TROPICAL_FISH) {
-					event.addScore(p, 4);
+					challenge.addScore(p, 4);
 					p.sendMessage(ChatColor.LIGHT_PURPLE + "You caught tropical fish! " + ChatColor.GOLD + "+4 points");
 					
 				//if player catches treasure
@@ -54,13 +54,13 @@ public class FishFrenzy implements Listener {
 						  item.getItemStack().getType() == Material.NAME_TAG ||
 						  item.getItemStack().getType() == Material.NAUTILUS_SHELL ||
 						  item.getItemStack().getType() == Material.SADDLE) {
-					event.addScore(p, 7);
+					challenge.addScore(p, 7);
 					p.sendMessage(ChatColor.LIGHT_PURPLE + "You caught treasure! " + ChatColor.GOLD + "+7 points");
 				} 
 
 				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 				
-				UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 				updateScoreboard.run();
 			}
 		}

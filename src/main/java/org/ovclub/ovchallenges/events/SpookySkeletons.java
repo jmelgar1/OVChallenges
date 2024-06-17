@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
 public class SpookySkeletons implements Listener {
@@ -33,18 +33,18 @@ public class SpookySkeletons implements Listener {
 			    entity.getType() == EntityType.WITHER_SKELETON) {
 
 				boolean contains = plugin.getData().getParticipants().contains(p);
-				Event event = plugin.getData().getWinningEvent();
+				Challenge challenge = plugin.getData().getWinningEvent();
 
 				if(contains) {
 					if(entity.getEquipment() != null) {
-						event.addScore(p, 3);
+						challenge.addScore(p, 3);
 						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a skeleton wearing armor! " + ChatColor.GOLD + "+3 Points!");
 					} else {
-						event.addScore(p, 1);
+						challenge.addScore(p, 1);
 					}
 					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 					
-					UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+					UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 					updateScoreboard.run();
 				}
 			}

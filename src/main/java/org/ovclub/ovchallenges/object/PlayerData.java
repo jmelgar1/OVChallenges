@@ -8,29 +8,21 @@ import java.util.*;
 
 public class PlayerData {
     public PlayerData() {
-        events = new ArrayList<>();
+        challenges = new ArrayList<>();
         participants = new ArrayList<>();
         inventories = new HashMap<>();
-        winningEvent = null;
+        winningChallenge = null;
         playerBossBars = new HashMap<>();
     }
 
-    private final List<Event> events;
-    public List<Event> getEvents() { return events; }
-    public void addEvent(Event event) {events.add(event);}
+    private final List<Challenge> challenges;
+    public List<Challenge> getEvents() { return challenges; }
+    public void addEvent(Challenge challenge) {
+        challenges.add(challenge);}
 
-//    public static void clearVotes() {
-//        for(Event event : this.events) {
-//            if(event.getVotes() != 0) {
-//                event.setVotes(0);
-//            }
-//        }
-//        System.out.println("[OVChallenges] Votes cleared!");
-//    }
-
-    private Event winningEvent;
-    public void setWinningEvent(Event event) { winningEvent = event; }
-    public Event getWinningEvent() { return winningEvent; }
+    private Challenge winningChallenge;
+    public void setWinningEvent(Challenge challenge) { winningChallenge = challenge; }
+    public Challenge getWinningEvent() { return winningChallenge; }
 
     private final List<Player> participants;
     public List<Player> getParticipants() { return participants; }

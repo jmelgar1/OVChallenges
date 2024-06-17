@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.util.EventUtility;
 
 import net.md_5.bungee.api.ChatColor;
@@ -28,11 +28,11 @@ public class SendDailyEventVote extends BukkitRunnable {
 		if(onlinePlayers >= 2) {
 
 			//clear previous participation list
-			List<Event> events = plugin.getData().getEvents();
+			List<Challenge> challenges = plugin.getData().getEvents();
 			plugin.getData().clearParticipants();
-			EventUtility.clearVotes(events);
-			//rotate the events
-			EventUtility.RotateEvents(events);
+			EventUtility.clearVotes(challenges);
+			//rotate the challenges
+			EventUtility.RotateEvents(challenges);
 			
 			//generate random eventid
 //			int eventID = (int)(Math.random()*10000);

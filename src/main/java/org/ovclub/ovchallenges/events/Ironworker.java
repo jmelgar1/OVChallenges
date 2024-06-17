@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
 public class Ironworker implements Listener {
@@ -29,17 +29,17 @@ public class Ironworker implements Listener {
 		if((material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE)) {
 
 			boolean contains = plugin.getData().getParticipants().contains(p);
-			Event event = plugin.getData().getWinningEvent();
+			Challenge challenge = plugin.getData().getWinningEvent();
 
 			if(!b.getMetadata("placed").isEmpty()) {
 				return;
 			}
 			
 			if(contains) {
-				event.addScore(p, 1);
+				challenge.addScore(p, 1);
 				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 
-				UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 				updateScoreboard.run();
 			}		
 		}

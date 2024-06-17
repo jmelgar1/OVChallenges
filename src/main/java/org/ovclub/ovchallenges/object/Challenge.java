@@ -1,9 +1,6 @@
 package org.ovclub.ovchallenges.object;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -17,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Event implements Listener, ConfigurationSerializable {
+public class Challenge implements Listener, ConfigurationSerializable {
     private Plugin data;
 
     private String name;
@@ -28,6 +25,10 @@ public class Event implements Listener, ConfigurationSerializable {
     private ItemStack item;
     private int duration;
     public int getDuration() { return duration; }
+
+    private String countdownLabel;
+    public void setCountdownLabel(String newLabel) { countdownLabel = newLabel; }
+    public String getCountdownLabel() { return countdownLabel; }
 
     private TextColor color;
     public TextColor getColor() { return color; }
@@ -44,6 +45,7 @@ public class Event implements Listener, ConfigurationSerializable {
     public int getRequiredScore() { return requiredScore; }
 
     private Map<Integer, Integer> placements;
+    public Map<Integer, Integer> getPlacements;
 
     private Map<UUID, Integer> scores;
     public Map<UUID, Integer> getScores() { return scores; }
@@ -59,7 +61,7 @@ public class Event implements Listener, ConfigurationSerializable {
     public Class<? extends Listener> getClassType() { return classType; }
     public void setClassType(Class<? extends Listener> newType) { classType = newType; }
 
-    public Event(String name, Map<String, Object> map, final Plugin data) {
+    public Challenge(String name, Map<String, Object> map, final Plugin data) {
         this.name = name;
         this.data = data;
         this.description = (String) map.get("description");
@@ -98,8 +100,8 @@ public class Event implements Listener, ConfigurationSerializable {
         return map;
     }
 
-    public static Event deserialize(String name, Map<String, Object> map, Plugin data) {
-        return new Event(name, map, data);
+    public static Challenge deserialize(String name, Map<String, Object> map, Plugin data) {
+        return new Challenge(name, map, data);
     }
 
     public void registerEvents() {
@@ -115,7 +117,7 @@ public class Event implements Listener, ConfigurationSerializable {
         }
     }
 
-    public static void unregisterEvents() {
+    public void unregisterEvents() {
         try {
             if (Listener.class.isAssignableFrom(classType)) {
                 Listener listenerInstance = classType.getDeclaredConstructor().newInstance();

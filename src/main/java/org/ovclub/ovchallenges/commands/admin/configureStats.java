@@ -86,7 +86,7 @@ public class configureStats implements CommandExecutor, Listener {
 	inv.setItem(5, createBannerItem(redvsblueBanner(), ChatColor.RED + "" + ChatColor.BOLD + "RED " +
 													   ChatColor.YELLOW + "" + ChatColor.BOLD + "VS " +
 													   ChatColor.BLUE + "" + ChatColor.BOLD + "BLUE"));
-	inv.setItem(6, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Event"));	
+	inv.setItem(6, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Challenge"));
 	}
 	
 	//create champions tour inventory
@@ -122,7 +122,7 @@ public class configureStats implements CommandExecutor, Listener {
 			  ChatColor.GREEN + "Left click to add 1",
 			  ChatColor.RED + "Right click to remove 1"));
 	
-	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open Event Wins", 
+	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open Challenge Wins",
 			  ChatColor.GREEN + "Left click to add 1",
 			  ChatColor.RED + "Right click to remove 1"));
 	

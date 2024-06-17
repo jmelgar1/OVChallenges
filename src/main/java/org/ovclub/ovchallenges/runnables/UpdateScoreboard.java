@@ -1,30 +1,23 @@
 package org.ovclub.ovchallenges.runnables;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
-import org.ovclub.ovchallenges.smalleventmanager.DailyEvents;
+import org.ovclub.ovchallenges.object.Challenge;
 
 import net.md_5.bungee.api.ChatColor;
+import org.ovclub.ovchallenges.util.EventUtility;
 
 public class UpdateScoreboard extends BukkitRunnable {
-	
-	//Plugin instance
-	private Plugin pluginClass = Plugin.getInstance();
-	
-	DailyEvents dailyEvents = new DailyEvents();
 
 	private final Plugin plugin;
 
@@ -35,22 +28,22 @@ public class UpdateScoreboard extends BukkitRunnable {
 	@Override
 	public void run() {
 
-		Event event = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningEvent();
 //		HashMap<Player, Integer> topScores = new HashMap<>();
 //
 //		for(Player p : plugin.getData().getParticipants()) {
 //			if(p != null) {
-//				topScores.put(p, event.);
+//				topScores.put(p, challenge.);
 //			}
 //		}
 		
 		//get greatest to least 
-		Map<UUID, Integer> topScores = sortByValue(event.getScores());
+		Map<UUID, Integer> topScores = EventUtility.sortByValue(challenge.getScores());
 		
 		for(Player p : plugin.getData().getParticipants()){
 			if(p != null) {
 				Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-				TextComponent title = Component.text(event.getName()).color(event.getColor()).decorate(TextDecoration.BOLD);
+				TextComponent title = Component.text(challenge.getName()).color(challenge.getColor()).decorate(TextDecoration.BOLD);
 				Objective obj = board.registerNewObjective("OVChallenges", "dummy", title);
 
 				obj.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -67,17 +60,17 @@ public class UpdateScoreboard extends BukkitRunnable {
 					if(topScores.size() < 3) {
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(8);
 						obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(7);
-						obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(6);
+						obj.getScore(challenge.getCountdownLabel()).setScore(6);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
-						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + pluginClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEventSection.getName()).getInt("requiredscore")).setScore(4);
+						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + challenge.getRequiredScore()).setScore(4);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
 						obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(2);
 					} else {
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(7);
 						obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(6);
-						obj.getScore(dailyEvents.eventData.getString("current-countdown")).setScore(5);
+						obj.getScore(challenge.getCountdownLabel()).setScore(5);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(4);
-						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + pluginClass.getSmallEvents().getConfigurationSection(dailyEvents.winningEventSection.getName()).getInt("requiredscore")).setScore(3);
+						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + challenge.getRequiredScore()).setScore(3);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
 						obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(1);
 					}
@@ -86,23 +79,10 @@ public class UpdateScoreboard extends BukkitRunnable {
 			}
 		}
 	}
-
-	static Map<UUID, Integer> sortByValue(Map<UUID, Integer> topScores) {
-
-        return topScores.entrySet().stream()
-		        .sorted(Comparator.comparingInt(e -> -e.getValue()))
-		        .collect(Collectors.toMap(
-		                Map.Entry::getKey,
-		                Map.Entry::getValue,
-		                (a, b) -> { throw new AssertionError(); },
-		                LinkedHashMap::new
-		        ));
-	}
 	
-	public void setCountdown(Event event) {
-		CountdownTimerLong timer = new CountdownTimerLong(pluginClass,
-		        event.getDuration(), 0, (t) -> dailyEvents.eventData.set("current-countdown", (t.getMinute() + ":" + (t.getSecondsLeft())))
-		);
+	public void setCountdown(Challenge challenge) {
+		CountdownTimerLong timer = new CountdownTimerLong(plugin,
+		        challenge.getDuration(), 0, (t) -> challenge.setCountdownLabel(t.getMinute() + ":" + (t.getSecondsLeft())));
 		timer.scheduleTimer();
 	}
 }

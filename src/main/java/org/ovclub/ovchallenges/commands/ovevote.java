@@ -47,7 +47,7 @@ public class ovevote extends InventoryManager implements CommandExecutor, Listen
 
             if(eventID != 0) {
                 if(checkIfSignedUp(p) == false){
-                    inv = Bukkit.createInventory(p, 9, "TheFruitBox | Daily Event Vote");
+                    inv = Bukkit.createInventory(p, 9, "TheFruitBox | Daily Challenge Vote");
                     inventories.put(playerUUID, inv);
                     openInventory(p, inventories.get(playerUUID));
                     initalizeItems();

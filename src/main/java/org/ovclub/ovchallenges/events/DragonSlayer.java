@@ -10,9 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
-import org.ovclub.ovchallenges.smalleventmanager.DailyEvents;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -45,14 +44,14 @@ public class DragonSlayer implements Listener{
 			if(p == null) {return;}
 
 			boolean contains = plugin.getData().getParticipants().contains(p);
-			Event event = plugin.getData().getWinningEvent();
+			Challenge challenge = plugin.getData().getWinningEvent();
 
 			if(contains) {
-				event.addScore(p, damage);
+				challenge.addScore(p, damage);
 				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 				p.sendMessage(ChatColor.LIGHT_PURPLE + "You dealt " + damage + " damage to the Ender Dragon!");
 				
-				UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 				updateScoreboard.run();
 			}
 		}

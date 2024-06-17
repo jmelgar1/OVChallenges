@@ -1,14 +1,14 @@
 package org.ovclub.ovchallenges.runnables;
 
 import java.text.DecimalFormat;
+import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Consumer;
+import org.ovclub.ovchallenges.Plugin;
 
 public class CountdownTimerLong implements Runnable {
     // Plugin class for bukkit scheduling
-    private JavaPlugin plugin;
+    private Plugin plugin;
 
     // Our scheduled task's assigned id, needed for canceling
     private Integer assignedTaskId;
@@ -23,12 +23,12 @@ public class CountdownTimerLong implements Runnable {
     DecimalFormat dFormat = new DecimalFormat("00");
 
     // Actions to perform while counting down, before and after
-    private Consumer<CountdownTimerLong> everySecond;
+    private final Consumer<CountdownTimerLong> everySecond;
 
     // Construct a timer, you could create multiple so for example if
     // you do not want these "actions"
-    public CountdownTimerLong(JavaPlugin plugin, int minute, int seconds,
-                          Consumer<CountdownTimerLong> everySecond) {
+    public CountdownTimerLong(Plugin plugin, int minute, int seconds,
+                              Consumer<CountdownTimerLong> everySecond) {
         // Initializing fields
         this.plugin = plugin;
 
@@ -75,7 +75,7 @@ public class CountdownTimerLong implements Runnable {
         ddSecond = dFormat.format(showSeconds);
         ddMinute = dFormat.format(minute);
         
-        UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+        UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
         updateScoreboard.run();
     }
 

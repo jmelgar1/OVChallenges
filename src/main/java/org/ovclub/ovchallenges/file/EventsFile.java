@@ -3,7 +3,7 @@ package org.ovclub.ovchallenges.file;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 
 import java.io.File;
 
@@ -30,8 +30,8 @@ public class EventsFile {
         eventsData = YamlConfiguration.loadConfiguration(eventsFile);
         if(!eventsData.getKeys(false).isEmpty()){
             for(String key : eventsData.getKeys(false)){
-                Event loadedEvent = Event.deserialize(key, eventsData.getConfigurationSection(key).getValues(false), plugin);
-                plugin.getData().addEvent(loadedEvent);
+                Challenge loadedChallenge = Challenge.deserialize(key, eventsData.getConfigurationSection(key).getValues(false), plugin);
+                plugin.getData().addEvent(loadedChallenge);
             }
         }
 //        for (String key : eventsData.getKeys(false)) {
@@ -39,7 +39,7 @@ public class EventsFile {
 //                UUID uuid = UUID.fromString(key);
 //                int unclaimed = rewardsData.getInt(key + ".unclaimed", 0);
 //                plugin.getData().getRewards().put(uuid, unclaimed);
-//                Event event = new Event();
+//                Challenge event = new Challenge();
 //                plugin.getData().getEvents().
 //            }
 //        }

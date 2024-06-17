@@ -89,7 +89,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 	@EventHandler
 	void onLeave(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		plugin.getData().addBossBar(p, Bukkit.createBossBar("Event will begin shortly", BarColor.PINK, BarStyle.SEGMENTED_10));
+		plugin.getData().addBossBar(p, Bukkit.createBossBar("Challenge will begin shortly", BarColor.PINK, BarStyle.SEGMENTED_10));
 	}
 	
 	@EventHandler

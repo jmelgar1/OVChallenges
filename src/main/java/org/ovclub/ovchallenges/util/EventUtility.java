@@ -1,57 +1,32 @@
 package org.ovclub.ovchallenges.util;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 
 public class EventUtility {
-	public static void ShuffleEvents(List<Event> events) {
-		Collections.shuffle(events);
+	public static void ShuffleEvents(List<Challenge> challenges) {
+		Collections.shuffle(challenges);
 	}
 	
-	public static void RotateEvents(List<Event> events){
+	public static void RotateEvents(List<Challenge> challenges){
 		//loop per # of rotations
 		for(int i = 0; i < 3; i++) {
 			
 			//store last element in list
-			Event temp = events.getLast();
+			Challenge temp = challenges.getLast();
 			
 			//traverse list and move elements to the right
 			for(int j = 14; j > 0; j--) {
-				events.set(j, events.get(j - 1));
+				challenges.set(j, challenges.get(j - 1));
 			}
-			events.set(0, temp);
+			challenges.set(0, temp);
 		}
-		events.subList(0, 3);
+		challenges.subList(0, 3);
 	}
-
-	
-//	public static void clearParticipationList(Plugin pluginClass) {
-//		//clear participant list
-//    	try{
-//    		List<String> clearedList = pluginClass.getEventData().getStringList("participants");
-//    		clearedList.clear();
-//    		pluginClass.getEventData().set("participants", clearedList);
-//    		pluginClass.saveEventDataFile();
-//    		System.out.println("Cleared participant list!");
-//    	} catch (Exception e) {
-//    		System.out.println(e);
-//    	}
-//	}
-//
-//	public static List<Player> getPlayerParticipants(List<String> participantList){
-//
-//		List<Player> playerParticipants = new ArrayList<>();
-//
-//		for(String s : participantList) {
-//			Player p = Bukkit.getServer().getPlayer(s);
-//			playerParticipants.add(p);
-//		}
-//
-//		return playerParticipants;
-//	}
 
 	public static List<Player> getNonParticipatingPlayers(List<Player> participantList){
         List<Player> nonParticipatingPlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
@@ -59,55 +34,60 @@ public class EventUtility {
 		return nonParticipatingPlayers;
 	}
 	
-	public static void clearVotes(List<Event> events) {
-    	for(Event event : events) {
-			if(event.getVotes() != 0) {
-				event.setVotes(0);
+	public static void clearVotes(List<Challenge> challenges) {
+    	for(Challenge challenge : challenges) {
+			if(challenge.getVotes() != 0) {
+				challenge.setVotes(0);
 			}
     	}  	
     	System.out.println("[OVChallenges] Votes cleared!");
 	}
 	
-	public static Event determineEvent(List<Event> events) {
-		List<Event> topEvents = new ArrayList<>();
+	public static Challenge determineEvent(List<Challenge> challenges) {
+		List<Challenge> topChallenges = new ArrayList<>();
 		int topVote = 0;
 		int totalVotes = 0;
 		
-	   	//gets all events from list
-		for (Event event : events) {
-			int votes = event.getVotes();
+	   	//gets all challenges from list
+		for (Challenge challenge : challenges) {
+			int votes = challenge.getVotes();
 
 			if (votes > topVote) {
 				topVote = votes;
-				topEvents.clear();
-				topEvents.add(event);
+				topChallenges.clear();
+				topChallenges.add(challenge);
 			} else if (votes == topVote) {
-				topEvents.add(event);
+				topChallenges.add(challenge);
 			}
 
 			totalVotes += votes;
 		}
 
-		// If less than 2 players vote or no events have votes, return "NONE"
-		if (totalVotes < 2 || topEvents.isEmpty()) {
+		// If less than 2 players vote or no challenges have votes, return "NONE"
+		if (totalVotes < 2 || topChallenges.isEmpty()) {
 			return null;
 		}
 
-		// If there's a tie, randomly select one of the top events
-		if (topEvents.size() > 1) {
+		// If there's a tie, randomly select one of the top challenges
+		if (topChallenges.size() > 1) {
 			Random random = new Random();
-			int randomIndex = random.nextInt(topEvents.size());
-			return topEvents.get(randomIndex);
+			int randomIndex = random.nextInt(topChallenges.size());
+			return topChallenges.get(randomIndex);
 		}
 
 		// If there's only one top event, return it
-		return topEvents.getFirst();
+		return topChallenges.getFirst();
 	}
 
-//	public static String getVotedEvent(Plugin pluginClass) {
-//		List<String> winningEventList = pluginClass.getEventData().getConfigurationSection("current-event").getKeys(false)
-//				.stream().collect(Collectors.toList());
-//
-//		return winningEventList.getFirst();
-//	}
+	public static Map<UUID, Integer> sortByValue(Map<UUID, Integer> topScores) {
+
+		return topScores.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> -e.getValue()))
+				.collect(Collectors.toMap(
+						Map.Entry::getKey,
+						Map.Entry::getValue,
+						(a, b) -> { throw new AssertionError(); },
+						LinkedHashMap::new
+				));
+	}
 }

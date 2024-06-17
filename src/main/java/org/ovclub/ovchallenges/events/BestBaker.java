@@ -10,9 +10,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
-import org.ovclub.ovchallenges.smalleventmanager.DailyEvents;
 
 public class BestBaker implements Listener {
 
@@ -36,7 +35,7 @@ public class BestBaker implements Listener {
 		int realAmount = craftedItem.getAmount();
 
 		boolean contains = plugin.getData().getParticipants().contains(p);
-		Event event = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningEvent();
 
 		if(contains) {
 			if(craftedItem.getType() == Material.BREAD) {
@@ -50,9 +49,9 @@ public class BestBaker implements Listener {
 						realAmount = lowerAmount * craftedItem.getAmount();
 					}
 				}
-			event.addScore(p, realAmount);
+			challenge.addScore(p, realAmount);
 			p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-			UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+			UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 			updateScoreboard.run();
 			}
 		}

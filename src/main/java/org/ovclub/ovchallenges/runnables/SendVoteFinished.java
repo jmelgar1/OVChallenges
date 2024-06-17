@@ -2,19 +2,15 @@ package org.ovclub.ovchallenges.runnables;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.commands.ovevote;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.util.EventUtility;
 
 import net.md_5.bungee.api.ChatColor;
-
-import java.util.UUID;
 
 public class SendVoteFinished extends BukkitRunnable implements Listener{
 
@@ -38,17 +34,17 @@ public class SendVoteFinished extends BukkitRunnable implements Listener{
 		if(Bukkit.getServer().getOnlinePlayers().size() >= 2) {
 
 			//get winning event
-			Event winningEvent = EventUtility.determineEvent(plugin.getData().getEvents());
-			plugin.getData().setWinningEvent(winningEvent);
+			Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getEvents());
+			plugin.getData().setWinningEvent(winningChallenge);
 			//set the event here some how
 //
 //			//create section with winning event name
 //			ConfigurationSection currentEventSection = eventData.createSection("current-event");
-//			ConfigurationSection winningEventSection = currentEventSection.createSection(winningEvent);
+//			ConfigurationSection winningEventSection = currentEventSection.createSection(winningChallenge);
 //
 //			pluginClass.getEventData().set("eventid", 0);
 
-			if(winningEvent != null) {
+			if(winningChallenge != null) {
 
 				StartEventCountdown3Min threeMin = new StartEventCountdown3Min(plugin);
 				threeMin.runTaskTimer(plugin, 0, 20);
@@ -71,7 +67,7 @@ public class SendVoteFinished extends BukkitRunnable implements Listener{
 				}
 
 				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-					p.sendMessage(ChatColor.LIGHT_PURPLE + winningEvent.getName()
+					p.sendMessage(ChatColor.LIGHT_PURPLE + winningChallenge.getName()
 								+ " has won the vote!");
 				}
 //

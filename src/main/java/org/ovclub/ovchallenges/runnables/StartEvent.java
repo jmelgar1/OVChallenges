@@ -1,11 +1,9 @@
 package org.ovclub.ovchallenges.runnables;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,14 +19,9 @@ import org.ovclub.ovchallenges.Plugin;
 //import org.ovclub.ovchallenges.events.damageevents.DragonSlayer;
 //import org.ovclub.ovchallenges.events.fishingevents.FishFrenzy;
 //import org.ovclub.ovchallenges.events.killingevents.*;
-import org.ovclub.ovchallenges.object.Event;
-import org.ovclub.ovchallenges.util.EventUtility;
-import org.ovclub.ovchallenges.smalleventmanager.DailyEvents;
+import org.ovclub.ovchallenges.object.Challenge;
 
 import net.md_5.bungee.api.ChatColor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class StartEvent extends BukkitRunnable{
 	
@@ -53,17 +46,17 @@ public class StartEvent extends BukkitRunnable{
 		EndEvent endEvent = new EndEvent();
 
 		//initializeEventClassMap();
-		Event event = plugin.getData().getWinningEvent();
-		Class<? extends Listener> eventClass = event.getClassType();
+		Challenge challenge = plugin.getData().getWinningEvent();
+		Class<? extends Listener> eventClass = challenge.getClassType();
 		if(eventClass != null){
-			TextColor color = event.getColor();
-			String name = event.getName();
-			int duration = event.getDuration();
-			int minimum = event.getRequiredScore();
-			createScoreboard(event, minimum);
+			TextColor color = challenge.getColor();
+			String name = challenge.getName();
+			int duration = challenge.getDuration();
+			int minimum = challenge.getRequiredScore();
+			createScoreboard(challenge, minimum);
 
 			if(allOnline){
-				event.registerEvents();
+				challenge.registerEvents();
 			} else {
 				SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
 				plugin.getData().clearParticipants();
@@ -71,7 +64,7 @@ public class StartEvent extends BukkitRunnable{
 			}
 			endEvent.runTaskLater(pluginClass, (long) duration *60*20);
 		} else {
-			Bukkit.broadcastMessage("Event is null. Please report this error.");
+			Bukkit.broadcastMessage("Challenge is null. Please report this error.");
 		}
 	}
 	
@@ -79,9 +72,9 @@ public class StartEvent extends BukkitRunnable{
 	boolean allOnline = true;
 	
 	//function to create scoreboard
-	void createScoreboard(Event event, int minimum) {
-		Component scoreboardTitle = Component.text(event.getName().toUpperCase())
-				.color(event.getColor())
+	void createScoreboard(Challenge challenge, int minimum) {
+		Component scoreboardTitle = Component.text(challenge.getName().toUpperCase())
+				.color(challenge.getColor())
 				.decorate(TextDecoration.BOLD);
 		Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 		Objective obj = board.registerNewObjective("OVChallenges", "dummy", scoreboardTitle);
@@ -114,15 +107,15 @@ public class StartEvent extends BukkitRunnable{
 //			user.data().add(InheritanceNode.builder(group).value(true).build());
 //			api.getUserManager().saveUser(user);
 			
-			//if player leaves before event starts REMOVE FROM LIST!
+			//if player leaves before challenge starts REMOVE FROM LIST!
 			if(!p.isOnline()) {
 				
-				Bukkit.broadcastMessage(ChatColor.RED + p.getName() + " left the game before the event started and will be removed from the event!");
+				Bukkit.broadcastMessage(ChatColor.RED + p.getName() + " left the game before the challenge started and will be removed from the challenge!");
 				
 				plugin.getData().removeParticipant(p);
 				
 				if(plugin.getData().getParticipants().size() < 2) {
-					Bukkit.broadcastMessage(ChatColor.RED + "The event will be cancelled since there are less than two players in the event.");
+					Bukkit.broadcastMessage(ChatColor.RED + "The challenge will be cancelled since there are less than two players in the challenge.");
 					
 					//cancel runnable if player is found not to be online
 					instance.cancel();
@@ -135,8 +128,8 @@ public class StartEvent extends BukkitRunnable{
 					this.cancel();
 				}
 			} else {
-				System.out.println("WINNING EVENT: " + event.getName());
-				obj.getScore(p.getName() + ": " + ChatColor.YELLOW + event.getScore(p)).setScore(counter);
+				System.out.println("WINNING EVENT: " + challenge.getName());
+				obj.getScore(p.getName() + ": " + ChatColor.YELLOW + challenge.getScore(p)).setScore(counter);
 				counter--;
 			
 				if(counter == 5) {
@@ -155,8 +148,8 @@ public class StartEvent extends BukkitRunnable{
 			}
 		}
 		
-		UpdateScoreboard updateScoreboard = new UpdateScoreboard();
-		updateScoreboard.setCountdown();
+		UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
+		updateScoreboard.setCountdown(challenge);
 		updateScoreboard.run();
 	}
 
@@ -199,16 +192,12 @@ public class StartEvent extends BukkitRunnable{
 //		eventClassMap.put("Endless Endermen", EndlessEndermen.class);
 //	}
 	
-	public void unregisterEvent(Event className) {
+	public void unregisterEvent(Challenge className) {
 		className.unregisterEvents();
 	}
 	
 	//Plugin instance
 	public static StartEvent getInstance() {
 		return instance;
-	}
-	
-	public DailyEvents getEvent() {
-		return eventWinnerClass;
 	}
 }

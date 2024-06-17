@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
 public class CookieClicker implements Listener {
@@ -35,7 +35,7 @@ public class CookieClicker implements Listener {
 		int realAmount = craftedItem.getAmount();
 
 		boolean contains = plugin.getData().getParticipants().contains(p);
-		Event event = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningEvent();
 
 		if(contains) {
 			if(craftedItem.getType() == Material.COOKIE) {
@@ -49,10 +49,10 @@ public class CookieClicker implements Listener {
 					}
 				}
 
-				event.addScore(p, realAmount);
+				challenge.addScore(p, realAmount);
 				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 			
-				UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 				updateScoreboard.run();
 			}
 		}

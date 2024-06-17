@@ -116,7 +116,7 @@ public class ovprofile extends InventoryManager implements Listener, CommandExec
 				ChatColor.GRAY + "4th: " + ChatColor.YELLOW + championsTourSection.getInt("4th"),
 				ChatColor.GRAY + "5th-6th: " + ChatColor.YELLOW + championsTourSection.getInt("5th-6th"),
 				ChatColor.GRAY + "",
-				ChatColor.GRAY + "Open Event Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open Event Wins"),
+				ChatColor.GRAY + "Open Challenge Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open Challenge Wins"),
 				ChatColor.GRAY + "",
 				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + championsTourSection.getInt("Participations")));
 
@@ -153,7 +153,7 @@ public class ovprofile extends InventoryManager implements Listener, CommandExec
 				ChatColor.GRAY + "",
 				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + RVBSection.getInt("Participations")));
 
-		inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Event"));
+		inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Challenge"));
 
 		//Small events section
 		ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");

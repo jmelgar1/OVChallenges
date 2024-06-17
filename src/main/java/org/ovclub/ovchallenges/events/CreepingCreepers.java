@@ -7,11 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.object.Event;
+import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
-import org.ovclub.ovchallenges.smalleventmanager.DailyEvents;
 
-public class CreepingCreepers extends DailyEvents implements Listener {
+public class CreepingCreepers implements Listener {
 
 	private final Plugin plugin;
 
@@ -24,28 +23,24 @@ public class CreepingCreepers extends DailyEvents implements Listener {
 		
 		LivingEntity entity = e.getEntity();
 		Player p = entity.getKiller();
+		if(p == null) {return;}
 
 		if(!(entity.getKiller() == null)) {
 			if(entity instanceof Creeper) {
 
 				boolean contains = plugin.getData().getParticipants().contains(p);
-				Event event = plugin.getData().getWinningEvent();
+				Challenge challenge = plugin.getData().getWinningEvent();
 
 				if(contains) {
-					int score = winningEventSection.getInt(p.getName());
-					
 					if(((Creeper) entity).isPowered()) {
-						event.addScore(p, 5);
+						challenge.addScore(p, 5);
 						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a charged creeper! " + ChatColor.GOLD + "+5 Points!");
 					} else {
-						event.addScore(p, 1);
+						challenge.addScore(p, 1);
 					}
-					
-					winningEventSection.set(p.getName(), score);
 					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-					pluginClass.saveEventDataFile();
-					
-					UpdateScoreboard updateScoreboard = new UpdateScoreboard();
+
+					UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 					updateScoreboard.run();
 				}
 			}
