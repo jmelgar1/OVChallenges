@@ -1,8 +1,6 @@
 package org.ovclub.ovchallenges.runnables;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -15,7 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.util.EventUtility;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -70,7 +67,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 				bar.setProgress(seconds / 180D);
 				String minutesTimer = String.valueOf(seconds/60);
 				String secondsTimer = dFormat.format(seconds % 60);
-				bar.setTitle(plugin.getData().getWinningEvent().getName() + " starts in " + minutesTimer + ":" + secondsTimer);
+				bar.setTitle(plugin.getData().getWinningChallenge().getName() + " starts in " + minutesTimer + ":" + secondsTimer);
 			}
 		}
 		if(seconds <= 5) {

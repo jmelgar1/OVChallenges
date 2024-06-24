@@ -3,6 +3,7 @@ package org.ovclub.ovchallenges.object;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -21,8 +22,14 @@ public class Challenge implements Listener, ConfigurationSerializable {
     public String getName() { return name; }
 
     private String description;
+    public String getDescription() {
+        return description;
+    }
 
     private ItemStack item;
+    public ItemStack getItem() {
+        return item;
+    }
     private int duration;
     public int getDuration() { return duration; }
 
@@ -71,15 +78,14 @@ public class Challenge implements Listener, ConfigurationSerializable {
         this.votes = 0;
         this.requiredScore = (int) map.get("requiredScore");
         this.placements = new HashMap<>();
-        Map<String, Object> placementsMap = (Map<String, Object>) map.get("placements");
-        if (placementsMap != null) {
-            for (Map.Entry<String, Object> entry : placementsMap.entrySet()) {
+        if (map.get("placements") instanceof ConfigurationSection placementsSection) {
+            for (String key : placementsSection.getKeys(false)) {
                 try {
-                    int key = Integer.parseInt(entry.getKey());
-                    int value = (int) entry.getValue();
-                    this.placements.put(key, value);
+                    int intKey = Integer.parseInt(key);
+                    int value = placementsSection.getInt(key);
+                    this.placements.put(intKey, value);
                 } catch (NumberFormatException e) {
-                    System.err.println("Invalid key format: " + entry.getKey());
+                    System.err.println("Invalid key format: " + key);
                 }
             }
         }

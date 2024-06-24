@@ -1,0 +1,63 @@
+api-version: 1.20
+name: OVChallenges
+version: 2.0
+author: OVClub
+main: org.ovclub.ovchallenges.Plugin
+description: OVChallenges Commands
+commands:
+    ovehelp:
+        description: See the challenge help page!
+        usage: /ovehelp
+#    ovprofile:
+#        description: Show TheFruitBox profile
+#        usage: /fbprofile [user]
+    ovevote:
+        description: Vote for a challenge!
+        usage: /ovevote
+#    configurestats:
+#        description: Set stats of players
+#        usage: /configurestats [user]
+#        permission: fbe.configurestats
+#    configurestatsct:
+#        description: Set stats of players CT
+#        usage: /configurestatsct [user]
+#        permission: fbe.configurestatsct
+#    configurestatsbc:
+#        description: Set stats of players BC
+#        usage: /configurestatsbc [user]
+#        permission: fbe.configurestatsbc
+#    configurestatsma:
+#        description: Set stats of players MA
+#        usage: /configurestatsma [user]
+#        permission: fbe.configurestatsma
+#    configurestatsrvb:
+#        description: Set stats of players RVB
+#        usage: /configurestatsrvb [user]
+#        permission: fbe.configurestatsrvb
+#    fbereload:
+#        description: fbe reload
+#        usage: /fbereload
+#        permission: fbe.reload
+#    fbeforcevote:
+#        description: Force an event vote
+#        usage: /fbeforcevote
+#        permission: fbe.forcevote
+#    fbeendvote:
+#        description: Force an event vote
+#        usage: /fbeendvote
+#        permission: fbe.endvote
+#    fbegivexp:
+#        description: Give player XP
+#        usage: /fbegivexp
+#        permission: fbe.givexp
+#    fbesetxp:
+#        description: Set player XP
+#        usage: /fbesetxp
+#        permission: fbe.setxp
+#    accept:
+#        description: Accept a warp request
+#        usage: /accept
+#    decline:
+#        description: Decline a warp request
+#        usage: /decline
+        

@@ -7,8 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
-import org.ovclub.ovchallenges.util.ChatUtility;
 import org.ovclub.ovchallenges.util.EventUtility;
 
 import net.md_5.bungee.api.ChatColor;
@@ -24,7 +24,7 @@ public class EndEvent extends BukkitRunnable{
 	@Override
 	public void run() {
 
-		Challenge challenge = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningChallenge();
 		Map<UUID, Integer> topScores = EventUtility.sortByValue(challenge.getScores());
 		
 		Bukkit.broadcastMessage(ChatColor.GRAY + "----- " + ChatColor.LIGHT_PURPLE + challenge.getName() + " Results!" + ChatColor.GRAY + " -----");
@@ -66,9 +66,9 @@ public class EndEvent extends BukkitRunnable{
 			if(p != null) {
 				int requiredScore = challenge.getRequiredScore();
 				if(entry.getValue() >= requiredScore) {
-						p.sendMessage(ChatColor.GOLD + "You earned " + ChatUtility.sponge_color + sponges + " sponges " + ChatColor.GOLD + "from the challenge! " + ChatColor.GOLD +
-								"They have been deposited into your bank! " + ChatColor.YELLOW + "/bank");
-						plugin.getEconomy().depositPlayer(p, sponges);
+					p.sendMessage(ConfigManager.EARNED_SPONGE
+							.replaceText(builder -> builder.matchLiteral("{amount}").replacement(String.valueOf(requiredScore))));
+					plugin.getEconomy().depositPlayer(p, sponges);
 //
 //						String playerUUIDString = Bukkit.getPlayer(entry.getKey()).getUniqueId().toString();
 //						ConfigurationSection playerDataConfig = pluginClass.getPlayerData();
@@ -85,10 +85,10 @@ public class EndEvent extends BukkitRunnable{
 //
 //						pluginClass.savePlayerDataFile();
 
-						counter++;
+					counter++;
 				} else {
-					Bukkit.getPlayer(entry.getKey()).sendMessage(ChatColor.RED + "You did not meet the required score of "
-							+ requiredScore + " and did not receive any sponges!");
+					p.sendMessage(ConfigManager.DID_NOT_MEET_SCORE
+							.replaceText(builder -> builder.matchLiteral("{amount}").replacement(String.valueOf(requiredScore))));
 				}
 			}
 		}
@@ -109,15 +109,11 @@ public class EndEvent extends BukkitRunnable{
 	
 		//clearing previous votes and removing the scoreboard from players
 		plugin.getData().clearParticipants();
-		EventUtility.clearVotes(plugin.getData().getEvents());
-
-		pluginClass.saveEventDataFile();
+		EventUtility.clearVotes(plugin.getData().getChallenges());
 		}
 	
 	public void removeScoreboard() {
-		for(String s : pluginClass.getEventData().getStringList("participants")){
-			Player p = Bukkit.getPlayer(s);
-			
+		for(Player p : plugin.getData().getParticipants()){
 			if(p != null) {
 				p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 			}

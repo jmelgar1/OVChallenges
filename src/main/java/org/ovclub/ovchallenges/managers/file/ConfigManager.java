@@ -13,6 +13,7 @@ import static org.bukkit.ChatColor.translateAlternateColorCodes;
 public class ConfigManager {
     public static void loadConfig(final FileConfiguration config) {
         EARNED_SPONGE = ChatUtility.createSpongeIcon(ChatUtility.sponge_color).append(LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("earned-sponge")))));
+        DID_NOT_MEET_SCORE = ChatUtility.createXIcon(TextColor.color(255,0,0)).append(LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("did-not-meet-score")))));
     }
 
     public static TextComponent EARNED_SPONGE;

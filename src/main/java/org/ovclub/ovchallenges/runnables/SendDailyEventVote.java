@@ -28,7 +28,7 @@ public class SendDailyEventVote extends BukkitRunnable {
 		if(onlinePlayers >= 2) {
 
 			//clear previous participation list
-			List<Challenge> challenges = plugin.getData().getEvents();
+			List<Challenge> challenges = plugin.getData().getChallenges();
 			plugin.getData().clearParticipants();
 			EventUtility.clearVotes(challenges);
 			//rotate the challenges
@@ -54,6 +54,8 @@ public class SendDailyEventVote extends BukkitRunnable {
 			
 			SendVoteFinished voteFinished = new SendVoteFinished(plugin);
 			voteFinished.runTaskLater(plugin, 2400);
+
+			plugin.getData().enableVotingPeriod();
 		} else {
 			plugin.runEventNotif20Minutes();
 		}

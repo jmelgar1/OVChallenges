@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT") {
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT") {
         exclude("junit", "junit")
     }
     compileOnly("com.github.MilkBowl:VaultAPI:1.7") {

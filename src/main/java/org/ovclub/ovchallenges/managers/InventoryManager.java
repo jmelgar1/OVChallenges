@@ -2,6 +2,7 @@ package org.ovclub.ovchallenges.managers;
 
 import java.util.Arrays;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
@@ -12,15 +13,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class InventoryManager implements Listener{
 	
 	//create gui item
-	public static ItemStack createGuiItem(final Material material, final String name, final String... lore) {
+	public static ItemStack createGuiItem(final Material material, final Component name, final Component... lore) {
 		final ItemStack item = new ItemStack(material, 1);
 		final ItemMeta meta = item.getItemMeta();
 		
 		//set the name of item
-		meta.setDisplayName(name);
+		meta.displayName(name);
 		
 		//set lore of item
-		meta.setLore(Arrays.asList(lore));
+		meta.lore(Arrays.asList(lore));
 		
 		item.setItemMeta(meta);
 		

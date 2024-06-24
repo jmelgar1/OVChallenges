@@ -28,7 +28,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 	@Override
 	public void run() {
 
-		Challenge challenge = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningChallenge();
 //		HashMap<Player, Integer> topScores = new HashMap<>();
 //
 //		for(Player p : plugin.getData().getParticipants()) {

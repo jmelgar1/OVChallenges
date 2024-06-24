@@ -11,14 +11,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.ovclub.ovchallenges.Plugin;
-//import org.ovclub.ovchallenges.events.blockbreakevents.*;
-//import org.ovclub.ovchallenges.events.craftingevents.BestBaker;
-//import org.ovclub.ovchallenges.events.craftingevents.CookieClicker;
-//import org.ovclub.ovchallenges.events.craftingevents.CountlessCakes;
-//import org.ovclub.ovchallenges.events.craftingevents.ScrumptiousStew;
-//import org.ovclub.ovchallenges.events.damageevents.DragonSlayer;
-//import org.ovclub.ovchallenges.events.fishingevents.FishFrenzy;
-//import org.ovclub.ovchallenges.events.killingevents.*;
 import org.ovclub.ovchallenges.object.Challenge;
 
 import net.md_5.bungee.api.ChatColor;
@@ -27,9 +19,6 @@ public class StartEvent extends BukkitRunnable{
 	
 	//Plugin instance
 	private static StartEvent instance;
-	
-	//Plugin instance
-	private Plugin pluginClass = Plugin.getInstance();
 
 	private final Plugin plugin;
 
@@ -43,10 +32,10 @@ public class StartEvent extends BukkitRunnable{
 		
 		instance = this;
 		
-		EndEvent endEvent = new EndEvent();
+		EndEvent endEvent = new EndEvent(plugin);
 
 		//initializeEventClassMap();
-		Challenge challenge = plugin.getData().getWinningEvent();
+		Challenge challenge = plugin.getData().getWinningChallenge();
 		Class<? extends Listener> eventClass = challenge.getClassType();
 		if(eventClass != null){
 			TextColor color = challenge.getColor();
@@ -60,9 +49,9 @@ public class StartEvent extends BukkitRunnable{
 			} else {
 				SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
 				plugin.getData().clearParticipants();
-				sendDailyEventVote.runTaskLater(pluginClass, 200);
+				sendDailyEventVote.runTaskLater(plugin, 200);
 			}
-			endEvent.runTaskLater(pluginClass, (long) duration *60*20);
+			endEvent.runTaskLater(plugin, (long) duration *60*20);
 		} else {
 			Bukkit.broadcastMessage("Challenge is null. Please report this error.");
 		}
@@ -124,7 +113,7 @@ public class StartEvent extends BukkitRunnable{
 					allOnline = false;
 					
 					SendDailyEventVote sendVote = new SendDailyEventVote(plugin);
-					sendVote.runTaskLater(pluginClass, 3000);
+					sendVote.runTaskLater(plugin, 3000);
 					this.cancel();
 				}
 			} else {
@@ -142,8 +131,7 @@ public class StartEvent extends BukkitRunnable{
 		
 		//if all players are online set scoreboard for all players
 		if(allOnline) {
-			for(String s : pluginClass.getEventData().getStringList("participants")){
-				Player p = Bukkit.getPlayer(s);
+			for(Player p : plugin.getData().getParticipants()){
 				p.setScoreboard(board);
 			}
 		}
@@ -191,13 +179,4 @@ public class StartEvent extends BukkitRunnable{
 //		eventClassMap.put("Creeping Creepers", CreepingCreepers.class);
 //		eventClassMap.put("Endless Endermen", EndlessEndermen.class);
 //	}
-	
-	public void unregisterEvent(Challenge className) {
-		className.unregisterEvents();
-	}
-	
-	//Plugin instance
-	public static StartEvent getInstance() {
-		return instance;
-	}
 }

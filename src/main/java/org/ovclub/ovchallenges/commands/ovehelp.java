@@ -11,8 +11,7 @@ public class ovehelp implements CommandExecutor {
     String cmd1 = "ovehelp";
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
             if(cmd.getName().equalsIgnoreCase(cmd1)) {
                 p.sendMessage(ChatColor.GRAY + "------" + ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "OVChallenges" + ChatColor.GRAY + "------");
                 p.sendMessage(ChatColor.YELLOW + "/ovehelp (This page)");

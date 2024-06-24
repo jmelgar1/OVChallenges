@@ -3,21 +3,14 @@ package org.ovclub.ovchallenges.runnables;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
-import org.ovclub.ovchallenges.commands.ovevote;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.util.EventUtility;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class SendVoteFinished extends BukkitRunnable implements Listener{
-
-	//Create new EventUtility object (to get list of events)
-	public EventUtility dev1 = new EventUtility();
-	
-	ovevote ov1 = new ovevote();
+public class SendVoteFinished extends BukkitRunnable {
 
 	private final Plugin plugin;
 
@@ -28,14 +21,14 @@ public class SendVoteFinished extends BukkitRunnable implements Listener{
 	@Override
 	public void run() {	
 		
-		ov1.clearAllInventories();
+		plugin.getData().clearAllInventories();
 
 		//will only run if 2 or more players are online
 		if(Bukkit.getServer().getOnlinePlayers().size() >= 2) {
 
 			//get winning event
-			Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getEvents());
-			plugin.getData().setWinningEvent(winningChallenge);
+			Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getChallenges());
+			plugin.getData().setWinningChallenge(winningChallenge);
 			//set the event here some how
 //
 //			//create section with winning event name
@@ -79,6 +72,7 @@ public class SendVoteFinished extends BukkitRunnable implements Listener{
 				Send30SecondReminder secondReminder = new Send30SecondReminder(plugin);
 				secondReminder.runTaskLater(plugin, 3000);
 
+				plugin.getData().disableVotingPeriod();
 			} else {
 				//if no one voted. try again in 20 minutes
 				Bukkit.broadcastMessage(ChatColor.RED + "Not enough players voted for an event! Trying again in 10 minutes!");

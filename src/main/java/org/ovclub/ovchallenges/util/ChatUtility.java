@@ -12,6 +12,10 @@ public class ChatUtility {
     public static TextComponent createSpongeIcon(TextColor color) {
         return Component.text("[⧠] ").color(color);
     }
+    public static TextComponent createXIcon(TextColor color) {
+        return Component.text("[✘] ").color(color);
+    }
+
 
     public static TextComponent prefix = Component.text("[").color(NamedTextColor.LIGHT_PURPLE)
             .append(Component.text("C")).color(plugin_color)
