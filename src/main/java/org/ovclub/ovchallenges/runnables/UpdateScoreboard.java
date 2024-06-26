@@ -6,7 +6,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -16,7 +15,7 @@ import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.object.Challenge;
 
 import net.md_5.bungee.api.ChatColor;
-import org.ovclub.ovchallenges.util.EventUtility;
+import org.ovclub.ovchallenges.util.ChallengeUtility;
 
 public class UpdateScoreboard extends BukkitRunnable {
 
@@ -29,7 +28,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 	@Override
 	public void run() {
 		Challenge challenge = plugin.getData().getWinningChallenge();
-		Map<UUID, Integer> topScores = EventUtility.sortByValue(challenge.getScores());
+		Map<UUID, Integer> topScores = ChallengeUtility.sortByValue(challenge.getScores());
 
 		for(UUID uuid : plugin.getData().getParticipants()) {
 			Player p = Bukkit.getPlayer(uuid);

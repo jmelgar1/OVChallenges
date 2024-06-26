@@ -1,10 +1,11 @@
-package org.ovclub.ovchallenges.runnables;
+package org.ovclub.ovchallenges.runnables.countdown;
 
 import java.text.DecimalFormat;
 import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
 public class CountdownTimerLong implements Runnable {
     // Plugin class for bukkit scheduling

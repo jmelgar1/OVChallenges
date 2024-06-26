@@ -1,5 +1,7 @@
 package org.ovclub.ovchallenges.challenges;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -10,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
@@ -49,7 +52,11 @@ public class DragonSlayer implements Listener{
 			if(contains) {
 				challenge.addScore(p, damage);
 				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-				p.sendMessage(ChatColor.LIGHT_PURPLE + "You dealt " + damage + " damage to the Ender Dragon!");
+				p.sendMessage(ConfigManager.DEALT_DAMAGE
+						.replaceText(builder -> builder.matchLiteral("{damage}")
+								.replacement(Component.text(String.valueOf(damage)).color(TextColor.fromHexString("#df3227"))))
+						.replaceText(builder -> builder.matchLiteral("{mob}")
+								.replacement(Component.text("Ender Dragon").color(challenge.getColor()))));
 				
 				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
 				updateScoreboard.run();

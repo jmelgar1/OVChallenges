@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
-import org.ovclub.ovchallenges.util.EventUtility;
+import org.ovclub.ovchallenges.util.ChallengeUtility;
 
 public class SendVoteFinished extends BukkitRunnable {
 
@@ -21,16 +21,16 @@ public class SendVoteFinished extends BukkitRunnable {
 	@Override
 	public void run() {
 		plugin.getData().clearAllInventories();
+		plugin.getData().disableVotingPeriod();
 
 		if(plugin.getData().getParticipants().isEmpty()) {
 			Bukkit.broadcast(ConfigManager.NOT_ENOUGH_PLAYERS);
 			SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
 			sendDailyEventVote.runTaskLater(plugin, 12000);
-			this.cancel();
 			return;
 		}
 
-		Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getChallenges());
+		Challenge winningChallenge = ChallengeUtility.determineEvent(plugin.getData().getChallenges());
 		plugin.getData().setWinningChallenge(winningChallenge);
 
 		StartEventCountdown3Min threeMin = new StartEventCountdown3Min(plugin);
@@ -48,16 +48,7 @@ public class SendVoteFinished extends BukkitRunnable {
 				p.sendMessage(ConfigManager.TIME_EXPIRED);
 			}
 		}
-
 		winningChallenge.setBossBarVisibility(true);
-
-		//TODO: ENABLE THIS
-//		Send30SecondReminder secondReminder = new Send30SecondReminder(plugin);
-//		secondReminder.runTaskLater(plugin, 3000);
-
-		plugin.getData().disableVotingPeriod();
-
-//
 //			//create section with winning event name
 //			ConfigurationSection currentEventSection = eventData.createSection("current-event");
 //			ConfigurationSection winningEventSection = currentEventSection.createSection(winningChallenge);

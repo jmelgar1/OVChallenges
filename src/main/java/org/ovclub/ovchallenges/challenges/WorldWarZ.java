@@ -1,5 +1,7 @@
 package org.ovclub.ovchallenges.challenges;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -8,10 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class WorldWarZ implements Listener{
 
@@ -41,7 +42,11 @@ public class WorldWarZ implements Listener{
 						challenge.addScore(p, 1);
 					} else if(entity.getType() == EntityType.ZOMBIE_VILLAGER) {
 						challenge.addScore(p, 2);
-						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a villager zombie! " + ChatColor.GOLD + "+2 Points!");
+						p.sendMessage(ConfigManager.KILLED_BABY_MOB
+								.replaceText(builder -> builder.matchLiteral("{mob}")
+										.replacement(Component.text("villager zombie").color(challenge.getColor())))
+								.replaceText(builder -> builder.matchLiteral("{points}")
+										.replacement(Component.text("2").color(NamedTextColor.GOLD))));
 					}
 					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 					

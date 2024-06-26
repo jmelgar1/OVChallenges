@@ -3,12 +3,16 @@ package org.ovclub.ovchallenges.util;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 
-public class EventUtility {
-	public static void RotateEvents(List<Challenge> challenges) {
+public class ChallengeUtility {
+	public static void rotateChallenges(List<Challenge> challenges) {
 		// Check if there are at least 5 elements to rotate
 		if (challenges.size() >= 5) {
 			List<Challenge> firstFive = new ArrayList<>(challenges.subList(0, 5));
@@ -94,5 +98,12 @@ public class EventUtility {
 						(a, b) -> { throw new AssertionError(); },
 						LinkedHashMap::new
 				));
+	}
+	public void sendBonusPointsMessage(Player p, TextComponent type, Challenge challenge, String subjectPlaceholder, String subject, String pointsPlaceholder, String points) {
+		p.sendMessage(type
+				.replaceText(builder -> builder.matchLiteral(subjectPlaceholder)
+						.replacement(Component.text(subject).color(challenge.getColor())))
+				.replaceText(builder -> builder.matchLiteral(pointsPlaceholder)
+						.replacement(Component.text(points).color(NamedTextColor.GOLD))));
 	}
 }

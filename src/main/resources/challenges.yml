@@ -1,10 +1,9 @@
 Fish Frenzy:
    description: Catch as many fish as you can!
    item: FISHING_ROD
-   duration: 5
-   color: LIGHT_PURPLE
+   duration: 1
+   color: "#42A5F5"
    votes: 0
-   #score required to recieve a reward
    requiredScore: 5
    placements:
       1: 15
@@ -14,7 +13,7 @@ Ghast Hunter:
    description: Kill as many ghasts as you can!
    item: GHAST_TEAR
    duration: 10
-   color: WHITE
+   color: "#ECEFF1"
    votes: 0
    requiredScore: 2
    placements:
@@ -25,7 +24,7 @@ Wheres Wither:
    description: Kill as many withers as you can!
    item: NETHER_STAR
    duration: 20
-   color: BLUE
+   color: "#757575"
    votes: 0
    requiredScore: 1
    placements:
@@ -36,7 +35,7 @@ Shulker Hunt:
    description: Kill as many shulkers as you can!
    item: SHULKER_SHELL
    duration: 20
-   color: DARK_PURPLE
+   color: "#CE93D8"
    votes: 0
    requiredScore: 2
    placements:
@@ -47,7 +46,7 @@ Dragon Slayer:
    description: Do as much damage to Ender Dragons as you can!
    item: DRAGON_HEAD
    duration: 20
-   color: DARK_GRAY
+   color: "#757575"
    votes: 0
    requiredScore: 1
    placements:
@@ -57,8 +56,8 @@ Dragon Slayer:
 Bring Home The Bacon:
    description: Kill as many pigs as you can!
    item: COOKED_PORKCHOP
-   duration: 5
-   color: LIGHT_PURPLE
+   duration: 1
+   color: "#F48FB1"
    votes: 0
    requiredScore: 3
    placements:
@@ -68,8 +67,8 @@ Bring Home The Bacon:
 Crazy Carrots:
    description: Mine as many fully grown carrot crops as you can!
    item: CARROT
-   duration: 5
-   color: GOLD
+   duration: 1
+   color: "#FF9800"
    votes: 0
    requiredScore: 20
    placements:
@@ -79,8 +78,8 @@ Crazy Carrots:
 Bad Bats:
    description: Kill as many bats as you can!
    item: BLACK_DYE
-   duration: 5
-   color: DARK_GRAY
+   duration: 1
+   color: "#A1887F"
    votes: 0
    requiredScore: 1
    placements:
@@ -91,7 +90,7 @@ Deep Diamonds:
    description: Mine as many diamonds as you can!
    item: DIAMOND
    duration: 20
-   color: AQUA
+   color: "#34EBC9"
    votes: 0
    requiredScore: 1
    placements:
@@ -102,7 +101,7 @@ Warden Warrior:
    description: Kill as many wardens as you can!
    item: SCULK_SENSOR
    duration: 20
-   color: DARK_BLUE
+   color: "#024050"
    votes: 0
    requiredScore: 1
    placements:
@@ -112,8 +111,8 @@ Warden Warrior:
 Cookie Clicker:
    description: Craft as many cookies as you can!
    item: COOKIE
-   duration: 5
-   color: YELLOW
+   duration: 1
+   color: "#FFCC80"
    votes: 0
    requiredScore: 32
    placements:
@@ -124,7 +123,7 @@ Nasty Netherite:
    description: Mine as much ancient debri as you can!
    item: NETHERITE_INGOT
    duration: 20
-   color: GRAY
+   color: "#685F70"
    votes: 0
    requiredScore: 1
    placements:
@@ -134,8 +133,8 @@ Nasty Netherite:
 Precious Potatoes:
    description: Mine as many fully grown potatoes as you can!
    item: POTATO
-   duration: 5
-   color: YELLOW
+   duration: 1
+   color: "#FFFB95"
    votes: 0
    requiredScore: 20
    placements:
@@ -146,7 +145,7 @@ Hilarious Homicide:
    description: Kill as many villagers as you can!
    item: IRON_SWORD
    duration: 10
-   color: DARK_RED
+   color: "#690000"
    votes: 0
    requiredScore: 2
    placements:
@@ -156,8 +155,8 @@ Hilarious Homicide:
 Cow Tipper:
    description: Kill as many cows as you can!
    item: COOKED_BEEF
-   duration: 5
-   color: WHITE
+   duration: 1
+   color: "#7E4534"
    votes: 0
    requiredScore: 3
    placements:
@@ -168,7 +167,7 @@ World War Z:
    description: Kill as many zombies as you can!
    item: ROTTEN_FLESH
    duration: 10
-   color: DARK_GREEN
+   color: "#557239"
    votes: 0
    requiredScore: 5
    placements:
@@ -179,7 +178,7 @@ Spooky Skeletons:
    description: Kill as many skeletons as you can!
    item: BONE
    duration: 10
-   color: WHITE
+   color: "#F4EEE0"
    votes: 0
    requiredScore: 5
    placements:
@@ -189,8 +188,8 @@ Spooky Skeletons:
 Coal Digger:
    description: Mine as much coal ore as you can!
    item: COAL
-   duration: 5
-   color: DARK_GRAY
+   duration: 1
+   color: "#616161"
    votes: 0
    requiredScore: 15
    placements:
@@ -201,7 +200,7 @@ Iron Worker:
    description: Mine as much iron ore as you can!
    item: IRON_INGOT
    duration: 10
-   color: GRAY
+   color: "#CBCDCD"
    votes: 0
    requiredScore: 10
    placements:
@@ -211,8 +210,8 @@ Iron Worker:
 Lumberjack:
    description: Mine as many logs as you can!
    item: OAK_LOG
-   duration: 5
-   color: GREEN
+   duration: 1
+   color: "#B39E6A"
    votes: 0
    requiredScore: 32
    placements:
@@ -222,8 +221,8 @@ Lumberjack:
 Best Baker:
    description: Craft as much bread as you can!
    item: BREAD
-   duration: 5
-   color: GOLD
+   duration: 1
+   color: "#AB793B"
    votes: 0
    requiredScore: 10
    placements:
@@ -234,7 +233,7 @@ Elegant Emeralds:
    description: Mine as many emeralds as you can!
    item: EMERALD
    duration: 20
-   color: GREEN
+   color: "#00D062"
    votes: 0
    requiredScore: 1
    placements:
@@ -245,7 +244,7 @@ Quality Quartz:
    description: Mine as much quartz ore as you can!
    item: QUARTZ
    duration: 20
-   color: GRAY
+   color: "#F7CAC9"
    votes: 0
    requiredScore: 30
    placements:
@@ -256,7 +255,7 @@ Countless Cakes:
    description: Craft as much cake as you can!
    item: CAKE
    duration: 10
-   color: RED
+   color: "#D85555"
    votes: 0
    requiredScore: 1
    placements:
@@ -267,7 +266,7 @@ Scrumptious Stew:
    description: Craft as much stew as you can!
    item: MUSHROOM_STEW
    duration: 10
-   color: RED
+   color: "#8AC659"
    votes: 0
    requiredScore: 3
    placements:
@@ -278,7 +277,7 @@ Creeping Creepers:
    description: Kill as many creepers as you can!
    item: GUNPOWDER
    duration: 10
-   color: DARK_GREEN
+   color: "#0DB50D"
    votes: 0
    requiredScore: 3
    placements:
@@ -289,7 +288,7 @@ Endless Endermen:
    description: Kill as many endermen as you can!
    item: ENDER_PEARL
    duration: 10
-   color: DARK_PURPLE
+   color: "#C800FA"
    votes: 0
    requiredScore: 10
    placements:

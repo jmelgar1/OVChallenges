@@ -1,5 +1,7 @@
 package org.ovclub.ovchallenges.challenges;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
@@ -9,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
@@ -30,7 +33,9 @@ public class SpookySkeletons implements Listener {
 		if(!(entity.getKiller() == null)) {
 			
 			if(entity.getType() == EntityType.SKELETON ||
-			    entity.getType() == EntityType.WITHER_SKELETON) {
+			    entity.getType() == EntityType.WITHER_SKELETON ||
+				entity.getType() == EntityType.STRAY ||
+				entity.getType() == EntityType.BOGGED) {
 
 				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
@@ -38,7 +43,11 @@ public class SpookySkeletons implements Listener {
 				if(contains) {
 					if(entity.getEquipment() != null) {
 						challenge.addScore(p, 3);
-						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a skeleton wearing armor! " + ChatColor.GOLD + "+3 Points!");
+						p.sendMessage(ConfigManager.KILLED_MOB_WITH_ARMOR
+								.replaceText(builder -> builder.matchLiteral("{mob}")
+										.replacement(Component.text("skeleton").color(challenge.getColor())))
+								.replaceText(builder -> builder.matchLiteral("{points}")
+										.replacement(Component.text("3").color(NamedTextColor.GOLD))));
 					} else {
 						challenge.addScore(p, 1);
 					}

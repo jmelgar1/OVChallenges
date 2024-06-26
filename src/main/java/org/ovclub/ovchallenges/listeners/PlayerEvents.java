@@ -1,7 +1,6 @@
 package org.ovclub.ovchallenges.listeners;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,7 +18,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
-import org.ovclub.ovchallenges.util.ChatUtility;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +32,11 @@ public class PlayerEvents implements Listener {
 
     List<Material> blocks = Arrays.asList(Material.DIAMOND_ORE, Material.DEEPSLATE_DIAMOND_ORE,
             Material.EMERALD_ORE, Material.DEEPSLATE_EMERALD_ORE, Material.ANCIENT_DEBRIS,
-            Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE, Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE);
+            Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE, Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE,
+            Material.OAK_LOG, Material.JUNGLE_LOG, Material.SPRUCE_LOG, Material.ACACIA_LOG, Material.DARK_OAK_LOG,Material.BIRCH_LOG,
+            Material.MANGROVE_LOG, Material.CRIMSON_HYPHAE, Material.WARPED_HYPHAE, Material.STRIPPED_OAK_LOG, Material.STRIPPED_JUNGLE_LOG,
+            Material.STRIPPED_SPRUCE_LOG, Material.STRIPPED_ACACIA_LOG, Material.STRIPPED_DARK_OAK_LOG, Material.STRIPPED_BIRCH_LOG,
+            Material.STRIPPED_MANGROVE_LOG, Material.STRIPPED_CRIMSON_HYPHAE, Material.STRIPPED_WARPED_HYPHAE, Material.CHERRY_LOG, Material.STRIPPED_CHERRY_LOG);
 
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
@@ -58,7 +60,6 @@ public class PlayerEvents implements Listener {
                 .replaceText(builder -> builder.matchLiteral("{challenge}")
                 .replacement(Component.text(challenge.getName()).color(challenge.getColor()))));
 
-        p.sendMessage("voting ends in 1 minute");
         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1F, 1F);
         p.closeInventory();
     }

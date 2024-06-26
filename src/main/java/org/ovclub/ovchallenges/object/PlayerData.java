@@ -42,7 +42,6 @@ public class PlayerData {
     public void disableVotingPeriod() {isVotingPeriod = false;}
     public boolean isVotingEnabled() {return isVotingPeriod;}
 
-
     public void addChallenge(Challenge challenge) {challenges.add(challenge);}
     public void shuffleChallenges() {Collections.shuffle(challenges);}
 
@@ -67,7 +66,7 @@ public class PlayerData {
 
     //check if player is in event list
     public boolean checkIfSignedUp(Player p) {
-        return(participants.contains(p));
+        return(participants.contains(p.getUniqueId()));
     }
 
     public void clearAllInventories() {
@@ -76,6 +75,9 @@ public class PlayerData {
             Inventory voteInv = inventories.get(playerUUID);
             if(voteInv != null) {
                 voteInv.clear();
+                if(p.getOpenInventory().equals(voteInv)){
+                    p.closeInventory();
+                }
             }
         }
     }

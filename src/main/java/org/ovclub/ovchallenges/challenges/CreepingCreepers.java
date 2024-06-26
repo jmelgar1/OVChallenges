@@ -1,12 +1,14 @@
 package org.ovclub.ovchallenges.challenges;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
@@ -33,8 +35,12 @@ public class CreepingCreepers implements Listener {
 
 				if(contains) {
 					if(((Creeper) entity).isPowered()) {
-						challenge.addScore(p, 5);
-						p.sendMessage(ChatColor.LIGHT_PURPLE + "You killed a charged creeper! " + ChatColor.GOLD + "+5 Points!");
+						challenge.addScore(p, 15);
+						p.sendMessage(ConfigManager.KILLED_BABY_MOB
+								.replaceText(builder -> builder.matchLiteral("{mob}")
+										.replacement(Component.text("charged creeper").color(challenge.getColor())))
+								.replaceText(builder -> builder.matchLiteral("{points}")
+										.replacement(Component.text("15").color(NamedTextColor.GOLD))));
 					} else {
 						challenge.addScore(p, 1);
 					}

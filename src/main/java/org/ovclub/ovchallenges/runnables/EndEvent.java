@@ -9,9 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
-import org.ovclub.ovchallenges.util.EventUtility;
-
-import net.md_5.bungee.api.ChatColor;
+import org.ovclub.ovchallenges.util.ChallengeUtility;
+import org.ovclub.ovchallenges.util.ChatUtility;
 
 public class EndEvent extends BukkitRunnable{
 
@@ -25,34 +24,35 @@ public class EndEvent extends BukkitRunnable{
 	public void run() {
 
 		Challenge challenge = plugin.getData().getWinningChallenge();
-		Map<UUID, Integer> topScores = EventUtility.sortByValue(challenge.getScores());
+		Map<UUID, Integer> topScores = ChallengeUtility.sortByValue(challenge.getScores());
 		
-		Bukkit.broadcastMessage(ChatColor.GRAY + "----- " + ChatColor.LIGHT_PURPLE + challenge.getName() + " Results!" + ChatColor.GRAY + " -----");
-		
-		int counter = 1;
-		int sponges = 0;
-		for(Map.Entry<UUID, Integer> entry : topScores.entrySet()) {
-			
-			Player p = Bukkit.getPlayer(entry.getKey());
-			
-			if(p != null) {
-				if(counter < 4) {
-					Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(counter) + ". " + ChatColor.YELLOW + p.getName() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
+		//Bukkit.broadcastMessage(ChatColor.GRAY + "----- " + ChatColor.LIGHT_PURPLE + challenge.getName() + " Results!" + ChatColor.GRAY + " -----");
 
-					if(counter == 1) {
-						challenge.addScore(p, 1);
-						sponges = challenge.getPlacements().get(1);
-					} else if(counter == 2) {
-						sponges = challenge.getPlacements().get(2);
-					} else if(counter == 3) {
-						sponges = challenge.getPlacements().get(3);
-					}
-					counter++;
-				}
-			}
-		}
-		
-		counter = 1;
+		Bukkit.broadcast(ChatUtility.createResultsMessage(challenge, topScores));
+//		int counter = 1;
+//		int sponges = 0;
+//		for(Map.Entry<UUID, Integer> entry : topScores.entrySet()) {
+//
+//			Player p = Bukkit.getPlayer(entry.getKey());
+//
+//			if(p != null) {
+//				if(counter < 4) {
+//					Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(counter) + ". " + ChatColor.YELLOW + p.getName() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
+//
+//					if(counter == 1) {
+//						challenge.addScore(p, 1);
+//						sponges = challenge.getPlacements().get(1);
+//					} else if(counter == 2) {
+//						sponges = challenge.getPlacements().get(2);
+//					} else if(counter == 3) {
+//						sponges = challenge.getPlacements().get(3);
+//					}
+//					counter++;
+//				}
+//			}
+//		}
+		int sponges = 0;
+		int counter = 1;
 		for(Map.Entry<UUID, Integer> entry : topScores.entrySet()) {
 			Player p = Bukkit.getServer().getPlayer(entry.getKey());
 			if(counter == 1) {
@@ -110,7 +110,7 @@ public class EndEvent extends BukkitRunnable{
 	
 		//clearing previous votes and removing the scoreboard from players
 		plugin.getData().clearParticipants();
-		EventUtility.clearVotes(plugin.getData().getChallenges());
+		ChallengeUtility.clearVotes(plugin.getData().getChallenges());
 		challenge.setIsActive(false);
 	}
 	

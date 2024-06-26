@@ -2,8 +2,7 @@ package org.ovclub.ovchallenges;
 
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.ovclub.ovchallenges.commands.ovehelp;
-import org.ovclub.ovchallenges.commands.ovevote;
+import org.ovclub.ovchallenges.commands.CommandManager;
 import org.ovclub.ovchallenges.file.ChallengesFile;
 import org.ovclub.ovchallenges.listeners.PlayerEvents;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
@@ -68,8 +67,7 @@ public class Plugin extends JavaPlugin implements Listener{
         }
 
         //this.getCommand("ovprofile").setExecutor(new ovprofile());
-        this.getCommand("ovevote").setExecutor(new ovevote(this));
-        this.getCommand("ovehelp").setExecutor(new ovehelp());
+        getCommand("challenges").setExecutor(new CommandManager(this));
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
 
@@ -95,8 +93,8 @@ public class Plugin extends JavaPlugin implements Listener{
 //        createEventDataFile();
 
         //shuffle events and clear participation list
-        //EventUtility.ShuffleEvents(smallEvents);
-        //EventUtility.clearParticipationList(instance);
+        //ChallengeUtility.ShuffleEvents(smallEvents);
+        //ChallengeUtility.clearParticipationList(instance);
 
         //admin commands
 //        this.getCommand("configurestats").setExecutor(new configureStats());

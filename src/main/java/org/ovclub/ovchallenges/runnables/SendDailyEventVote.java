@@ -1,26 +1,28 @@
 package org.ovclub.ovchallenges.runnables;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
-import org.ovclub.ovchallenges.util.EventUtility;
-
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import org.ovclub.ovchallenges.runnables.countdown.CountdownTimerShort;
+import org.ovclub.ovchallenges.util.ChallengeUtility;
+import org.ovclub.ovchallenges.util.ChatUtility;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SendDailyEventVote extends BukkitRunnable {
-    
-	//Plugin instance
 	private final Plugin plugin;
-
-	public SendDailyEventVote(Plugin plugin) {
-		this.plugin = plugin;
-	}
+	public SendDailyEventVote(Plugin plugin) {this.plugin = plugin;}
 
 	@Override
 	public void run() {
@@ -31,30 +33,47 @@ public class SendDailyEventVote extends BukkitRunnable {
 			//clear previous participation list
 			List<Challenge> challenges = plugin.getData().getChallenges();
 			plugin.getData().clearParticipants();
-			EventUtility.clearVotes(challenges);
-			EventUtility.RotateEvents(challenges);
+			ChallengeUtility.clearVotes(challenges);
+			ChallengeUtility.rotateChallenges(challenges);
 			
 			for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-				
-				//p.getWorld().playSound(p.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_1, 0.5F, 1.2F);
-				
-		    	p.sendMessage(ChatColor.GRAY + "----- " + ChatColor.LIGHT_PURPLE + "Daily Events!" + ChatColor.GRAY + " -----");
-		    	
-		    	TextComponent message = new TextComponent(" ✦ Click Here To Vote! ✦");
-		    	message.setColor(ChatColor.RED);
-		    	message.setItalic(true);
-		    	message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ovevote"));
-		    	p.spigot().sendMessage(message);
+				p.getWorld().playSound(p.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_1, 0.5F, 1.2F);
+				TextComponent component = ChatUtility.createChallengeTitle()
+						.append(Component.newline())
+						.append(Component.text("│").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD))
+						.append(Component.text(" ✦ Click Here To Vote! ✦ ")
+								.color(NamedTextColor.RED)
+								.decorate(TextDecoration.ITALIC)
+								.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/ch vote"))
+								.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Click to vote!"))))
+						.append(Component.text(" │").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD))
+						.append(Component.newline())
+						.append(Component.text("└───────────────┘").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+				p.sendMessage(component);
 			}
-			
-			SendVoteFinished voteFinished = new SendVoteFinished(plugin);
 
-			//TODO: CHANGE TO 1200
-			voteFinished.runTaskLater(plugin, 200);
+			startVoteFinishTimer();
 
 			plugin.getData().enableVotingPeriod();
 		} else {
 			plugin.OriginalVoteRunnable();
 		}
+	}
+
+	public void startVoteFinishTimer() {
+		Runnable beforeTimer = () -> {};
+		Runnable afterTimer = () -> {
+			SendVoteFinished voteFinished = new SendVoteFinished(plugin);
+			voteFinished.run();
+		};
+
+		Consumer<CountdownTimerShort> everySecond = timer -> {
+			if(timer.getSecondsLeft() == 60 || timer.getSecondsLeft() == 30 || timer.getSecondsLeft() == 15 || timer.getSecondsLeft() == 10 || timer.getSecondsLeft() <= 3) {
+				Bukkit.broadcast(ConfigManager.TIME_TILL_VOTING_ENDS
+						.replaceText(builder -> builder.matchLiteral("{seconds}").replacement(String.valueOf(timer.getSecondsLeft()))));
+			}
+		};
+		CountdownTimerShort timer = new CountdownTimerShort(plugin, 60, beforeTimer, afterTimer, everySecond);
+		timer.scheduleTimer();
 	}
 }

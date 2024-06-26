@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
+import org.ovclub.ovchallenges.runnables.countdown.CountdownTimerLong;
 
 import java.util.Iterator;
 import java.util.UUID;

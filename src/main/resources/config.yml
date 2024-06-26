@@ -3,8 +3,20 @@ earned-sponge: "&6You earned &#dfff00{amount} sponges &6from the challenge! &eTh
 did-not-meet-score: "&7You did not reach the required score of &4{amount} &7and did not receive any sponge!"
 left-the-game: "&4{player} &#EF9A9Aleft the game and will be removed from the challenge!"
 challenge-cancelled: "&4The challenge will be cancelled due to no participants."
-player-vote: "&#AB56B6{player} &#7E57C2voted for &#AB56B6{challenge}"
-not-enough-players: "&#EF9A9ANot enough players voted for an event! Trying again in 10 minutes."
+player-vote: "&#AB56B6{player} &#7E57C2voted for {challenge}"
+not-enough-players: "&#EF9A9ANot enough players voted for an challenge! Trying again in 10 minutes."
 challenge-won-vote: "{challenge} &dhas won the vote!"
 did-not-vote: "&#EF9A9AYou did not vote for the challenge and will not participate."
-time-expired: "&7The voting time has expired and the event will start in 3 minutes!"
+time-expired: "&7The voting time has expired and the challenge will start in &23 &7minutes!"
+voting-ended: "&#EF9A9AVoting for this challenge has ended!!"
+already-voted: "&#EF9A9AYou have already voted!"
+time-till-voting-ends: "&7Voting ends in &b{seconds} seconds&7!"
+
+#Killing messages
+killed-baby-mob: "&dYou killed a &5{mob}&d! &6+{points} &6points"
+killed-mob-with-armor: "&dYou killed a &5{mob} &dwearing armor! &6+{points} &6points"
+caught-item: "&dYou caught &5{item}&d! &6+{points} &6points"
+dealt-damage: "&dYou dealt &5{damage} &dto the {mob}&d!"
+
+#Other
+no-permission: "&#EF9A9ANo permission!"
