@@ -8,29 +8,45 @@ import org.bukkit.entity.Player;
 import org.ovclub.ovchallenges.object.Challenge;
 
 public class EventUtility {
-	public static void ShuffleEvents(List<Challenge> challenges) {
-		Collections.shuffle(challenges);
-	}
-	
-	public static void RotateEvents(List<Challenge> challenges){
-		//loop per # of rotations
-		for(int i = 0; i < 3; i++) {
-			
-			//store last element in list
-			Challenge temp = challenges.getLast();
-			
-			//traverse list and move elements to the right
-			for(int j = 14; j > 0; j--) {
-				challenges.set(j, challenges.get(j - 1));
-			}
-			challenges.set(0, temp);
+	public static void RotateEvents(List<Challenge> challenges) {
+		// Check if there are at least 5 elements to rotate
+		if (challenges.size() >= 5) {
+			List<Challenge> firstFive = new ArrayList<>(challenges.subList(0, 5));
+			challenges.removeAll(firstFive);
+			challenges.addAll(firstFive);
 		}
-		challenges.subList(0, 3);
+
+		// Filter challenges based on the specified durations
+		List<Challenge> duration5 = challenges.stream()
+				.filter(c -> c.getDuration() == 5)
+				.limit(2)
+				.collect(Collectors.toList());
+		List<Challenge> duration10 = challenges.stream()
+				.filter(c -> c.getDuration() == 10)
+				.limit(2)
+				.collect(Collectors.toList());
+		List<Challenge> duration20 = challenges.stream()
+				.filter(c -> c.getDuration() == 20)
+				.limit(1)
+				.collect(Collectors.toList());
+
+		// Clear the top 5 and re-add the selected challenges
+		challenges.removeAll(duration5);
+		challenges.removeAll(duration10);
+		challenges.removeAll(duration20);
+
+		List<Challenge> newTopFive = new ArrayList<>();
+		newTopFive.addAll(duration5);
+		newTopFive.addAll(duration10);
+		newTopFive.addAll(duration20);
+
+		// Add back the selected challenges at the top
+		challenges.addAll(0, newTopFive);
 	}
 
-	public static List<Player> getNonParticipatingPlayers(List<Player> participantList){
-        List<Player> nonParticipatingPlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
-        nonParticipatingPlayers.removeIf(p -> !participantList.contains(p));
+	public static List<Player> getNonParticipatingPlayers(List<Player> participantList) {
+		List<Player> nonParticipatingPlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
+		nonParticipatingPlayers.removeAll(participantList);
 		return nonParticipatingPlayers;
 	}
 	
@@ -42,16 +58,14 @@ public class EventUtility {
     	}  	
     	System.out.println("[OVChallenges] Votes cleared!");
 	}
-	
+
 	public static Challenge determineEvent(List<Challenge> challenges) {
-		List<Challenge> topChallenges = new ArrayList<>();
+		ArrayList<Challenge> topChallenges = new ArrayList<>();
 		int topVote = 0;
-		int totalVotes = 0;
-		
-	   	//gets all challenges from list
+
+        //gets all challenges from list
 		for (Challenge challenge : challenges) {
 			int votes = challenge.getVotes();
-
 			if (votes > topVote) {
 				topVote = votes;
 				topChallenges.clear();
@@ -59,14 +73,7 @@ public class EventUtility {
 			} else if (votes == topVote) {
 				topChallenges.add(challenge);
 			}
-
-			totalVotes += votes;
-		}
-
-		// If less than 2 players vote or no challenges have votes, return "NONE"
-		if (totalVotes < 2 || topChallenges.isEmpty()) {
-			return null;
-		}
+        }
 
 		// If there's a tie, randomly select one of the top challenges
 		if (topChallenges.size() > 1) {
@@ -74,8 +81,6 @@ public class EventUtility {
 			int randomIndex = random.nextInt(topChallenges.size());
 			return topChallenges.get(randomIndex);
 		}
-
-		// If there's only one top event, return it
 		return topChallenges.getFirst();
 	}
 

@@ -2,9 +2,10 @@ package org.ovclub.ovchallenges.object;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.boss.BossBar;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.ovclub.ovchallenges.util.ChatUtility;
 
 import java.util.*;
 
@@ -14,55 +15,55 @@ public class PlayerData {
         participants = new ArrayList<>();
         inventories = new HashMap<>();
         winningChallenge = null;
-        playerBossBars = new HashMap<>();
         isVotingPeriod = false;
     }
 
     private boolean isVotingPeriod;
-    public void enableVotingPeriod() {isVotingPeriod = true;}
-    public void disableVotingPeriod() {isVotingPeriod = false;}
-    public boolean isVotingEnabled() {return isVotingPeriod;}
-
     private final List<Challenge> challenges;
+    private Challenge winningChallenge;
+    private final List<UUID> participants;
+    private final HashMap<UUID, Inventory> inventories;
+
+    public Challenge getWinningChallenge() { return winningChallenge; }
     public List<Challenge> getChallenges() { return challenges; }
-    public Challenge getChallengeByName(Component name) {
+    public List<UUID> getParticipants() {return participants;}
+    public HashMap<UUID, Inventory> getInventories(){return inventories;}
+    public Challenge getChallengeByName(Component itemName) {
+        String name = ChatUtility.getPlainTextFromComponent(itemName);
         for(Challenge challenge : challenges) {
-            if(challenge.getName().equals(name.toString())) {
+            if(challenge.getName().equals(name)) {
                 return challenge;
             }
         }
         return null;
     }
 
-    public void addChallenge(Challenge challenge) {
-        challenges.add(challenge);}
+    public void enableVotingPeriod() {isVotingPeriod = true;}
+    public void disableVotingPeriod() {isVotingPeriod = false;}
+    public boolean isVotingEnabled() {return isVotingPeriod;}
 
-    private Challenge winningChallenge;
+
+    public void addChallenge(Challenge challenge) {challenges.add(challenge);}
+    public void shuffleChallenges() {Collections.shuffle(challenges);}
+
     public void setWinningChallenge(Challenge challenge) { winningChallenge = challenge; }
-    public Challenge getWinningChallenge() { return winningChallenge; }
 
-    private final List<Player> participants;
-    public List<Player> getParticipants() { return participants; }
-    public void addParticipant(Player p) { participants.add(p); }
-    public void removeParticipant(Player p) { participants.remove(p); }
-    public void clearParticipants() { participants.clear(); }
-
-    private final HashMap<UUID, Inventory> inventories;
-    public HashMap<UUID, Inventory> getInventories(){
-        return inventories;
+    public void addParticipant(Player p) {
+        participants.add(p.getUniqueId());
     }
+    public void removeParticipant(OfflinePlayer p) {
+        participants.remove(p.getUniqueId());
+    }
+    public void clearParticipants() {
+        participants.clear();
+    }
+
     public void addInventory(UUID uuid, Inventory inv) {
+        if(inventories.get(uuid) != null) {
+            inventories.remove(uuid);
+        }
         inventories.putIfAbsent(uuid, inv);
     }
-
-    private final HashMap<Player, BossBar> playerBossBars;
-    public HashMap<Player, BossBar> getAllPlayerBossBars(){
-        return playerBossBars;
-    }
-    public BossBar getPlayerBossBar(Player p){
-        return playerBossBars.get(p);
-    }
-    public void addBossBar(Player p, BossBar bossBar) { playerBossBars.put(p, bossBar); }
 
     //check if player is in event list
     public boolean checkIfSignedUp(Player p) {

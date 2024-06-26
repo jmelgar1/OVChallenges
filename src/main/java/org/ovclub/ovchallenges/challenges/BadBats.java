@@ -21,26 +21,20 @@ public class BadBats implements Listener {
 	
 	@EventHandler
 	public void killBat(EntityDeathEvent e) {
-		
+
 		LivingEntity entity = e.getEntity();
 		Player p = entity.getKiller();
-		
-		//ensure mob was killed by a player
-		if(!(entity.getKiller() == null)) {
-			if(entity.getType() == EntityType.BAT) {
-
-				boolean contains = plugin.getData().getParticipants().contains(p);
-				Challenge challenge = plugin.getData().getWinningChallenge();
-
-				if(contains) {
-					if(p != null) {
-						challenge.addScore(p, 1);
-						p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-						UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
-						updateScoreboard.run();
-					}
-				}
+		if(p == null) {return;}
+		if(entity.getType() == EntityType.BAT) {
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
+			Challenge challenge = plugin.getData().getWinningChallenge();
+			if(contains) {
+				challenge.addScore(p, 1);
+				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
+				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
+				updateScoreboard.run();
 			}
 		}
 	}
 }
+

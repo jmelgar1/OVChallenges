@@ -26,17 +26,15 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7") {
         exclude(group = "org.bukkit", module = "bukkit")
     }
-    compileOnly(group = "net.luckperms", name = "api", version = "5.4")
-    compileOnly(group = "net.coreprotect", name = "coreprotect", version = "22.0")
 }
 
-//tasks {
-////    compileJava {
-////        // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
-////        // See https://openjdk.java.net/jeps/247 for more information.
-////        options.release.set(21)
-////    }
-//    javadoc {
-//        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+tasks {
+//    compileJava {
+//        // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
+//        // See https://openjdk.java.net/jeps/247 for more information.
+//        options.release.set(21)
 //    }
-//}
+    javadoc {
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+    }
+}

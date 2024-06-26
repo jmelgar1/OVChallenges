@@ -3,6 +3,10 @@ package org.ovclub.ovchallenges.object;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
@@ -11,66 +15,85 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.ovclub.ovchallenges.Plugin;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class Challenge implements Listener, ConfigurationSerializable {
-    private Plugin data;
+    /**
+     * VARIABLES
+     **/
+    private final Plugin plugin;
+    private final String name;
+    private final String description;
+    private final ItemStack item;
+    private final int duration;
+    private String countdownLabel;
+    private final TextColor color;
+    private final BossBar countdownBar = Bukkit.createBossBar("countdown", BarColor.PINK, BarStyle.SEGMENTED_10);
+    private int votes;
+    private final int requiredScore;
+    private final Map<Integer, Integer> placements;
+    private final Map<UUID, Integer> scores = new HashMap<>();
+    private boolean isActive = false;
+    private Class<? extends Listener> classType;
 
-    private String name;
+    /**
+     * GETTERS
+     **/
     public String getName() { return name; }
-
-    private String description;
-    public String getDescription() {
-        return description;
-    }
-
-    private ItemStack item;
+    public String getDescription() {return description;}
     public ItemStack getItem() {
         return item;
     }
-    private int duration;
     public int getDuration() { return duration; }
-
-    private String countdownLabel;
-    public void setCountdownLabel(String newLabel) { countdownLabel = newLabel; }
     public String getCountdownLabel() { return countdownLabel; }
-
-    private TextColor color;
     public TextColor getColor() { return color; }
-
-//    private boolean isActive = false;
-//    public boolean getIsActive() { return isActive; }
-//    public void setIsActive(boolean value) { isActive = value; }
-
-    private int votes;
+    public BossBar getCountdownBar() { return countdownBar; }
     public int getVotes() { return votes; }
-    public void setVotes(int newVote) { votes = newVote; }
-
-    private int requiredScore;
     public int getRequiredScore() { return requiredScore; }
-
-    private Map<Integer, Integer> placements;
-    public Map<Integer, Integer> getPlacements;
-
-    private Map<UUID, Integer> scores;
+    public Map<Integer, Integer> getPlacements() { return placements; };
     public Map<UUID, Integer> getScores() { return scores; }
-    public int getScore(Player p) {
-        return scores.get(p.getUniqueId());
-    }
-    public void addScore(Player p, int value) {
-        UUID uuid = p.getUniqueId();
-        scores.merge(uuid, value, Integer::sum);
-    }
-
-    private Class<? extends Listener> classType;
+    public boolean getIsActive() { return isActive; }
     public Class<? extends Listener> getClassType() { return classType; }
-    public void setClassType(Class<? extends Listener> newType) { classType = newType; }
 
-    public Challenge(String name, Map<String, Object> map, final Plugin data) {
+    /**
+     * SETTERS
+     **/
+    public void setCountdownLabel(String newLabel) { countdownLabel = newLabel; }
+    public void setVotes(int newVote) { votes = newVote; }
+    public void setClassType(Class<? extends Listener> newType) { classType = newType; }
+    public void setIsActive(boolean value) { isActive = value; }
+    public void setCountdownBar(int totalSeconds) {
+        DecimalFormat dFormat = new DecimalFormat("00");
+        countdownBar.setProgress(totalSeconds / (double) totalSeconds);
+        String minutes = String.valueOf(totalSeconds/60);
+        String seconds = dFormat.format(totalSeconds % 60);
+        countdownBar.setTitle(name + " starts in " + minutes + ":" + seconds);
+    }
+
+    public void setBossBarVisibility(boolean value) {
+        if (value) {
+            for (UUID uuid : plugin.getData().getParticipants()) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p != null) {
+                    countdownBar.addPlayer(p);
+                }
+            }
+        } else {
+            countdownBar.removeAll();
+        }
+    }
+
+    public void addScore(Player p, int score) {
+        UUID uuid = p.getUniqueId();
+        scores.compute(uuid, (key, oldScore) -> (oldScore == null) ? score : oldScore + score);
+    }
+
+    public Challenge(String name, Map<String, Object> map, final Plugin plugin) {
         this.name = name;
-        this.data = data;
+        this.plugin = plugin;
         this.description = (String) map.get("description");
         this.item = new ItemStack(Material.getMaterial((String) map.get("item")), 1);
         this.duration = (int) map.get("duration");
@@ -113,8 +136,8 @@ public class Challenge implements Listener, ConfigurationSerializable {
     public void registerEvents() {
         try {
             if (Listener.class.isAssignableFrom(classType)) {
-                Listener listenerInstance = classType.getDeclaredConstructor().newInstance();
-                Bukkit.getServer().getPluginManager().registerEvents(listenerInstance, data);
+                Listener listenerInstance = classType.getDeclaredConstructor(Plugin.class).newInstance(plugin);
+                Bukkit.getServer().getPluginManager().registerEvents(listenerInstance, plugin);
             } else {
                 System.out.println("The class does not implement Listener.");
             }
@@ -126,7 +149,7 @@ public class Challenge implements Listener, ConfigurationSerializable {
     public void unregisterEvents() {
         try {
             if (Listener.class.isAssignableFrom(classType)) {
-                Listener listenerInstance = classType.getDeclaredConstructor().newInstance();
+                Listener listenerInstance = classType.getDeclaredConstructor(Plugin.class).newInstance(plugin);
                 HandlerList.unregisterAll(listenerInstance);
             } else {
                 System.out.println("The class does not implement Listener.");
@@ -139,7 +162,7 @@ public class Challenge implements Listener, ConfigurationSerializable {
     private Class<? extends Listener> convertNameToClass(String name) {
         try {
             name = name.replace(" ", "");
-            String fullyQualifiedName = "org.ovclub.ovchallenges.events." + name;
+            String fullyQualifiedName = "org.ovclub.ovchallenges.challenges." + name;
             Class<?> clazz = Class.forName(fullyQualifiedName);
             if (Listener.class.isAssignableFrom(clazz)) {
                 classType = clazz.asSubclass(Listener.class);

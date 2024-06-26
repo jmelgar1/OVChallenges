@@ -49,14 +49,12 @@ public class ovevote extends InventoryManager implements CommandExecutor {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     public void initalizeItems() {
 
-        int inventorySlot = 3;
+        int inventorySlot = 0;
 
         //gets all events from list
-        for(Challenge challenge : plugin.getData().getChallenges().subList(0, 3)) {
-//
+        for(Challenge challenge : plugin.getData().getChallenges().subList(0,5)) {//
 //            ConfigurationSection eventName = pluginClass.getSmallEvents().getConfigurationSection(names);
 //
 //            String description = eventName.getString("description");
@@ -85,15 +83,15 @@ public class ovevote extends InventoryManager implements CommandExecutor {
                     Component.text(""),
                     Component.text("Rewards").color(NamedTextColor.YELLOW).decorate(TextDecoration.UNDERLINED),
                     Component.text("1st: ").color(NamedTextColor.GRAY)
-                        .append(Component.text(String.valueOf(challenge.getPlacements.get(1)))).color(NamedTextColor.GOLD),
+                        .append(Component.text(String.valueOf(challenge.getPlacements().get(1)))).color(NamedTextColor.GOLD),
                     Component.text("2nd: ").color(NamedTextColor.GRAY)
-                        .append(Component.text(String.valueOf(challenge.getPlacements.get(2)))).color(NamedTextColor.GOLD),
+                        .append(Component.text(String.valueOf(challenge.getPlacements().get(2)))).color(NamedTextColor.GOLD),
                     Component.text("3rd: ").color(NamedTextColor.GRAY)
-                        .append(Component.text(String.valueOf(challenge.getPlacements.get(3)))).color(NamedTextColor.GOLD),
+                        .append(Component.text(String.valueOf(challenge.getPlacements().get(3)))).color(NamedTextColor.GOLD),
                     Component.text(""),
                     Component.text("Required score: ").color(NamedTextColor.DARK_PURPLE)
                         .append(Component.text(String.valueOf(challenge.getRequiredScore())).color(NamedTextColor.LIGHT_PURPLE))));
-            inventorySlot++;
+            inventorySlot+=2;
         }
     }
 

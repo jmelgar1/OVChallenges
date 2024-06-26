@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -27,20 +28,11 @@ public class UpdateScoreboard extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-
 		Challenge challenge = plugin.getData().getWinningChallenge();
-//		HashMap<Player, Integer> topScores = new HashMap<>();
-//
-//		for(Player p : plugin.getData().getParticipants()) {
-//			if(p != null) {
-//				topScores.put(p, challenge.);
-//			}
-//		}
-		
-		//get greatest to least 
 		Map<UUID, Integer> topScores = EventUtility.sortByValue(challenge.getScores());
-		
-		for(Player p : plugin.getData().getParticipants()){
+
+		for(UUID uuid : plugin.getData().getParticipants()) {
+			Player p = Bukkit.getPlayer(uuid);
 			if(p != null) {
 				Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 				TextComponent title = Component.text(challenge.getName()).color(challenge.getColor()).decorate(TextDecoration.BOLD);
@@ -54,7 +46,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 				int counter = 10;
 				for(Map.Entry<UUID, Integer> entry : topScores.entrySet()) {
 					if(counter >= 8) {
-						obj.getScore(entry.getKey() + ": " + ChatColor.YELLOW + entry.getValue()).setScore(counter);
+						obj.getScore(Bukkit.getOfflinePlayer(entry.getKey()).getName() + ": " + ChatColor.YELLOW + entry.getValue()).setScore(counter);
 						counter--;
 					}
 					if(topScores.size() < 3) {
@@ -64,7 +56,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(5);
 						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + challenge.getRequiredScore()).setScore(4);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(3);
-						obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(2);
+						obj.getScore(ChatColor.DARK_AQUA + "play.ovclub.gg").setScore(2);
 					} else {
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(7);
 						obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Time Left:").setScore(6);
@@ -72,17 +64,11 @@ public class UpdateScoreboard extends BukkitRunnable {
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(4);
 						obj.getScore(ChatColor.GRAY + "Required Score: " + ChatColor.GOLD + challenge.getRequiredScore()).setScore(3);
 						obj.getScore(ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString() + ChatColor.RESET.toString()).setScore(2);
-						obj.getScore(ChatColor.GREEN + "play.thefruitbox.net").setScore(1);
+						obj.getScore(ChatColor.DARK_AQUA + "play.ovclub.gg").setScore(1);
 					}
 				}
 				p.setScoreboard(board);
 			}
 		}
-	}
-	
-	public void setCountdown(Challenge challenge) {
-		CountdownTimerLong timer = new CountdownTimerLong(plugin,
-		        challenge.getDuration(), 0, (t) -> challenge.setCountdownLabel(t.getMinute() + ":" + (t.getSecondsLeft())));
-		timer.scheduleTimer();
 	}
 }

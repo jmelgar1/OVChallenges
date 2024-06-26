@@ -11,11 +11,11 @@ import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
 
-public class Ironworker implements Listener {
+public class IronWorker implements Listener {
 
 	private final Plugin plugin;
 
-	public Ironworker(Plugin plugin) {
+	public IronWorker(Plugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -31,7 +31,7 @@ public class Ironworker implements Listener {
 			boolean contains = plugin.getData().getParticipants().contains(p);
 			Challenge challenge = plugin.getData().getWinningChallenge();
 
-			if(!b.getMetadata("placed").isEmpty()) {
+			if(!b.getMetadata("challenge").isEmpty()) {
 				return;
 			}
 			

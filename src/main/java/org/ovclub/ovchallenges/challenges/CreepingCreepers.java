@@ -28,7 +28,7 @@ public class CreepingCreepers implements Listener {
 		if(!(entity.getKiller() == null)) {
 			if(entity instanceof Creeper) {
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

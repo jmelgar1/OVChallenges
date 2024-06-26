@@ -43,7 +43,7 @@ public class DragonSlayer implements Listener{
 
 			if(p == null) {return;}
 
-			boolean contains = plugin.getData().getParticipants().contains(p);
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 			Challenge challenge = plugin.getData().getWinningChallenge();
 
 			if(contains) {

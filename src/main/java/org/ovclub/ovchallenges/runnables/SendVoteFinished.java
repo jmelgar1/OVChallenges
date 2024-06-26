@@ -1,14 +1,14 @@
 package org.ovclub.ovchallenges.runnables;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
+import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.util.EventUtility;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class SendVoteFinished extends BukkitRunnable {
 
@@ -19,66 +19,47 @@ public class SendVoteFinished extends BukkitRunnable {
 	}
 
 	@Override
-	public void run() {	
-		
+	public void run() {
 		plugin.getData().clearAllInventories();
 
-		//will only run if 2 or more players are online
-		if(Bukkit.getServer().getOnlinePlayers().size() >= 2) {
+		if(plugin.getData().getParticipants().isEmpty()) {
+			Bukkit.broadcast(ConfigManager.NOT_ENOUGH_PLAYERS);
+			SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
+			sendDailyEventVote.runTaskLater(plugin, 12000);
+			this.cancel();
+			return;
+		}
 
-			//get winning event
-			Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getChallenges());
-			plugin.getData().setWinningChallenge(winningChallenge);
-			//set the event here some how
+		Challenge winningChallenge = EventUtility.determineEvent(plugin.getData().getChallenges());
+		plugin.getData().setWinningChallenge(winningChallenge);
+
+		StartEventCountdown3Min threeMin = new StartEventCountdown3Min(plugin);
+		threeMin.runTaskTimer(plugin, 0, 20);
+
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FROG_TONGUE, 500F, 0.8F);
+			p.sendMessage(ConfigManager.CHALLENGE_WON_VOTE
+					.replaceText(builder -> builder.matchLiteral("{challenge}")
+					.replacement(Component.text(winningChallenge.getName()).color(winningChallenge.getColor()))));
+
+			if(!plugin.getData().getParticipants().contains(p.getUniqueId())) {
+				p.sendMessage(ConfigManager.DID_NOT_VOTE);
+			} else {
+				p.sendMessage(ConfigManager.TIME_EXPIRED);
+			}
+		}
+
+		winningChallenge.setBossBarVisibility(true);
+
+		//TODO: ENABLE THIS
+//		Send30SecondReminder secondReminder = new Send30SecondReminder(plugin);
+//		secondReminder.runTaskLater(plugin, 3000);
+
+		plugin.getData().disableVotingPeriod();
+
 //
 //			//create section with winning event name
 //			ConfigurationSection currentEventSection = eventData.createSection("current-event");
 //			ConfigurationSection winningEventSection = currentEventSection.createSection(winningChallenge);
-//
-//			pluginClass.getEventData().set("eventid", 0);
-
-			if(winningChallenge != null) {
-
-				StartEventCountdown3Min threeMin = new StartEventCountdown3Min(plugin);
-				threeMin.runTaskTimer(plugin, 0, 20);
-
-				for(Player p : EventUtility.getNonParticipatingPlayers(plugin.getData().getParticipants())) {
-					p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FROG_TONGUE, 500F, 0.8F);
-					p.sendMessage(ChatColor.RED + "You did not vote for an event "
-							+ "and will not be participating!");
-				}
-
-				//send to players who joined
-				for(Player p : plugin.getData().getParticipants()) {
-					if(p != null) {
-						p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FROG_TONGUE, 500F, 0.8F);
-						p.sendMessage(ChatColor.GREEN + "The voting time has expired and "
-								+ "the event will start in 2 minutes!");
-
-						threeMin.addPlayer(p);
-					}
-				}
-
-				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-					p.sendMessage(ChatColor.LIGHT_PURPLE + winningChallenge.getName()
-								+ " has won the vote!");
-				}
-//
-//				//save files
-//				pluginClass.saveSmallEventsFile();
-//				pluginClass.saveEventDataFile();
-//				pluginClass.reloadEventDataFile();
-
-				Send30SecondReminder secondReminder = new Send30SecondReminder(plugin);
-				secondReminder.runTaskLater(plugin, 3000);
-
-				plugin.getData().disableVotingPeriod();
-			} else {
-				//if no one voted. try again in 20 minutes
-				Bukkit.broadcastMessage(ChatColor.RED + "Not enough players voted for an event! Trying again in 10 minutes!");
-				SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
-				sendDailyEventVote.runTaskLater(plugin, 24000);
-			}
-		}
 	}
 }

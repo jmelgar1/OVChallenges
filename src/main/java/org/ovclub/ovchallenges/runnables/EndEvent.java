@@ -37,15 +37,15 @@ public class EndEvent extends BukkitRunnable{
 			
 			if(p != null) {
 				if(counter < 4) {
-					Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(counter) + ". " + ChatColor.YELLOW + entry.getKey() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
+					Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(counter) + ". " + ChatColor.YELLOW + p.getName() + ChatColor.GOLD + " - " + ChatColor.GRAY + entry.getValue());
 
 					if(counter == 1) {
 						challenge.addScore(p, 1);
-						sponges = challenge.getPlacements.get(1);
+						sponges = challenge.getPlacements().get(1);
 					} else if(counter == 2) {
-						sponges = challenge.getPlacements.get(2);
+						sponges = challenge.getPlacements().get(2);
 					} else if(counter == 3) {
-						sponges = challenge.getPlacements.get(3);
+						sponges = challenge.getPlacements().get(3);
 					}
 					counter++;
 				}
@@ -56,18 +56,19 @@ public class EndEvent extends BukkitRunnable{
 		for(Map.Entry<UUID, Integer> entry : topScores.entrySet()) {
 			Player p = Bukkit.getServer().getPlayer(entry.getKey());
 			if(counter == 1) {
-				sponges = challenge.getPlacements.get(1);
+				sponges = challenge.getPlacements().get(1);
 			} else if(counter == 2) {
-				sponges = challenge.getPlacements.get(2);
+				sponges = challenge.getPlacements().get(2);
 			} else if(counter == 3) {
-				sponges = challenge.getPlacements.get(3);
+				sponges = challenge.getPlacements().get(3);
 			}
 			
 			if(p != null) {
 				int requiredScore = challenge.getRequiredScore();
 				if(entry.getValue() >= requiredScore) {
+					int finalSponges = sponges;
 					p.sendMessage(ConfigManager.EARNED_SPONGE
-							.replaceText(builder -> builder.matchLiteral("{amount}").replacement(String.valueOf(requiredScore))));
+							.replaceText(builder -> builder.matchLiteral("{amount}").replacement(String.valueOf(finalSponges))));
 					plugin.getEconomy().depositPlayer(p, sponges);
 //
 //						String playerUUIDString = Bukkit.getPlayer(entry.getKey()).getUniqueId().toString();
@@ -100,9 +101,9 @@ public class EndEvent extends BukkitRunnable{
 			System.out.println(e);
 		}
 		
-		//send a new task in 20 minutes 
+		//send a new task in 10 minutes
 		SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
-		sendDailyEventVote.runTaskLater(plugin, 24000);
+		sendDailyEventVote.runTaskLater(plugin, 1200);
 		
 		//remove scoreboard
 		removeScoreboard();
@@ -110,10 +111,12 @@ public class EndEvent extends BukkitRunnable{
 		//clearing previous votes and removing the scoreboard from players
 		plugin.getData().clearParticipants();
 		EventUtility.clearVotes(plugin.getData().getChallenges());
-		}
+		challenge.setIsActive(false);
+	}
 	
 	public void removeScoreboard() {
-		for(Player p : plugin.getData().getParticipants()){
+		for(UUID uuid : plugin.getData().getParticipants()) {
+			Player p = Bukkit.getPlayer(uuid);
 			if(p != null) {
 				p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 			}

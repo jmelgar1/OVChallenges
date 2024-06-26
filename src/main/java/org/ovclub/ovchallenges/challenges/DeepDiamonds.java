@@ -27,10 +27,10 @@ public class DeepDiamonds implements Listener {
 		
 		if((material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE)) {
 
-			boolean contains = plugin.getData().getParticipants().contains(p);
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 			Challenge challenge = plugin.getData().getWinningChallenge();
 
-			if(!b.getMetadata("placed").isEmpty()) {
+			if(!b.getMetadata("challenge").isEmpty()) {
 				return;
 			}
 			

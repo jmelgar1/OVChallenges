@@ -34,14 +34,6 @@ public class ChallengesFile {
                 plugin.getData().addChallenge(loadedChallenge);
             }
         }
-//        for (String key : eventsData.getKeys(false)) {
-//            if (key != null && !key.isEmpty()) {
-//                UUID uuid = UUID.fromString(key);
-//                int unclaimed = rewardsData.getInt(key + ".unclaimed", 0);
-//                plugin.getData().getRewards().put(uuid, unclaimed);
-//                Challenge event = new Challenge();
-//                plugin.getData().getEvents().
-//            }
-//        }
+        plugin.getData().shuffleChallenges();
     }
 }

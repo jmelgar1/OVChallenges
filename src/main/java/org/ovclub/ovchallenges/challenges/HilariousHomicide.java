@@ -36,7 +36,7 @@ public class HilariousHomicide implements Listener {
 				Ageable age = (Ageable) entity;
 			    baby = !age.isAdult();
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

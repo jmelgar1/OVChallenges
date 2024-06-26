@@ -32,7 +32,7 @@ public class SpookySkeletons implements Listener {
 			if(entity.getType() == EntityType.SKELETON ||
 			    entity.getType() == EntityType.WITHER_SKELETON) {
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

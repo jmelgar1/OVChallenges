@@ -33,7 +33,7 @@ public class WorldWarZ implements Listener{
 			if(entity.getType() == EntityType.ZOMBIE ||
 			   entity.getType() == EntityType.ZOMBIE_VILLAGER) {
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

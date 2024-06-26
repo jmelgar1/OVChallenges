@@ -28,10 +28,10 @@ public class QualityQuartz implements Listener {
 
 		if((material == Material.NETHER_QUARTZ_ORE)) {
 
-			boolean contains = plugin.getData().getParticipants().contains(p);
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 			Challenge challenge = plugin.getData().getWinningChallenge();
 
-			if(!b.getMetadata("placed").isEmpty()) {
+			if(!b.getMetadata("challenge").isEmpty()) {
 				return;
 			}
 			

@@ -8,7 +8,7 @@ import org.ovclub.ovchallenges.Plugin;
 
 public class CountdownTimerLong implements Runnable {
     // Plugin class for bukkit scheduling
-    private Plugin plugin;
+    private final Plugin plugin;
 
     // Our scheduled task's assigned id, needed for canceling
     private Integer assignedTaskId;
@@ -74,6 +74,8 @@ public class CountdownTimerLong implements Runnable {
         
         ddSecond = dFormat.format(showSeconds);
         ddMinute = dFormat.format(minute);
+
+        //challenge.setCountdownLabel(ddMinute + ":" + ddSecond);
         
         UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
         updateScoreboard.run();

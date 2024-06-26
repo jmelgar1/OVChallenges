@@ -30,7 +30,7 @@ public class WheresWither implements Listener{
 			
 			if(entity.getType() == EntityType.WITHER) {
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

@@ -25,19 +25,14 @@ public class SendDailyEventVote extends BukkitRunnable {
 	@Override
 	public void run() {
 		int onlinePlayers = Bukkit.getServer().getOnlinePlayers().size();
-		if(onlinePlayers >= 2) {
+		//TODO: CHANGE THIS TO 2
+		if(onlinePlayers >= 1) {
 
 			//clear previous participation list
 			List<Challenge> challenges = plugin.getData().getChallenges();
 			plugin.getData().clearParticipants();
 			EventUtility.clearVotes(challenges);
-			//rotate the challenges
 			EventUtility.RotateEvents(challenges);
-			
-			//generate random eventid
-//			int eventID = (int)(Math.random()*10000);
-//			plugin.getEventData().set("eventid", eventID);
-//			plugin.saveEventDataFile();
 			
 			for(Player p : Bukkit.getServer().getOnlinePlayers()) {
 				
@@ -53,11 +48,13 @@ public class SendDailyEventVote extends BukkitRunnable {
 			}
 			
 			SendVoteFinished voteFinished = new SendVoteFinished(plugin);
-			voteFinished.runTaskLater(plugin, 2400);
+
+			//TODO: CHANGE TO 1200
+			voteFinished.runTaskLater(plugin, 200);
 
 			plugin.getData().enableVotingPeriod();
 		} else {
-			plugin.runEventNotif20Minutes();
+			plugin.OriginalVoteRunnable();
 		}
 	}
 }

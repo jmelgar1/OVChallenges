@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.ovclub.ovchallenges.commands.ovehelp;
 import org.ovclub.ovchallenges.commands.ovevote;
 import org.ovclub.ovchallenges.file.ChallengesFile;
+import org.ovclub.ovchallenges.listeners.PlayerEvents;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.PlayerData;
 import org.ovclub.ovchallenges.runnables.EndEvent;
@@ -69,6 +70,8 @@ public class Plugin extends JavaPlugin implements Listener{
         //this.getCommand("ovprofile").setExecutor(new ovprofile());
         this.getCommand("ovevote").setExecutor(new ovevote(this));
         this.getCommand("ovehelp").setExecutor(new ovehelp());
+
+        getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
 
         //OLD SHIT
 
@@ -232,10 +235,10 @@ public class Plugin extends JavaPlugin implements Listener{
 //    }
 
     //send event notification every 20 minutes
-    public void runEventNotif20Minutes() {
+    public void OriginalVoteRunnable() {
         SendDailyEventVote dailyVote = new SendDailyEventVote(this);
 
-        //checks every 5 minutes
-        dailyVote.runTaskLater(this, 6000);
+        //checks every 30 seconds
+        dailyVote.runTaskLater(this, 600);
     }
 }

@@ -30,7 +30,7 @@ public class WardenWarrior implements Listener {
 			
 			if(entity.getType() == EntityType.WARDEN) {
 
-				boolean contains = plugin.getData().getParticipants().contains(p);
+				boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 				Challenge challenge = plugin.getData().getWinningChallenge();
 
 				if(contains) {

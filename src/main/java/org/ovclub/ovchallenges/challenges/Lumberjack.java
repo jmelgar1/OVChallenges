@@ -47,10 +47,10 @@ public class Lumberjack implements Listener {
 				material == Material.CHERRY_LOG ||
 				material == Material.STRIPPED_CHERRY_LOG)) {
 
-			boolean contains = plugin.getData().getParticipants().contains(p);
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 			Challenge challenge = plugin.getData().getWinningChallenge();
 			
-			if(!b.getMetadata("placed").isEmpty()) {
+			if(!b.getMetadata("challenge").isEmpty()) {
 				return;
 			}
 			
