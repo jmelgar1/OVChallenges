@@ -4,6 +4,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.ovclub.ovchallenges.commands.CommandManager;
 import org.ovclub.ovchallenges.file.ChallengesFile;
+import org.ovclub.ovchallenges.file.PlayerProfileFile;
 import org.ovclub.ovchallenges.listeners.PlayerEvents;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.PlayerData;
@@ -18,6 +19,8 @@ public class Plugin extends JavaPlugin implements Listener{
     public PlayerData getData(){return this.playerData;}
 
     private ChallengesFile eventsFile;
+
+    private PlayerProfileFile profilesFile;
 
     //vault instance
     public static Economy econ = null;
@@ -54,6 +57,9 @@ public class Plugin extends JavaPlugin implements Listener{
 
         eventsFile = new ChallengesFile(this);
         eventsFile.loadEventsIntoMemory();
+
+        profilesFile = new PlayerProfileFile(this);
+        profilesFile.loadProfiles();
 
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
@@ -127,7 +133,7 @@ public class Plugin extends JavaPlugin implements Listener{
     @Override
     public void onDisable() {
         System.out.println("(!) OVChallenges Disabled");
-
+        profilesFile.saveProfiles();
         //end event cycle
         EndEvent endEvent = new EndEvent(this);
         endEvent.run();

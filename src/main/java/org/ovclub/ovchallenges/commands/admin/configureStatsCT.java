@@ -80,7 +80,7 @@
 //			  ChatColor.GREEN + "Left click to add 1",
 //			  ChatColor.RED + "Right click to remove 1"));
 //
-//	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open Challenge Wins",
+//	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open ChallengeDTO Wins",
 //			  ChatColor.GREEN + "Left click to add 1",
 //			  ChatColor.RED + "Right click to remove 1"));
 //
@@ -148,7 +148,7 @@
 ////		} else if(clickedItem.getType() == Material.COAL_BLOCK) {
 ////			epp1.checkClickType(event, championsTour, "5th-6th", p, IGN);
 ////		} else if(clickedItem.getType() == Material.DIAMOND) {
-////			epp1.checkClickType(event, championsTour, "Open Challenge Wins", p, IGN);
+////			epp1.checkClickType(event, championsTour, "Open ChallengeDTO Wins", p, IGN);
 ////		} else if(clickedItem.getType() == Material.GOLD_INGOT) {
 ////			epp1.checkClickType(event, championsTour, "Participations", p, IGN);
 ////		} else if(clickedItem.getType() == Material.PLAYER_HEAD) {

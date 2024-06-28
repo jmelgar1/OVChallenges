@@ -22,10 +22,10 @@ public class ChallengesFile {
             plugin.saveResource("challenges.yml", false);
         }
         eventsData = YamlConfiguration.loadConfiguration(challengesFile);
-        loadEvents();
+        loadChallengesFromFile();
     }
 
-    private void loadEvents() {
+    private void loadChallengesFromFile() {
         plugin.getData().getChallenges().clear();
         eventsData = YamlConfiguration.loadConfiguration(challengesFile);
         if(!eventsData.getKeys(false).isEmpty()){

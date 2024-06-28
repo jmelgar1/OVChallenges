@@ -85,7 +85,7 @@
 //	inv.setItem(5, createBannerItem(redvsblueBanner(), ChatColor.RED + "" + ChatColor.BOLD + "RED " +
 //													   ChatColor.YELLOW + "" + ChatColor.BOLD + "VS " +
 //													   ChatColor.BLUE + "" + ChatColor.BOLD + "BLUE"));
-//	inv.setItem(6, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Challenge"));
+//	inv.setItem(6, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server ChallengeDTO"));
 //	}
 //
 //	//create champions tour inventory
@@ -121,7 +121,7 @@
 //			  ChatColor.GREEN + "Left click to add 1",
 //			  ChatColor.RED + "Right click to remove 1"));
 //
-//	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open Challenge Wins",
+//	inv.setItem(7, createGuiItem(Material.DIAMOND, ChatColor.AQUA + "Open ChallengeDTO Wins",
 //			  ChatColor.GREEN + "Left click to add 1",
 //			  ChatColor.RED + "Right click to remove 1"));
 //

@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.ovclub.ovchallenges.file.PlayerProfileFile;
 import org.ovclub.ovchallenges.util.ChatUtility;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class PlayerData {
         inventories = new HashMap<>();
         winningChallenge = null;
         isVotingPeriod = false;
+        playerProfiles = new ArrayList<>();
     }
 
     private boolean isVotingPeriod;
@@ -23,11 +25,21 @@ public class PlayerData {
     private Challenge winningChallenge;
     private final List<UUID> participants;
     private final HashMap<UUID, Inventory> inventories;
+    private final ArrayList<PlayerProfile> playerProfiles;
 
     public Challenge getWinningChallenge() { return winningChallenge; }
     public List<Challenge> getChallenges() { return challenges; }
     public List<UUID> getParticipants() {return participants;}
     public HashMap<UUID, Inventory> getInventories(){return inventories;}
+    public List<PlayerProfile> getPlayerProfiles() { return playerProfiles; }
+    public PlayerProfile getProfile(Player p) {
+        for(PlayerProfile profile : playerProfiles) {
+            if(profile.getUuid().equals(p.getUniqueId().toString())) {
+                return profile;
+            }
+        }
+        return null;
+    }
     public Challenge getChallengeByName(Component itemName) {
         String name = ChatUtility.getPlainTextFromComponent(itemName);
         for(Challenge challenge : challenges) {
@@ -43,6 +55,7 @@ public class PlayerData {
     public boolean isVotingEnabled() {return isVotingPeriod;}
 
     public void addChallenge(Challenge challenge) {challenges.add(challenge);}
+    public void addPlayerProfile(PlayerProfile profile){playerProfiles.add(profile);}
     public void shuffleChallenges() {Collections.shuffle(challenges);}
 
     public void setWinningChallenge(Challenge challenge) { winningChallenge = challenge; }

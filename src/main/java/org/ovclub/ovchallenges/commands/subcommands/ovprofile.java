@@ -116,7 +116,7 @@
 //				ChatColor.GRAY + "4th: " + ChatColor.YELLOW + championsTourSection.getInt("4th"),
 //				ChatColor.GRAY + "5th-6th: " + ChatColor.YELLOW + championsTourSection.getInt("5th-6th"),
 //				ChatColor.GRAY + "",
-//				ChatColor.GRAY + "Open Challenge Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open Challenge Wins"),
+//				ChatColor.GRAY + "Open ChallengeDTO Wins: " + ChatColor.YELLOW + championsTourSection.getInt("Open ChallengeDTO Wins"),
 //				ChatColor.GRAY + "",
 //				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + championsTourSection.getInt("Participations")));
 //
@@ -153,7 +153,7 @@
 //				ChatColor.GRAY + "",
 //				ChatColor.GRAY + "Participations: " + ChatColor.YELLOW + RVBSection.getInt("Participations")));
 //
-//		inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server Challenge"));
+//		inv.setItem(15, createGuiItem(Material.GRAY_DYE, ChatColor.GRAY + "Future Server ChallengeDTO"));
 //
 //		//Small events section
 //		ConfigurationSection smallEventsSection = statsSection.getConfigurationSection("small-events");

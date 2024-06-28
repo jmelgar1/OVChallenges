@@ -1,8 +1,10 @@
 package org.ovclub.ovchallenges.object.events;
 
-public class MajorEvent extends Event {
+import java.util.Map;
 
-    public MajorEvent(String name, String date) {
-        super(name, date);
+public class MajorEvent extends EventDTO {
+
+    public MajorEvent(String name, Map<String, Integer> results) {
+        super(name, results);
     }
 }

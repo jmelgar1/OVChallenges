@@ -4,7 +4,7 @@ did-not-meet-score: "&7You did not reach the required score of &4{amount} &7and 
 left-the-game: "&4{player} &#EF9A9Aleft the game and will be removed from the challenge!"
 challenge-cancelled: "&4The challenge will be cancelled due to no participants."
 player-vote: "&#AB56B6{player} &#7E57C2voted for {challenge}"
-not-enough-players: "&#EF9A9ANot enough players voted for an challenge! Trying again in 10 minutes."
+not-enough-players: "&#EF9A9ANot enough players voted for a challenge! Trying again in 10 minutes."
 challenge-won-vote: "{challenge} &dhas won the vote!"
 did-not-vote: "&#EF9A9AYou did not vote for the challenge and will not participate."
 time-expired: "&7The voting time has expired and the challenge will start in &23 &7minutes!"

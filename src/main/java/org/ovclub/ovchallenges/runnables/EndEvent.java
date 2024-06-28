@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
+import org.ovclub.ovchallenges.object.events.ChallengeDTO;
 import org.ovclub.ovchallenges.util.ChallengeUtility;
 import org.ovclub.ovchallenges.util.ChatUtility;
 
@@ -25,8 +26,6 @@ public class EndEvent extends BukkitRunnable{
 
 		Challenge challenge = plugin.getData().getWinningChallenge();
 		Map<UUID, Integer> topScores = ChallengeUtility.sortByValue(challenge.getScores());
-		
-		//Bukkit.broadcastMessage(ChatColor.GRAY + "----- " + ChatColor.LIGHT_PURPLE + challenge.getName() + " Results!" + ChatColor.GRAY + " -----");
 
 		Bukkit.broadcast(ChatUtility.createResultsMessage(challenge, topScores));
 //		int counter = 1;
@@ -57,6 +56,9 @@ public class EndEvent extends BukkitRunnable{
 			Player p = Bukkit.getServer().getPlayer(entry.getKey());
 			if(counter == 1) {
 				sponges = challenge.getPlacements().get(1);
+				ChallengeDTO challengeDto = plugin.getData().getProfile(p).getChallengeDtoFromChallenge(challenge);
+				challengeDto.addWin();
+				challengeDto.checkToReplaceHighScore(entry.getValue());
 			} else if(counter == 2) {
 				sponges = challenge.getPlacements().get(2);
 			} else if(counter == 3) {
@@ -100,18 +102,15 @@ public class EndEvent extends BukkitRunnable{
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
+		plugin.getData().clearParticipants();
+		ChallengeUtility.clearVotes(plugin.getData().getChallenges());
+		challenge.setIsActive(false);
+		removeScoreboard();
 		
 		//send a new task in 10 minutes
 		SendDailyEventVote sendDailyEventVote = new SendDailyEventVote(plugin);
 		sendDailyEventVote.runTaskLater(plugin, 1200);
-		
-		//remove scoreboard
-		removeScoreboard();
-	
-		//clearing previous votes and removing the scoreboard from players
-		plugin.getData().clearParticipants();
-		ChallengeUtility.clearVotes(plugin.getData().getChallenges());
-		challenge.setIsActive(false);
 	}
 	
 	public void removeScoreboard() {

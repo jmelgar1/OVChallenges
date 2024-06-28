@@ -56,7 +56,7 @@ public class StartEvent extends BukkitRunnable{
 			challenge.setIsActive(true);
 			endEvent.runTaskLater(plugin, (long) duration * 60 * 20);
 		} else {
-			Bukkit.broadcastMessage("Challenge is null. Please report this error. Something fucking broke.");
+			Bukkit.broadcastMessage("ChallengeDTO is null. Please report this error. Something fucking broke.");
 		}
 	}
 

@@ -25,13 +25,13 @@
 //        		p.sendMessage("broken");
 //        		if(Bukkit.getScheduler().isQueued(dailyVote.getTaskId()) == true){
 //        			dailyVote.cancel();
-//        			p.sendMessage(ChatColor.RED + "Challenge vote cancelled!");
+//        			p.sendMessage(ChatColor.RED + "ChallengeDTO vote cancelled!");
 //        		} else if (Bukkit.getScheduler().isQueued(voteFinished.getTaskId()) == true){
 //        			voteFinished.cancel();
-//        			p.sendMessage(ChatColor.RED + "Challenge vote cancelled!");
+//        			p.sendMessage(ChatColor.RED + "ChallengeDTO vote cancelled!");
 //        		} else if (Bukkit.getScheduler().isQueued(secondReminder.getTaskId()) == true){
 //        			secondReminder.cancel();
-//        			p.sendMessage(ChatColor.RED + "Challenge vote cancelled!");
+//        			p.sendMessage(ChatColor.RED + "ChallengeDTO vote cancelled!");
 //        		} else {
 //        			p.sendMessage(ChatColor.RED + "There is not event vote running right now.");
 //        		}
