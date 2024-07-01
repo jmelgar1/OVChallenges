@@ -1,5 +1,7 @@
 package org.ovclub.ovchallenges.object;
 
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.object.events.ChallengeDTO;
 import org.ovclub.ovchallenges.object.events.EventDTO;
@@ -19,15 +21,39 @@ public class PlayerProfile {
     public List<EventDTO> getEvents() { return events; }
     public List<ChallengeDTO> getChallenges() { return challenges; }
 
-    public ChallengeDTO getChallengeDtoFromChallenge(Challenge challenge) {
-        for(ChallengeDTO challengeDto : challenges) {
-            if(challengeDto.getName().equals(challenge.getName())) {
-                return challengeDto;
+    public void handleChallengeResult(Challenge challenge, OfflinePlayer p, int score, boolean isWinner) {
+        String challengeName = challenge.getName();
+        boolean found = false;
+
+        for (ChallengeDTO challengeDto : challenges) {
+            if (challengeDto.getName().equals(challengeName)) {
+                challengeDto.checkToReplaceHighScore(p, score);
+                if (isWinner) {
+                    challengeDto.addWin();
+                }
+                found = true;
+                break;
             }
         }
-        return null;
+
+        if (!found) {
+            ChallengeDTO newChallenge = new ChallengeDTO(challengeName, 0, 0);
+            newChallenge.checkToReplaceHighScore(p, score);
+            if (isWinner) {
+                newChallenge.addWin();
+            }
+            challenges.add(newChallenge);
+        }
     }
 
+    //Constructor for new profile
+    public PlayerProfile(final Player p, final Plugin data) {
+        this.uuid = p.getUniqueId().toString();
+        this.plugin = data;
+        this.plugin.getData().addPlayerProfile(this);
+    }
+
+    //constructor for loaded profile
     public PlayerProfile(String uuid, Map<String, Object> map, final Plugin data) {
         this.uuid = uuid;
         this.plugin = data;
@@ -35,7 +61,7 @@ public class PlayerProfile {
         Object eventsObj = map.get("events");
         loadEvents(eventsObj);
 
-        Object challengesObj = map.get("enforcers");
+        Object challengesObj = map.get("challenges");
         loadChallenges(challengesObj);
     }
 
@@ -60,8 +86,14 @@ public class PlayerProfile {
     private void loadEvents(Object eventData) {
         if (eventData instanceof Map<?, ?> eventsMap) {
             eventsMap.forEach((eventName, results) -> {
-                if (results instanceof Map<?, ?> resultsMap) {
-                    this.events.add(new EventDTO((String) eventName, (Map<String, Integer>) resultsMap));
+                if (eventName instanceof String && results instanceof Map<?, ?> resultsMap) {
+                    try {
+                        Map<String, Integer> typedResults = castMap(resultsMap);
+                        this.events.add(new EventDTO((String) eventName, typedResults));
+                    } catch (ClassCastException e) {
+                        System.err.println("Error processing event: " + eventName);
+                        System.err.println("Map type error: " + e.getMessage());
+                    }
                 }
             });
         }
@@ -69,12 +101,37 @@ public class PlayerProfile {
 
     private void loadChallenges(Object challengeData) {
         if (challengeData instanceof Map<?, ?> rawChallengesMap) {
-            Map<String, Map<String, Integer>> challengesMap = (Map<String, Map<String, Integer>>) rawChallengesMap;
-            challengesMap.forEach((challengeName, resultsMap) -> {
-                int wins = resultsMap.getOrDefault("wins", 0);
-                int highScore = resultsMap.getOrDefault("high-score", 0);
-                this.challenges.add(new ChallengeDTO(challengeName, wins, highScore));
+            rawChallengesMap.forEach((key, value) -> {
+                if (key instanceof String challengeName && value instanceof Map<?, ?> resultsMap) {
+                    try {
+                        Map<String, Integer> typedResultsMap = castMap(resultsMap);
+                        int wins = typedResultsMap.getOrDefault("wins", 0);
+                        int highScore = typedResultsMap.getOrDefault("high-score", 0);
+                        challenges.add(new ChallengeDTO(challengeName, wins, highScore));
+                    } catch (ClassCastException e) {
+                        System.err.println("Error processing challenge: " + challengeName);
+                        System.err.println("Map type error: " + e.getMessage());
+                    }
+                }
             });
         }
+    }
+
+    private Map<String, Integer> castMap(Map<?, ?> rawMap) {
+        Map<String, Integer> typedMap = new HashMap<>();
+        rawMap.forEach((key, value) -> {
+            if (key instanceof String) {
+                if (value instanceof Integer) {
+                    typedMap.put((String) key, (Integer) value);
+                } else if (value instanceof Double) {
+                    typedMap.put((String) key, ((Double) value).intValue());
+                } else {
+                    throw new ClassCastException("Expected Integer or Double as value. Found: " + value.getClass().getSimpleName());
+                }
+            } else {
+                throw new ClassCastException("Key should be String. Found key type: " + key.getClass().getSimpleName());
+            }
+        });
+        return typedMap;
     }
 }

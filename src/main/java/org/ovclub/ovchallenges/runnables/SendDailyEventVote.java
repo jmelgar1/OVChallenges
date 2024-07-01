@@ -29,15 +29,13 @@ public class SendDailyEventVote extends BukkitRunnable {
 		int onlinePlayers = Bukkit.getServer().getOnlinePlayers().size();
 		//TODO: CHANGE THIS TO 2
 		if(onlinePlayers >= 1) {
-
-			//clear previous participation list
 			List<Challenge> challenges = plugin.getData().getChallenges();
 			plugin.getData().clearParticipants();
-			ChallengeUtility.clearVotes(challenges);
+			ChallengeUtility.clearVotesAndScores(challenges);
 			ChallengeUtility.rotateChallenges(challenges);
 			
 			for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-				p.getWorld().playSound(p.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_1, 0.5F, 1.2F);
+				p.getWorld().playSound(p.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_1, 0.25F, 1.2F);
 				TextComponent component = ChatUtility.createChallengeTitle()
 						.append(Component.newline())
 						.append(Component.text("│").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD))

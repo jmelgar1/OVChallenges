@@ -7,7 +7,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.ovclub.ovchallenges.managers.file.ConfigManager;
 import org.ovclub.ovchallenges.object.Challenge;
 
@@ -54,13 +57,15 @@ public class ChallengeUtility {
 		return nonParticipatingPlayers;
 	}
 	
-	public static void clearVotes(List<Challenge> challenges) {
+	public static void clearVotesAndScores(List<Challenge> challenges) {
     	for(Challenge challenge : challenges) {
 			if(challenge.getVotes() != 0) {
 				challenge.setVotes(0);
 			}
-    	}  	
-    	System.out.println("[OVChallenges] Votes cleared!");
+			if(!challenge.getScores().isEmpty()) {
+				challenge.getScores().clear();
+			}
+    	}
 	}
 
 	public static Challenge determineEvent(List<Challenge> challenges) {
@@ -105,5 +110,18 @@ public class ChallengeUtility {
 						.replacement(Component.text(subject).color(challenge.getColor())))
 				.replaceText(builder -> builder.matchLiteral(pointsPlaceholder)
 						.replacement(Component.text(points).color(NamedTextColor.GOLD))));
+	}
+
+	public static int calculateInventorySpace(Player player, Material material) {
+		int space = 0;
+		Inventory inv = player.getInventory();
+		for (ItemStack item : inv.getStorageContents()) {
+			if (item == null || item.getType().isAir()) {
+				space += material.getMaxStackSize();
+			} else if (item.getType() == material && item.getAmount() < item.getMaxStackSize()) {
+				space += item.getMaxStackSize() - item.getAmount();
+			}
+		}
+		return space;
 	}
 }

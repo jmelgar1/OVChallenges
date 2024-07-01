@@ -28,7 +28,7 @@ public class IronWorker implements Listener {
 
 		if((material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE)) {
 
-			boolean contains = plugin.getData().getParticipants().contains(p);
+			boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 			Challenge challenge = plugin.getData().getWinningChallenge();
 
 			if(!b.getMetadata("challenge").isEmpty()) {

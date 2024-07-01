@@ -36,66 +36,34 @@ class PlayerProfileAdapter extends TypeAdapter<PlayerProfile> {
 
     private void writeComplexObject(JsonWriter out, String name, Object obj) throws IOException {
         out.name(name);
-        if (obj instanceof List<?>) {
-            out.beginArray();
-            for (Object item : (List<?>) obj) {
-                if (item instanceof EventDTO) {
-                    writeEvent(out, (EventDTO) item);
-                } else if (item instanceof ChallengeDTO) {
-                    writeChallenge(out, (ChallengeDTO) item);
-                } else {
-                    JsonElement jsonElement = localGson.toJsonTree(item);
-                    writeJsonElement(out, jsonElement);
+        if (obj instanceof List<?> list) {
+            out.beginObject();
+            for (Object item : list) {
+                if (item instanceof EventDTO event) {
+                    out.name(event.getName());
+                    writeEvent(out, event);
+                } else if (item instanceof ChallengeDTO challenge) {
+                    out.name(challenge.getName());
+                    writeChallenge(out, challenge);
                 }
             }
-            out.endArray();
+            out.endObject();
         } else {
             out.nullValue();
         }
     }
 
-    private void writeJsonElement(JsonWriter out, JsonElement element) throws IOException {
-        if (element.isJsonNull()) {
-            out.nullValue();
-        } else if (element.isJsonObject()) {
-            out.beginObject();
-            for (Map.Entry<String, JsonElement> e : element.getAsJsonObject().entrySet()) {
-                out.name(e.getKey());
-                writeJsonElement(out, e.getValue());
-            }
-            out.endObject();
-        } else if (element.isJsonArray()) {
-            out.beginArray();
-            for (JsonElement e : element.getAsJsonArray()) {
-                writeJsonElement(out, e);
-            }
-            out.endArray();
-        } else if (element instanceof JsonPrimitive){
-            JsonPrimitive prim = element.getAsJsonPrimitive();
-            if (prim.isBoolean()) {
-                out.value(prim.getAsBoolean());
-            } else if (prim.isString()) {
-                out.value(prim.getAsString());
-            } else if (prim.isNumber()) {
-                out.value(prim.getAsNumber());
-            }
-        }
-    }
-
     private void writeEvent(JsonWriter out, EventDTO event) throws IOException {
         out.beginObject();
-        out.name(event.getName()).beginObject();
-
+        System.out.println(event.getResults());
         for (Map.Entry<String, Integer> entry : event.getResults().entrySet()) {
             out.name(entry.getKey()).value(entry.getValue());
         }
-
-        out.endObject();
         out.endObject();
     }
 
     private void writeChallenge(JsonWriter out, ChallengeDTO challenge) throws IOException {
-        out.name(challenge.getName()).beginObject();
+        out.beginObject();
         out.name("wins").value(challenge.getWins());
         out.name("high-score").value(challenge.getHighScore());
         out.endObject();

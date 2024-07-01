@@ -22,7 +22,7 @@ public class StartEventCountdown3Min extends BukkitRunnable {
 	}
 
 	//TODO: CHANGE TO 180
-	int seconds = 30;
+	int seconds = 180;
 
     boolean validStart = true;
 

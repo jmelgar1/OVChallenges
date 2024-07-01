@@ -26,7 +26,6 @@ public class GhastHunter implements Listener{
 		Player p = entity.getKiller();
 		if(p == null) {return;}
 		
-		//ensure mob was killed by a player
 		if(!(entity.getKiller() == null)) {
 			if(entity.getType() == EntityType.GHAST) {
 

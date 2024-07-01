@@ -29,6 +29,7 @@ public class ConfigManager {
         VOTING_ENDED = ChatUtility.createXIcon(TextColor.color(255, 0, 0)).append(LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("voting-ended")))));
         NO_PERMISSION = ChatUtility.createXIcon(TextColor.color(255, 0, 0)).append(LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("no-permission")))));
         TIME_TILL_VOTING_ENDS = ChatUtility.createTimerIcon(TextColor.color(111, 131, 232)).append(LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("time-till-voting-ends")))));
+        NEW_HIGH_SCORE = LegacyComponentSerializer.legacyAmpersand().deserialize(translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("new-high-score"))));
     }
 
     public static TextComponent EARNED_SPONGE;
@@ -48,4 +49,5 @@ public class ConfigManager {
     public static TextComponent VOTING_ENDED;
     public static TextComponent NO_PERMISSION;
     public static TextComponent TIME_TILL_VOTING_ENDS;
+    public static TextComponent NEW_HIGH_SCORE;
 }

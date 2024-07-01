@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.ovclub.ovchallenges.file.PlayerProfileFile;
+import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.util.ChatUtility;
 
 import java.util.*;
@@ -25,18 +25,22 @@ public class PlayerData {
     private Challenge winningChallenge;
     private final List<UUID> participants;
     private final HashMap<UUID, Inventory> inventories;
-    private final ArrayList<PlayerProfile> playerProfiles;
+    private final List<PlayerProfile> playerProfiles;
 
     public Challenge getWinningChallenge() { return winningChallenge; }
     public List<Challenge> getChallenges() { return challenges; }
     public List<UUID> getParticipants() {return participants;}
     public HashMap<UUID, Inventory> getInventories(){return inventories;}
     public List<PlayerProfile> getPlayerProfiles() { return playerProfiles; }
-    public PlayerProfile getProfile(Player p) {
+    public PlayerProfile getProfile(OfflinePlayer p, Plugin plugin) {
         for(PlayerProfile profile : playerProfiles) {
             if(profile.getUuid().equals(p.getUniqueId().toString())) {
                 return profile;
             }
+        }
+        Player pl = p.getPlayer();
+        if(pl != null) {
+            return new PlayerProfile(pl, plugin);
         }
         return null;
     }

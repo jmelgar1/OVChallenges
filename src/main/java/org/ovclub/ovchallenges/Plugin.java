@@ -18,8 +18,6 @@ public class Plugin extends JavaPlugin implements Listener{
     private PlayerData playerData;
     public PlayerData getData(){return this.playerData;}
 
-    private ChallengesFile eventsFile;
-
     private PlayerProfileFile profilesFile;
 
     //vault instance
@@ -55,7 +53,7 @@ public class Plugin extends JavaPlugin implements Listener{
         System.out.println("[OVChallenges Enabled]");
         this.playerData = new PlayerData();
 
-        eventsFile = new ChallengesFile(this);
+        ChallengesFile eventsFile = new ChallengesFile(this);
         eventsFile.loadEventsIntoMemory();
 
         profilesFile = new PlayerProfileFile(this);
@@ -76,6 +74,9 @@ public class Plugin extends JavaPlugin implements Listener{
         getCommand("challenges").setExecutor(new CommandManager(this));
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
+
+        SendDailyEventVote dailyVote = new SendDailyEventVote(this);
+        dailyVote.run();
 
         //OLD SHIT
 
@@ -124,20 +125,12 @@ public class Plugin extends JavaPlugin implements Listener{
 //        getServer().getPluginManager().registerEvents(new configureStatsBC(), this);
 //        getServer().getPluginManager().registerEvents(new configureStatsMA(), this);
 //        getServer().getPluginManager().registerEvents(new configureStatsRVB(), this);
-
-        //create new runnable to start the event cycle
-        SendDailyEventVote dailyVote = new SendDailyEventVote(this);
-        dailyVote.run();
     }
 
     @Override
     public void onDisable() {
         System.out.println("(!) OVChallenges Disabled");
         profilesFile.saveProfiles();
-        //end event cycle
-        EndEvent endEvent = new EndEvent(this);
-        endEvent.run();
-
     }
 //
 //    //PLAYER DATA FILE

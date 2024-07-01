@@ -12,7 +12,6 @@ import org.ovclub.ovchallenges.object.Challenge;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class ChatUtility {
     public static TextColor plugin_color = TextColor.fromHexString("#AB56B6");
@@ -88,7 +87,7 @@ public class ChatUtility {
 
         // Close the box with a bold line
         header = header.append(Component.newline().append(Component.text("│ ")).color(NamedTextColor.GRAY).decoration(TextDecoration.BOLD, true))
-                .append(Component.newline().append(Component.text("└─────────────────┘").color(NamedTextColor.GRAY).decoration(TextDecoration.BOLD, true)));
+                .append(Component.newline().append(Component.text("└───────────────┘").color(NamedTextColor.GRAY).decoration(TextDecoration.BOLD, true)));
 
         return header;
     }

@@ -11,6 +11,7 @@ time-expired: "&7The voting time has expired and the challenge will start in &23
 voting-ended: "&#EF9A9AVoting for this challenge has ended!!"
 already-voted: "&#EF9A9AYou have already voted!"
 time-till-voting-ends: "&7Voting ends in &b{seconds} seconds&7!"
+new-high-score: "&e(🏆) &#FF7043NEW HIGH SCORE: &6&l{score}"
 
 #Killing messages
 killed-baby-mob: "&dYou killed a &5{mob}&d! &6+{points} &6points"

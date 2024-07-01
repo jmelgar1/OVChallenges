@@ -1,7 +1,7 @@
 Fish Frenzy:
    description: Catch as many fish as you can!
    item: FISHING_ROD
-   duration: 1
+   duration: 5
    color: "#42A5F5"
    votes: 0
    requiredScore: 5
@@ -56,7 +56,7 @@ Dragon Slayer:
 Bring Home The Bacon:
    description: Kill as many pigs as you can!
    item: COOKED_PORKCHOP
-   duration: 1
+   duration: 5
    color: "#F48FB1"
    votes: 0
    requiredScore: 3
@@ -67,7 +67,7 @@ Bring Home The Bacon:
 Crazy Carrots:
    description: Mine as many fully grown carrot crops as you can!
    item: CARROT
-   duration: 1
+   duration: 5
    color: "#FF9800"
    votes: 0
    requiredScore: 20
@@ -78,7 +78,7 @@ Crazy Carrots:
 Bad Bats:
    description: Kill as many bats as you can!
    item: BLACK_DYE
-   duration: 1
+   duration: 5
    color: "#A1887F"
    votes: 0
    requiredScore: 1
@@ -111,7 +111,7 @@ Warden Warrior:
 Cookie Clicker:
    description: Craft as many cookies as you can!
    item: COOKIE
-   duration: 1
+   duration: 5
    color: "#FFCC80"
    votes: 0
    requiredScore: 32
@@ -133,7 +133,7 @@ Nasty Netherite:
 Precious Potatoes:
    description: Mine as many fully grown potatoes as you can!
    item: POTATO
-   duration: 1
+   duration: 5
    color: "#FFFB95"
    votes: 0
    requiredScore: 20
@@ -155,7 +155,7 @@ Hilarious Homicide:
 Cow Tipper:
    description: Kill as many cows as you can!
    item: COOKED_BEEF
-   duration: 1
+   duration: 5
    color: "#7E4534"
    votes: 0
    requiredScore: 3
@@ -188,7 +188,7 @@ Spooky Skeletons:
 Coal Digger:
    description: Mine as much coal ore as you can!
    item: COAL
-   duration: 1
+   duration: 5
    color: "#616161"
    votes: 0
    requiredScore: 15
@@ -210,7 +210,7 @@ Iron Worker:
 Lumberjack:
    description: Mine as many logs as you can!
    item: OAK_LOG
-   duration: 1
+   duration: 5
    color: "#B39E6A"
    votes: 0
    requiredScore: 32
@@ -221,7 +221,7 @@ Lumberjack:
 Best Baker:
    description: Craft as much bread as you can!
    item: BREAD
-   duration: 1
+   duration: 5
    color: "#AB793B"
    votes: 0
    requiredScore: 10

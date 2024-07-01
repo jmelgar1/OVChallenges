@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.ovclub.ovchallenges.Plugin;
 import org.ovclub.ovchallenges.object.Challenge;
 import org.ovclub.ovchallenges.runnables.UpdateScoreboard;
+import org.ovclub.ovchallenges.util.ChallengeUtility;
 
 public class CountlessCakes implements Listener {
 
@@ -20,40 +21,32 @@ public class CountlessCakes implements Listener {
 	public CountlessCakes(Plugin plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
 	public void craftCake(CraftItemEvent e) {
-		
-		Player p = (Player) e.getWhoClicked();
-		
-		ItemStack craftedItem = e.getInventory().getResult();
-		
-		Inventory inv = e.getInventory();
-		
-		ClickType clickType = e.getClick();
-		
-		int realAmount = craftedItem.getAmount();
+		if (!(e.getWhoClicked() instanceof Player p)) return;
+
+        ItemStack craftedItem = e.getInventory().getResult();
+
+		if (craftedItem == null || craftedItem.getType() != Material.CAKE) return;
 
 		boolean contains = plugin.getData().getParticipants().contains(p.getUniqueId());
 		Challenge challenge = plugin.getData().getWinningChallenge();
 
-		if(contains) {
-			if(craftedItem.getType() == Material.CAKE) {
-				if(clickType.isShiftClick()) {
-					int lowerAmount = craftedItem.getMaxStackSize() + 1000;
-					for(ItemStack actualItem : inv.getContents()) {
-						if(!actualItem.getType().isAir() && lowerAmount > actualItem.getAmount() && !actualItem.getType().equals(craftedItem.getType())) {
-							lowerAmount = actualItem.getAmount();
-						}
-						realAmount = lowerAmount * craftedItem.getAmount();
-					}
-				}
-				challenge.addScore(p, realAmount);
-				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
+		if (!contains) return;
 
-				UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
-				updateScoreboard.run();
-			}
+		int amountToCraft = craftedItem.getAmount();
+		if (e.getClick().isShiftClick()) {
+			int inventorySpace = ChallengeUtility.calculateInventorySpace(p, craftedItem.getType());
+			amountToCraft = Math.min(amountToCraft, inventorySpace);
+		}
+
+		if (amountToCraft > 0) {
+			challenge.addScore(p, amountToCraft);
+			p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
+
+			UpdateScoreboard updateScoreboard = new UpdateScoreboard(plugin);
+			updateScoreboard.run();
 		}
 	}
 }

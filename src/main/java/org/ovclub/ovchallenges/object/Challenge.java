@@ -38,6 +38,7 @@ public class Challenge implements Listener, ConfigurationSerializable {
     private final Map<UUID, Integer> scores = new HashMap<>();
     private boolean isActive = false;
     private Class<? extends Listener> classType;
+    private final Map<Class<? extends Listener>, Listener> activeListeners = new HashMap<>();
 
     /**
      * GETTERS
@@ -136,8 +137,14 @@ public class Challenge implements Listener, ConfigurationSerializable {
     public void registerEvents() {
         try {
             if (Listener.class.isAssignableFrom(classType)) {
-                Listener listenerInstance = classType.getDeclaredConstructor(Plugin.class).newInstance(plugin);
-                Bukkit.getServer().getPluginManager().registerEvents(listenerInstance, plugin);
+                if (!activeListeners.containsKey(classType)) {
+                    Listener listenerInstance = classType.getDeclaredConstructor(Plugin.class).newInstance(plugin);
+                    Bukkit.getServer().getPluginManager().registerEvents(listenerInstance, plugin);
+                    activeListeners.put(classType, listenerInstance);
+                    System.out.println("Registered events for " + classType.getSimpleName());
+                } else {
+                    System.out.println("Events are already registered for " + classType.getSimpleName());
+                }
             } else {
                 System.out.println("The class does not implement Listener.");
             }
@@ -148,14 +155,16 @@ public class Challenge implements Listener, ConfigurationSerializable {
 
     public void unregisterEvents() {
         try {
-            if (Listener.class.isAssignableFrom(classType)) {
-                Listener listenerInstance = classType.getDeclaredConstructor(Plugin.class).newInstance(plugin);
+            if (activeListeners.containsKey(classType)) {
+                Listener listenerInstance = activeListeners.get(classType);
                 HandlerList.unregisterAll(listenerInstance);
+                activeListeners.remove(classType);
+                System.out.println("Unregistered events for " + classType.getSimpleName());
             } else {
-                System.out.println("The class does not implement Listener.");
+                System.out.println("No events found to unregister for " + classType.getSimpleName());
             }
         } catch (Exception e) {
-            System.out.println("Failed to register events: " + e);
+            System.out.println("Failed to unregister events: " + e);
         }
     }
 

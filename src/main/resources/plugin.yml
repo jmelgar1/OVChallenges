@@ -10,6 +10,6 @@ commands:
         aliases: [chal, ch, challenges]
         usage: /challenges
 permissions:
-    crews.player.*:
+    challenges.player.*:
         description: Access to OVChallenges
         default: true

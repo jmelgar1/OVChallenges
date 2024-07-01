@@ -24,13 +24,9 @@
 //import org.bukkit.inventory.ItemStack;
 //import org.bukkit.inventory.meta.BannerMeta;
 //import org.bukkit.inventory.meta.SkullMeta;
-//import org.ovclub.ovchallenges.Plugin;
-//import org.ovclub.ovchallenges.bukkitevents.PlayerEvents;
+//import org.ovclub.ovchallenges.listeners.PlayerEvents;
 //import org.ovclub.ovchallenges.managers.InventoryManager;
 //
-//import net.luckperms.api.LuckPerms;
-//import net.luckperms.api.LuckPermsProvider;
-//import net.luckperms.api.model.user.User;
 //import net.md_5.bungee.api.ChatColor;
 //
 //public class ovprofile extends InventoryManager implements Listener, CommandExecutor{
@@ -40,7 +36,7 @@
 //	public static Map<UUID, Inventory> inventories = new HashMap<UUID, Inventory>();
 //
 //	//Luckperms api
-//	static LuckPerms api = LuckPermsProvider.get();
+//	//static LuckPerms api = LuckPermsProvider.get();
 ////
 ////	//Plugin instance
 ////	private static Plugin pluginClass = Plugin.getInstance();
